@@ -21,6 +21,7 @@ function Index() {
       <ProfileLookup />
       <Features />
       <LiveStats />
+      <SocialMockups />
       <Testimonials />
       <Footer />
     </div>
