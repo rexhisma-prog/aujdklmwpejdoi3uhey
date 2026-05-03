@@ -134,7 +134,7 @@ function ClientDashboard() {
                   </div>
                   <div className="font-semibold">{s.name}</div>
                   <div className="mt-1 text-sm text-muted-foreground">
-                    {Number(s.price_eur).toFixed(2)} € për {s.quantity.toLocaleString()}
+                    {Number(s.price_eur).toFixed(2)} € për 1,000
                   </div>
                   <button className="mt-4 w-full rounded-lg bg-primary py-2 text-sm font-semibold text-primary-foreground hover:opacity-90">
                     Porosit
