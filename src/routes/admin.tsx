@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Users, Wallet, TrendingUp, ShoppingCart } from "lucide-react";
 
 export const Route = createFileRoute("/admin")({
-  head: () => ({ meta: [{ title: "Super Admin — GrowSocial" }] }),
+  head: () => ({ meta: [{ title: "Super Admin — ShtoFollow" }] }),
   component: AdminPage,
 });
 

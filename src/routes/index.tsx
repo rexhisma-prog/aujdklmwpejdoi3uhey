@@ -5,9 +5,9 @@ import { useCountUp } from "@/hooks/use-count-up";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "GrowSocial — Rritu në rrjetet sociale" },
+      { title: "ShtoFollow — Rritu në rrjetet sociale" },
       { name: "description", content: "Shto Followers, Pëlqime dhe Shikime në Instagram, TikTok dhe Facebook. Wallet EUR, porosi të shpejta, transaksione të sigurta." },
-      { property: "og:title", content: "GrowSocial — Rritu në rrjetet sociale" },
+      { property: "og:title", content: "ShtoFollow — Rritu në rrjetet sociale" },
       { property: "og:description", content: "Followers, Likes dhe Views për Instagram, TikTok, Facebook." },
     ],
   }),
@@ -233,7 +233,7 @@ function SocialMockups() {
         <div className="overflow-hidden rounded-3xl border border-border bg-[oklch(0.12_0.015_165)] shadow-[var(--shadow-elegant)]">
           <div className="flex items-center justify-between border-b border-border/60 px-4 py-3 text-sm">
             <ArrowLeft className="h-4 w-4" />
-            <span className="font-semibold">growsocial.com</span>
+            <span className="font-semibold">shtofollow.com</span>
             <MoreHorizontal className="h-4 w-4" />
           </div>
           <div className="p-5">
@@ -248,7 +248,7 @@ function SocialMockups() {
               </div>
             </div>
             <div className="mt-4">
-              <div className="font-semibold">growsocial.com</div>
+              <div className="font-semibold">shtofollow.com</div>
               <div className="text-xs text-muted-foreground">📈 Social Media Growth</div>
             </div>
             <div className="mt-3 flex gap-2">
@@ -267,7 +267,7 @@ function SocialMockups() {
           <div className="-mt-10 px-5">
             <div className="h-20 w-20 rounded-full border-4 border-card bg-secondary" />
             <div className="mt-3">
-              <div className="text-lg font-bold">GrowSocial.com</div>
+              <div className="text-lg font-bold">ShtoFollow.com</div>
               <div className="text-xs text-muted-foreground"><AnimatedStat target={10000} /> followers · 890 likes</div>
             </div>
             <div className="mt-3 flex gap-2">
@@ -286,7 +286,7 @@ function SocialMockups() {
             <div className="flex items-center gap-2">
               <div className="h-8 w-8 rounded-full bg-secondary" />
               <div>
-                <div className="text-xs font-semibold">GrowSocial.com</div>
+                <div className="text-xs font-semibold">ShtoFollow.com</div>
                 <div className="text-[10px] text-muted-foreground">Just now</div>
               </div>
             </div>
@@ -310,12 +310,12 @@ function SocialMockups() {
         <div className="overflow-hidden rounded-3xl border border-border bg-[oklch(0.12_0.015_165)] shadow-[var(--shadow-elegant)]">
           <div className="flex items-center justify-between border-b border-border/60 px-4 py-3 text-sm">
             <ArrowLeft className="h-4 w-4" />
-            <span className="font-semibold">@growsocial.com</span>
+            <span className="font-semibold">@shtofollow.com</span>
             <MoreHorizontal className="h-4 w-4" />
           </div>
           <div className="flex flex-col items-center p-5">
             <div className="h-20 w-20 rounded-full bg-secondary" />
-            <div className="mt-3 font-semibold">@growsocial.com</div>
+            <div className="mt-3 font-semibold">@shtofollow.com</div>
             <div className="mt-4 flex gap-6 text-center text-xs">
               <div><div className="text-base font-bold">128</div><div className="text-muted-foreground">Following</div></div>
               <div><div className="text-base font-bold text-primary"><AnimatedStat target={10000} /></div><div className="text-muted-foreground">Followers</div></div>
@@ -350,7 +350,7 @@ function Footer() {
   return (
     <footer className="border-t border-border">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-8 md:flex-row">
-        <p className="text-sm text-muted-foreground">© 2026 GrowSocial. Të gjitha të drejtat të rezervuara.</p>
+        <p className="text-sm text-muted-foreground">© 2026 ShtoFollow. Të gjitha të drejtat të rezervuara.</p>
         <div className="flex gap-4 text-sm text-muted-foreground">
           <Link to="/login" className="hover:text-foreground">Hyr</Link>
           <Link to="/register" className="hover:text-foreground">Regjistrohu</Link>
