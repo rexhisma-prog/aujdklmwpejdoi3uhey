@@ -253,11 +253,6 @@ function OrderPage() {
               {error}
             </p>
           )}
-          {success && (
-            <p className="rounded-lg bg-primary/10 px-3 py-2 text-sm text-primary">
-              Porosia u dërgua me sukses! Po të kthejmë te paneli...
-            </p>
-          )}
 
           <button
             type="submit"
