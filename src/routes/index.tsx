@@ -5,9 +5,9 @@ import { useCountUp } from "@/hooks/use-count-up";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "ShtoFollow — Rritu në rrjetet sociale" },
+      { title: "shtofollow.com — Rritu në rrjetet sociale" },
       { name: "description", content: "Shto Followers, Pëlqime dhe Shikime në Instagram, TikTok dhe Facebook. Wallet EUR, porosi të shpejta, transaksione të sigurta." },
-      { property: "og:title", content: "ShtoFollow — Rritu në rrjetet sociale" },
+      { property: "og:title", content: "shtofollow.com — Rritu në rrjetet sociale" },
       { property: "og:description", content: "Followers, Likes dhe Views për Instagram, TikTok, Facebook." },
     ],
   }),
@@ -34,7 +34,7 @@ function Header() {
     <header className="sticky top-0 z-50 border-b border-border/50 bg-background/70 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         <Link to="/" className="text-xl font-bold tracking-tight">
-          <span className="text-primary">Grow</span>Social
+          <span className="text-primary">Shto</span>Follow<span className="text-muted-foreground">.com</span>
         </Link>
         <nav className="flex items-center gap-2">
           <Link to="/login" className="rounded-lg px-4 py-2 text-sm font-medium text-muted-foreground transition hover:text-foreground">
@@ -267,7 +267,7 @@ function SocialMockups() {
           <div className="-mt-10 px-5">
             <div className="h-20 w-20 rounded-full border-4 border-card bg-secondary" />
             <div className="mt-3">
-              <div className="text-lg font-bold">ShtoFollow.com</div>
+              <div className="text-lg font-bold">shtofollow.com.com</div>
               <div className="text-xs text-muted-foreground"><AnimatedStat target={10000} /> followers · 890 likes</div>
             </div>
             <div className="mt-3 flex gap-2">
@@ -286,7 +286,7 @@ function SocialMockups() {
             <div className="flex items-center gap-2">
               <div className="h-8 w-8 rounded-full bg-secondary" />
               <div>
-                <div className="text-xs font-semibold">ShtoFollow.com</div>
+                <div className="text-xs font-semibold">shtofollow.com.com</div>
                 <div className="text-[10px] text-muted-foreground">Just now</div>
               </div>
             </div>
@@ -350,7 +350,7 @@ function Footer() {
   return (
     <footer className="border-t border-border">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-8 md:flex-row">
-        <p className="text-sm text-muted-foreground">© 2026 ShtoFollow. Të gjitha të drejtat të rezervuara.</p>
+        <p className="text-sm text-muted-foreground">© 2026 shtofollow.com. Të gjitha të drejtat të rezervuara.</p>
         <div className="flex gap-4 text-sm text-muted-foreground">
           <Link to="/login" className="hover:text-foreground">Hyr</Link>
           <Link to="/register" className="hover:text-foreground">Regjistrohu</Link>
