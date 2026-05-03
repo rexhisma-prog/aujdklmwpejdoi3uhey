@@ -80,7 +80,6 @@ function OrderPage() {
       return;
     }
     setSuccess(true);
-    setTimeout(() => navigate({ to: "/dashboard" }), 1200);
   };
 
   if (loading) {
