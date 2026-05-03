@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      services: {
+        Row: {
+          active: boolean
+          created_at: string
+          id: string
+          name: string
+          platform: string
+          price_eur: number
+          quantity: number
+          service_type: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          name: string
+          platform: string
+          price_eur?: number
+          quantity?: number
+          service_type: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          name?: string
+          platform?: string
+          price_eur?: number
+          quantity?: number
+          service_type?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
