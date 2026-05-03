@@ -3,6 +3,27 @@ import { Wallet, ShoppingCart, Instagram, Music2, Facebook, Heart, Eye, Users, L
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
+type Service = {
+  id: string;
+  platform: string;
+  service_type: string;
+  name: string;
+  price_eur: number;
+  quantity: number;
+};
+
+const platformIcon: Record<string, typeof Instagram> = {
+  instagram: Instagram,
+  tiktok: Music2,
+  facebook: Facebook,
+};
+
+const typeIcon: Record<string, typeof Heart> = {
+  likes: Heart,
+  views: Eye,
+  followers: Users,
+};
+
 export const Route = createFileRoute("/dashboard")({
   head: () => ({ meta: [{ title: "Paneli im — shtofollow.com" }] }),
   component: ClientDashboard,
