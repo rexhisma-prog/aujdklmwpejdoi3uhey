@@ -1,6 +1,8 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Instagram, Wallet, ShoppingCart, ShieldCheck, Heart, Eye, Users, TrendingUp, Music2, ArrowLeft, MoreHorizontal, ThumbsUp, MessageCircle, Share2, UserPlus, Play } from "lucide-react";
 import { useCountUp } from "@/hooks/use-count-up";
+import { useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -14,7 +16,35 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
+function useAutoRedirectAfterLogin() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    let cancelled = false;
+    const check = async (userId: string) => {
+      const { data: roles } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", userId);
+      if (cancelled) return;
+      const isAdmin = roles?.some((r) => r.role === "super_admin");
+      if (isAdmin) navigate({ to: "/admin" });
+    };
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session?.user) check(data.session.user.id);
+    });
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_IN" && session?.user) check(session.user.id);
+    });
+    return () => {
+      cancelled = true;
+      sub.subscription.unsubscribe();
+    };
+  }, [navigate]);
+}
+
+
 function Index() {
+  useAutoRedirectAfterLogin();
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Header />
