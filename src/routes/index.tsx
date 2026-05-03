@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Instagram, Wallet, ShoppingCart, ShieldCheck, Heart, Eye, Users, TrendingUp, Music2 } from "lucide-react";
+import { Instagram, Wallet, ShoppingCart, ShieldCheck, Heart, Eye, Users, TrendingUp, Music2, ArrowLeft, MoreHorizontal, ThumbsUp, MessageCircle, Share2, UserPlus, Play } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -21,6 +21,7 @@ function Index() {
       <ProfileLookup />
       <Features />
       <LiveStats />
+      <SocialMockups />
       <Testimonials />
       <Footer />
     </div>
@@ -193,6 +194,138 @@ function Testimonials() {
             <p className="mt-4 text-sm font-semibold text-primary">— {t.name}</p>
           </div>
         ))}
+      </div>
+    </section>
+  );
+}
+
+function SocialMockups() {
+  return (
+    <section className="mx-auto max-w-7xl px-6 py-20">
+      <div className="text-center">
+        <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+          <TrendingUp className="h-3.5 w-3.5" /> Live
+        </div>
+        <h2 className="mt-4 text-4xl font-bold tracking-tight">Shiko rritjen në kohë reale</h2>
+        <p className="mt-3 text-muted-foreground">Nga 100 në 10K followers — shpejt dhe sigurt</p>
+      </div>
+
+      <div className="mt-12 grid gap-6 md:grid-cols-3">
+        {/* Instagram mockup */}
+        <div className="overflow-hidden rounded-3xl border border-border bg-[oklch(0.12_0.015_165)] shadow-[var(--shadow-elegant)]">
+          <div className="flex items-center justify-between border-b border-border/60 px-4 py-3 text-sm">
+            <ArrowLeft className="h-4 w-4" />
+            <span className="font-semibold">growsocial.com</span>
+            <MoreHorizontal className="h-4 w-4" />
+          </div>
+          <div className="p-5">
+            <div className="flex items-center gap-5">
+              <div className="h-16 w-16 rounded-full bg-gradient-to-tr from-primary via-primary-foreground/20 to-primary p-[2px]">
+                <div className="h-full w-full rounded-full bg-card" />
+              </div>
+              <div className="flex flex-1 justify-around text-center text-xs">
+                <div><div className="text-base font-bold">42</div><div className="text-muted-foreground">Posts</div></div>
+                <div><div className="text-base font-bold text-primary">907</div><div className="text-muted-foreground">Followers</div></div>
+                <div><div className="text-base font-bold">320</div><div className="text-muted-foreground">Following</div></div>
+              </div>
+            </div>
+            <div className="mt-4">
+              <div className="font-semibold">growsocial.com</div>
+              <div className="text-xs text-muted-foreground">📈 Social Media Growth</div>
+            </div>
+            <div className="mt-3 flex gap-2">
+              <button className="flex-1 rounded-lg bg-primary py-1.5 text-xs font-semibold text-primary-foreground">Follow</button>
+              <button className="flex-1 rounded-lg border border-border py-1.5 text-xs font-semibold">Message</button>
+            </div>
+            <div className="mt-6 flex flex-col items-center justify-center rounded-2xl bg-gradient-to-b from-primary/10 to-transparent py-10">
+              <div className="text-5xl font-bold text-primary">907</div>
+              <div className="mt-1 text-xs text-muted-foreground">followers</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Facebook mockup */}
+        <div className="overflow-hidden rounded-3xl border border-border bg-[oklch(0.12_0.015_165)] shadow-[var(--shadow-elegant)]">
+          <div className="h-20 bg-gradient-to-r from-primary to-primary-glow" />
+          <div className="-mt-10 px-5">
+            <div className="h-20 w-20 rounded-full border-4 border-card bg-secondary" />
+            <div className="mt-3">
+              <div className="text-lg font-bold">GrowSocial.com</div>
+              <div className="text-xs text-muted-foreground">907 followers · 890 likes</div>
+            </div>
+            <div className="mt-3 flex gap-2">
+              <button className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-primary py-1.5 text-xs font-semibold text-primary-foreground">
+                <ThumbsUp className="h-3.5 w-3.5" /> Like
+              </button>
+              <button className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-border py-1.5 text-xs font-semibold">
+                <UserPlus className="h-3.5 w-3.5" /> Follow
+              </button>
+              <button className="rounded-lg border border-border px-2.5 py-1.5">
+                <Share2 className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          </div>
+          <div className="mx-5 mt-5 rounded-2xl border border-border p-3">
+            <div className="flex items-center gap-2">
+              <div className="h-8 w-8 rounded-full bg-secondary" />
+              <div>
+                <div className="text-xs font-semibold">GrowSocial.com</div>
+                <div className="text-[10px] text-muted-foreground">Just now</div>
+              </div>
+            </div>
+            <p className="mt-2 text-xs">📈 Rritje e vazhdueshme — 907 followers!</p>
+            <div className="mt-2 flex items-center justify-between text-[10px] text-muted-foreground">
+              <span>👍 ❤️ 100</span>
+              <span>24 comments</span>
+            </div>
+            <div className="mt-2 flex gap-3 border-t border-border pt-2 text-[10px] text-muted-foreground">
+              <span className="flex items-center gap-1"><ThumbsUp className="h-3 w-3" /> Like</span>
+              <span className="flex items-center gap-1"><MessageCircle className="h-3 w-3" /> Comment</span>
+              <span className="flex items-center gap-1"><Share2 className="h-3 w-3" /> Share</span>
+            </div>
+          </div>
+          <div className="m-5 flex flex-col items-center rounded-2xl bg-gradient-to-b from-primary/10 to-transparent py-8">
+            <div className="text-5xl font-bold text-primary">907</div>
+            <div className="text-xs text-muted-foreground">followers</div>
+          </div>
+        </div>
+
+        {/* TikTok mockup */}
+        <div className="overflow-hidden rounded-3xl border border-border bg-[oklch(0.12_0.015_165)] shadow-[var(--shadow-elegant)]">
+          <div className="flex items-center justify-between border-b border-border/60 px-4 py-3 text-sm">
+            <ArrowLeft className="h-4 w-4" />
+            <span className="font-semibold">@growsocial.com</span>
+            <MoreHorizontal className="h-4 w-4" />
+          </div>
+          <div className="flex flex-col items-center p-5">
+            <div className="h-20 w-20 rounded-full bg-secondary" />
+            <div className="mt-3 font-semibold">@growsocial.com</div>
+            <div className="mt-4 flex gap-6 text-center text-xs">
+              <div><div className="text-base font-bold">128</div><div className="text-muted-foreground">Following</div></div>
+              <div><div className="text-base font-bold text-primary">907</div><div className="text-muted-foreground">Followers</div></div>
+              <div><div className="text-base font-bold">45.2K</div><div className="text-muted-foreground">Likes</div></div>
+            </div>
+            <div className="mt-4 flex w-full gap-2">
+              <button className="flex-1 rounded-lg bg-primary py-1.5 text-xs font-semibold text-primary-foreground">Follow</button>
+              <button className="flex-1 rounded-lg border border-border py-1.5 text-xs font-semibold">Message</button>
+            </div>
+            <div className="mt-5 flex w-full border-b border-border text-xs">
+              <button className="flex-1 border-b-2 border-primary py-2 font-semibold">Videos</button>
+              <button className="flex-1 py-2 text-muted-foreground">Liked</button>
+            </div>
+            <div className="mt-3 grid w-full grid-cols-3 gap-1">
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="flex aspect-[3/4] items-center justify-center rounded bg-gradient-to-br from-primary/30 to-secondary">
+                  <Play className="h-5 w-5 text-foreground/70" />
+                </div>
+              ))}
+            </div>
+            <div className="mt-5 w-full rounded-2xl bg-gradient-to-b from-primary/10 to-transparent py-6 text-center">
+              <div className="text-4xl font-bold text-primary">907</div>
+              <div className="text-xs text-muted-foreground">followers</div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
