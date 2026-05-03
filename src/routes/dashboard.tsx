@@ -33,6 +33,7 @@ function ClientDashboard() {
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
   const [loading, setLoading] = useState(true);
+  const [services, setServices] = useState<Service[]>([]);
 
   useEffect(() => {
     let mounted = true;
@@ -43,7 +44,6 @@ function ClientDashboard() {
         navigate({ to: "/login" });
         return;
       }
-      // If super admin, redirect to admin panel
       const { data: roles } = await supabase
         .from("user_roles")
         .select("role")
@@ -53,7 +53,16 @@ function ClientDashboard() {
         return;
       }
       setEmail(user.email ?? "");
-      setLoading(false);
+
+      const { data: svc } = await supabase
+        .from("services")
+        .select("*")
+        .eq("active", true)
+        .order("sort_order");
+      if (mounted) {
+        setServices((svc as Service[]) ?? []);
+        setLoading(false);
+      }
     });
     return () => {
       mounted = false;
@@ -72,15 +81,6 @@ function ClientDashboard() {
       </div>
     );
   }
-
-  const services = [
-    { icon: Instagram, name: "Instagram Followers", price: "nga 1.50 €" },
-    { icon: Heart, name: "Instagram Likes", price: "nga 0.80 €" },
-    { icon: Music2, name: "TikTok Followers", price: "nga 1.20 €" },
-    { icon: Eye, name: "TikTok Views", price: "nga 0.50 €" },
-    { icon: Facebook, name: "Facebook Followers", price: "nga 2.00 €" },
-    { icon: Users, name: "Facebook Page Likes", price: "nga 1.80 €" },
-  ];
 
   return (
     <div className="min-h-screen bg-background text-foreground">
