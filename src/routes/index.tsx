@@ -179,22 +179,37 @@ function Testimonials() {
     { name: "Ardit K.", text: "Shumë shpejt erdhen followerat, brenda 2 orësh i kisha të gjithë. Top shërbim!" },
     { name: "Erina M.", text: "Çmim shumë i mirë dhe pagesa me kartë funksionoi pa problem. Rekomandoj!" },
     { name: "Blerim S.", text: "TikTok views erdhen menjëherë. Do e përdor përsëri 100%." },
+    { name: "Diana H.", text: "Wallet-i funksionon perfekt, mbusha 20€ dhe brenda minutash kisha porosinë gati." },
+    { name: "Krenar V.", text: "I përdora për Instagram dhe rezultatet erdhen menjëherë. Çmime shumë konkurruese!" },
+    { name: "Anila B.", text: "Mbështetja e klientit është e shkëlqyer. Më ndihmuan brenda pak minutash." },
+    { name: "Genti P.", text: "Më e mira faqe për followers në Shqipëri. Pa probleme, pa vonesa!" },
+    { name: "Elsa R.", text: "Për Facebook page-in tim erdhen 5K followers brenda një dite. Mahnitëse!" },
+    { name: "Driton M.", text: "Pagesa me kartë e thjeshtë dhe e sigurt. Do rekomandoj te të gjithë miqtë." },
+    { name: "Vesa K.", text: "Likes erdhen menjëherë sapo bëra porosinë. Cilësi e lartë, çmim i ulët." },
   ];
+  // duplicate for seamless loop
+  const loop = [...items, ...items];
   return (
-    <section className="mx-auto max-w-7xl px-6 py-20">
-      <div className="text-center">
+    <section className="overflow-hidden py-20">
+      <div className="mx-auto max-w-7xl px-6 text-center">
         <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
           <TrendingUp className="h-3.5 w-3.5" /> Çfarë thonë klientët
         </div>
         <h2 className="mt-4 text-4xl font-bold tracking-tight">Mbi 800 klientë të kënaqur</h2>
       </div>
-      <div className="mt-12 grid gap-6 md:grid-cols-3">
-        {items.map((t) => (
-          <div key={t.name} className="rounded-3xl border border-border bg-card p-6">
-            <p className="text-sm leading-relaxed text-foreground/90">"{t.text}"</p>
-            <p className="mt-4 text-sm font-semibold text-primary">— {t.name}</p>
-          </div>
-        ))}
+
+      <div className="relative mt-12 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+        <div className="flex gap-6 animate-marquee">
+          {loop.map((t, i) => (
+            <div
+              key={i}
+              className="w-[340px] shrink-0 rounded-3xl border border-border bg-card p-6"
+            >
+              <p className="text-sm leading-relaxed text-foreground/90">"{t.text}"</p>
+              <p className="mt-4 text-sm font-semibold text-primary">— {t.name}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
