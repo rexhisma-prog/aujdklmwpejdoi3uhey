@@ -199,6 +199,23 @@ function Testimonials() {
   );
 }
 
+function AnimatedFollowers({ size = "5xl" }: { size?: "4xl" | "5xl" }) {
+  const { value, ref } = useCountUp(10000, 5000);
+  return (
+    <div ref={ref} className="flex flex-col items-center">
+      <div className={`text-${size} font-bold text-primary tabular-nums`}>
+        {value.toLocaleString()}
+      </div>
+      <div className="mt-1 text-xs text-muted-foreground">followers</div>
+    </div>
+  );
+}
+
+function AnimatedStat({ target }: { target: number }) {
+  const { value, ref } = useCountUp(target, 5000);
+  return <span ref={ref as never} className="tabular-nums">{value.toLocaleString()}</span>;
+}
+
 function SocialMockups() {
   return (
     <section className="mx-auto max-w-7xl px-6 py-20">
@@ -207,7 +224,7 @@ function SocialMockups() {
           <TrendingUp className="h-3.5 w-3.5" /> Live
         </div>
         <h2 className="mt-4 text-4xl font-bold tracking-tight">Shiko rritjen në kohë reale</h2>
-        <p className="mt-3 text-muted-foreground">Nga 100 në 10K followers — shpejt dhe sigurt</p>
+        <p className="mt-3 text-muted-foreground">Nga 0 në 10,000 followers — shpejt dhe sigurt</p>
       </div>
 
       <div className="mt-12 grid gap-6 md:grid-cols-3">
@@ -225,7 +242,7 @@ function SocialMockups() {
               </div>
               <div className="flex flex-1 justify-around text-center text-xs">
                 <div><div className="text-base font-bold">42</div><div className="text-muted-foreground">Posts</div></div>
-                <div><div className="text-base font-bold text-primary">907</div><div className="text-muted-foreground">Followers</div></div>
+                <div><div className="text-base font-bold text-primary"><AnimatedStat target={10000} /></div><div className="text-muted-foreground">Followers</div></div>
                 <div><div className="text-base font-bold">320</div><div className="text-muted-foreground">Following</div></div>
               </div>
             </div>
@@ -238,8 +255,7 @@ function SocialMockups() {
               <button className="flex-1 rounded-lg border border-border py-1.5 text-xs font-semibold">Message</button>
             </div>
             <div className="mt-6 flex flex-col items-center justify-center rounded-2xl bg-gradient-to-b from-primary/10 to-transparent py-10">
-              <div className="text-5xl font-bold text-primary">907</div>
-              <div className="mt-1 text-xs text-muted-foreground">followers</div>
+              <AnimatedFollowers />
             </div>
           </div>
         </div>
@@ -251,7 +267,7 @@ function SocialMockups() {
             <div className="h-20 w-20 rounded-full border-4 border-card bg-secondary" />
             <div className="mt-3">
               <div className="text-lg font-bold">GrowSocial.com</div>
-              <div className="text-xs text-muted-foreground">907 followers · 890 likes</div>
+              <div className="text-xs text-muted-foreground"><AnimatedStat target={10000} /> followers · 890 likes</div>
             </div>
             <div className="mt-3 flex gap-2">
               <button className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-primary py-1.5 text-xs font-semibold text-primary-foreground">
@@ -273,7 +289,7 @@ function SocialMockups() {
                 <div className="text-[10px] text-muted-foreground">Just now</div>
               </div>
             </div>
-            <p className="mt-2 text-xs">📈 Rritje e vazhdueshme — 907 followers!</p>
+            <p className="mt-2 text-xs">📈 Rritje e vazhdueshme — <AnimatedStat target={10000} /> followers!</p>
             <div className="mt-2 flex items-center justify-between text-[10px] text-muted-foreground">
               <span>👍 ❤️ 100</span>
               <span>24 comments</span>
@@ -285,8 +301,7 @@ function SocialMockups() {
             </div>
           </div>
           <div className="m-5 flex flex-col items-center rounded-2xl bg-gradient-to-b from-primary/10 to-transparent py-8">
-            <div className="text-5xl font-bold text-primary">907</div>
-            <div className="text-xs text-muted-foreground">followers</div>
+            <AnimatedFollowers />
           </div>
         </div>
 
@@ -302,7 +317,7 @@ function SocialMockups() {
             <div className="mt-3 font-semibold">@growsocial.com</div>
             <div className="mt-4 flex gap-6 text-center text-xs">
               <div><div className="text-base font-bold">128</div><div className="text-muted-foreground">Following</div></div>
-              <div><div className="text-base font-bold text-primary">907</div><div className="text-muted-foreground">Followers</div></div>
+              <div><div className="text-base font-bold text-primary"><AnimatedStat target={10000} /></div><div className="text-muted-foreground">Followers</div></div>
               <div><div className="text-base font-bold">45.2K</div><div className="text-muted-foreground">Likes</div></div>
             </div>
             <div className="mt-4 flex w-full gap-2">
@@ -321,8 +336,7 @@ function SocialMockups() {
               ))}
             </div>
             <div className="mt-5 w-full rounded-2xl bg-gradient-to-b from-primary/10 to-transparent py-6 text-center">
-              <div className="text-4xl font-bold text-primary">907</div>
-              <div className="text-xs text-muted-foreground">followers</div>
+              <AnimatedFollowers size="4xl" />
             </div>
           </div>
         </div>
