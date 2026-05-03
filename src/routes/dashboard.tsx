@@ -122,21 +122,26 @@ function ClientDashboard() {
         <section>
           <h2 className="mb-4 text-lg font-semibold">Shërbimet tona</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {services.map(({ icon: Icon, name, price }) => (
-              <div
-                key={name}
-                className="group rounded-2xl border border-border bg-card p-5 transition hover:border-primary/50"
-              >
-                <div className="mb-3 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary/15 text-primary ring-1 ring-primary/30">
-                  <Icon className="h-5 w-5" />
+            {services.map((s) => {
+              const Icon = platformIcon[s.platform] ?? typeIcon[s.service_type] ?? Users;
+              return (
+                <div
+                  key={s.id}
+                  className="group rounded-2xl border border-border bg-card p-5 transition hover:border-primary/50"
+                >
+                  <div className="mb-3 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary/15 text-primary ring-1 ring-primary/30">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <div className="font-semibold">{s.name}</div>
+                  <div className="mt-1 text-sm text-muted-foreground">
+                    {Number(s.price_eur).toFixed(2)} € për {s.quantity.toLocaleString()}
+                  </div>
+                  <button className="mt-4 w-full rounded-lg bg-primary py-2 text-sm font-semibold text-primary-foreground hover:opacity-90">
+                    Porosit
+                  </button>
                 </div>
-                <div className="font-semibold">{name}</div>
-                <div className="mt-1 text-sm text-muted-foreground">{price}</div>
-                <button className="mt-4 w-full rounded-lg bg-primary py-2 text-sm font-semibold text-primary-foreground hover:opacity-90">
-                  Porosit
-                </button>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </section>
 
