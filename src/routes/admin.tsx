@@ -199,8 +199,8 @@ function ServicesManager() {
                 <th className="px-4 py-3">Emri</th>
                 <th className="px-4 py-3">Platforma</th>
                 <th className="px-4 py-3">Tipi</th>
-                <th className="px-4 py-3">Çmimi €</th>
-                <th className="px-4 py-3">Sasia</th>
+                <th className="px-4 py-3">Çmimi € / 1000</th>
+                <th className="px-4 py-3">Sasi min.</th>
                 <th className="px-4 py-3">Aktiv</th>
                 <th className="px-4 py-3"></th>
               </tr>
@@ -279,7 +279,7 @@ function ServicesManager() {
             <option value="likes">Likes</option>
             <option value="views">Views</option>
           </select>
-          <input type="number" step="0.01" placeholder="Çmimi €" value={newSvc.price_eur}
+          <input type="number" step="0.01" placeholder="Çmimi € / 1000" value={newSvc.price_eur}
             onChange={(e) => setNewSvc({ ...newSvc, price_eur: Number(e.target.value) })}
             className="w-24 rounded border border-border bg-background px-2 py-1 text-sm" />
           <input type="number" placeholder="Sasia" value={newSvc.quantity}
