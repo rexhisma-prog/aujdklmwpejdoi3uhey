@@ -122,6 +122,7 @@ function AdminPage() {
           </div>
         </div>
 
+        <OrdersManager />
         <ServicesManager />
       </main>
     </div>
