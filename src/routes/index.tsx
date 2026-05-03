@@ -20,21 +20,15 @@ function useAutoRedirectAfterLogin() {
   const navigate = useNavigate();
   useEffect(() => {
     let cancelled = false;
-    const check = async (userId: string) => {
+    const { data: sub } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event !== "SIGNED_IN" || !session?.user) return;
       const { data: roles } = await supabase
         .from("user_roles")
         .select("role")
-        .eq("user_id", userId);
+        .eq("user_id", session.user.id);
       if (cancelled) return;
       const isAdmin = roles?.some((r) => r.role === "super_admin");
-      if (isAdmin) navigate({ to: "/admin" });
-      else navigate({ to: "/dashboard" });
-    };
-    supabase.auth.getSession().then(({ data }) => {
-      if (data.session?.user) check(data.session.user.id);
-    });
-    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_IN" && session?.user) check(session.user.id);
+      navigate({ to: isAdmin ? "/admin" : "/dashboard" });
     });
     return () => {
       cancelled = true;
