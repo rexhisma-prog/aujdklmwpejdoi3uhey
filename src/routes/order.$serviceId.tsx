@@ -115,6 +115,64 @@ function OrderPage() {
       ? "https://instagram.com/profili_yt"
       : "https://... (linku i postimit, fotos ose videos)";
 
+  if (success) {
+    return (
+      <div className="min-h-screen bg-background">
+        <main className="mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center px-6 py-12">
+          <div className="w-full rounded-3xl border border-primary/30 bg-gradient-to-br from-primary/15 via-card to-card p-8 text-center shadow-[var(--shadow-glow)]">
+            <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-primary/20 ring-2 ring-primary/40">
+              <CheckCircle2 className="h-9 w-9 text-primary" />
+            </div>
+            <h1 className="text-3xl font-bold">Faleminderit! 🎉</h1>
+            <p className="mt-3 text-base text-muted-foreground">
+              Porosia jote u pranua me sukses dhe po procesohet nga ekipi ynë.
+            </p>
+
+            <div className="mx-auto mt-6 flex max-w-md items-center justify-center gap-3 rounded-2xl border border-primary/20 bg-primary/5 px-5 py-4">
+              <Clock className="h-5 w-5 shrink-0 text-primary" />
+              <p className="text-sm text-foreground">
+                Shërbimi do të kryhet brenda <span className="font-semibold text-primary">2 orësh</span>.
+              </p>
+            </div>
+
+            <div className="mt-6 space-y-1 text-sm text-muted-foreground">
+              <p className="flex items-center justify-center gap-2">
+                <Sparkles className="h-4 w-4 text-primary" />
+                Sasia: <span className="font-semibold text-foreground">{quantity.toLocaleString()} {unitLabel}</span>
+              </p>
+              <p>
+                Totali: <span className="font-semibold text-primary">{total.toFixed(2)} €</span>
+              </p>
+            </div>
+
+            <p className="mt-6 text-xs text-muted-foreground">
+              Të ftojmë të na kontaktosh në çdo moment nëse ke pyetje. Faleminderit që zgjodhe <span className="font-semibold text-foreground">ShtoFollow.com</span>! 💙
+            </p>
+
+            <div className="mt-8 flex flex-col gap-2 sm:flex-row sm:justify-center">
+              <Link
+                to="/dashboard"
+                className="rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90"
+              >
+                Kthehu te paneli
+              </Link>
+              <button
+                onClick={() => {
+                  setSuccess(false);
+                  setLink("");
+                  setNotes("");
+                }}
+                className="rounded-xl border border-border px-5 py-3 text-sm font-semibold hover:border-primary hover:text-primary"
+              >
+                Bëj një porosi tjetër
+              </button>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="border-b border-border bg-card/50 backdrop-blur">
