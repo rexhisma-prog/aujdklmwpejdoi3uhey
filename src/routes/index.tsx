@@ -19,7 +19,7 @@ function Index() {
     <div className="min-h-screen bg-background text-foreground">
       <Header />
       <Hero />
-      <ProfileLookup />
+      
       <Features />
       <LiveStats />
       <SocialMockups />
