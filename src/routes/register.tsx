@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/register")({
-  head: () => ({ meta: [{ title: "Regjistrohu — GrowSocial" }] }),
+  head: () => ({ meta: [{ title: "Regjistrohu — ShtoFollow" }] }),
   component: RegisterPage,
 });
 
