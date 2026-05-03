@@ -28,6 +28,7 @@ function useAutoRedirectAfterLogin() {
       if (cancelled) return;
       const isAdmin = roles?.some((r) => r.role === "super_admin");
       if (isAdmin) navigate({ to: "/admin" });
+      else navigate({ to: "/dashboard" });
     };
     supabase.auth.getSession().then(({ data }) => {
       if (data.session?.user) check(data.session.user.id);

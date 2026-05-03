@@ -1,5 +1,7 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Users, Wallet, TrendingUp, ShoppingCart } from "lucide-react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({ meta: [{ title: "Super Admin — shtofollow.com" }] }),
@@ -14,6 +16,41 @@ const users = [
 ];
 
 function AdminPage() {
+  const navigate = useNavigate();
+  const [allowed, setAllowed] = useState(false);
+
+  useEffect(() => {
+    let mounted = true;
+    supabase.auth.getSession().then(async ({ data }) => {
+      if (!mounted) return;
+      const user = data.session?.user;
+      if (!user) {
+        navigate({ to: "/login" });
+        return;
+      }
+      const { data: roles } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", user.id);
+      if (roles?.some((r) => r.role === "super_admin")) {
+        setAllowed(true);
+      } else {
+        navigate({ to: "/dashboard" });
+      }
+    });
+    return () => {
+      mounted = false;
+    };
+  }, [navigate]);
+
+  if (!allowed) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background text-muted-foreground">
+        Duke verifikuar aksesin...
+      </div>
+    );
+  }
+
   const stats = [
     { icon: Users, label: "Përdorues", value: "4,302" },
     { icon: Wallet, label: "Balanca totale", value: "€ 38,210" },
