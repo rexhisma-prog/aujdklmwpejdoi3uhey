@@ -199,8 +199,8 @@ function ServicesManager() {
                 <th className="px-4 py-3">Emri</th>
                 <th className="px-4 py-3">Platforma</th>
                 <th className="px-4 py-3">Tipi</th>
-                <th className="px-4 py-3">Çmimi €</th>
-                <th className="px-4 py-3">Sasia</th>
+                <th className="px-4 py-3">Çmimi € / 1000</th>
+                <th className="px-4 py-3">Sasi min.</th>
                 <th className="px-4 py-3">Aktiv</th>
                 <th className="px-4 py-3"></th>
               </tr>
