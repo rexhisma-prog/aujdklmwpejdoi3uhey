@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { createOneforTopup } from "@/lib/onefor.functions";
+import { QRCodeSVG } from "qrcode.react";
 import {
   ArrowLeft,
   CreditCard,
@@ -72,6 +73,7 @@ function TopupPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [returnStatus, setReturnStatus] = useState<string | null>(null);
+  const [qrUrl, setQrUrl] = useState<string | null>(null);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -104,13 +106,20 @@ function TopupPage() {
     setError(null);
     setSubmitting(true);
 
-    // Card & OneFor payments go through OneFor: create a session and redirect.
+    // Card & OneFor payments go through OneFor: create a session.
     if (method === "card" || method === "onefor") {
       try {
         const { redirectUrl } = await startCardPayment({
           data: { amount, channel: method },
         });
-        window.location.href = redirectUrl;
+        // Card -> redirect to the OneFor payment page.
+        // OneFor -> show a QR code the user scans with the OneFor app.
+        if (method === "onefor") {
+          setQrUrl(redirectUrl);
+          setSubmitting(false);
+        } else {
+          window.location.href = redirectUrl;
+        }
         return;
       } catch (err) {
         setSubmitting(false);
@@ -141,6 +150,49 @@ function TopupPage() {
       </div>
     );
   }
+
+  if (qrUrl) {
+    return (
+      <div className="min-h-screen bg-background text-foreground">
+        <header className="border-b border-border bg-card/50 backdrop-blur">
+          <div className="mx-auto flex max-w-2xl items-center gap-3 px-6 py-4">
+            <button
+              onClick={() => setQrUrl(null)}
+              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+            >
+              <ArrowLeft className="h-4 w-4" /> Kthehu
+            </button>
+          </div>
+        </header>
+        <main className="mx-auto flex max-w-2xl flex-col items-center px-6 py-10 text-center">
+          <h1 className="text-2xl font-bold">Skano me OneFor</h1>
+          <p className="mt-2 max-w-md text-sm text-muted-foreground">
+            Hap aplikacionin OneFor dhe skano këtë QR code për të paguar{" "}
+            <span className="font-semibold text-primary">{amount.toFixed(2)} €</span>.
+            Balanca shtohet automatikisht pas pagesës.
+          </p>
+
+          <div className="mt-8 rounded-3xl border border-border bg-white p-6 shadow-[var(--shadow-glow)]">
+            <QRCodeSVG value={qrUrl} size={240} level="M" />
+          </div>
+
+          <a
+            href={qrUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-8 inline-flex items-center justify-center gap-2 rounded-xl border border-primary/40 px-5 py-3 text-sm font-semibold text-primary hover:bg-primary/10"
+          >
+            Hap linkun e pagesës
+          </a>
+
+          <p className="mt-6 text-xs text-muted-foreground">
+            Pasi të paguash, kthehu te paneli — balanca përditësohet brenda pak sekondash.
+          </p>
+        </main>
+      </div>
+    );
+  }
+
 
   if (success) {
     return (
@@ -333,7 +385,7 @@ function TopupPage() {
             {method === "card"
               ? "Vazhdo te pagesa me kartelë"
               : method === "onefor"
-                ? "Vazhdo te pagesa me OneFor"
+                ? "Gjenero QR code për OneFor"
                 : "Dërgo kërkesën"}
           </button>
         </form>
