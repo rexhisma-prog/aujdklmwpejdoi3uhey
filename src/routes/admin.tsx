@@ -468,9 +468,21 @@ function TopupsManager() {
   const load = async () => {
     const { data } = await supabase
       .from("topup_requests")
-      .select("*, profiles(email)")
+      .select("*")
       .order("created_at", { ascending: false });
-    setTopups((data as Topup[]) ?? []);
+    const rows = (data as Topup[]) ?? [];
+    const ids = [...new Set(rows.map((r) => r.user_id))];
+    if (ids.length) {
+      const { data: profs } = await supabase
+        .from("profiles")
+        .select("user_id, email")
+        .in("user_id", ids);
+      const map = new Map((profs ?? []).map((p) => [p.user_id, p.email]));
+      rows.forEach((r) => {
+        r.profiles = { email: map.get(r.user_id) ?? null };
+      });
+    }
+    setTopups(rows);
     setLoading(false);
   };
 
