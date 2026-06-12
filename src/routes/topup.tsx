@@ -57,9 +57,9 @@ const METHODS: {
 const PRESETS = [5, 10, 20, 50, 100];
 
 const BANK_DETAILS = {
-  bank: "NLB Banka",
-  name: "ShtoFollow",
-  iban: "XK00 0000 0000 0000 0000",
+  bank: "Teb Bank",
+  name: "REA Marketing SH.P.K",
+  iban: "2032000271265989",
 };
 
 function TopupPage() {
