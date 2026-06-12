@@ -64,6 +64,13 @@ function TopupPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [returnStatus, setReturnStatus] = useState<string | null>(null);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const s = params.get("status");
+    if (s === "success" || s === "cancel") setReturnStatus(s);
+  }, []);
 
   useEffect(() => {
     let mounted = true;
