@@ -104,10 +104,12 @@ function TopupPage() {
     setError(null);
     setSubmitting(true);
 
-    // Card payments go through OneFor: create a session and redirect.
-    if (method === "card") {
+    // Card & OneFor payments go through OneFor: create a session and redirect.
+    if (method === "card" || method === "onefor") {
       try {
-        const { redirectUrl } = await startCardPayment({ data: { amount } });
+        const { redirectUrl } = await startCardPayment({
+          data: { amount, channel: method },
+        });
         window.location.href = redirectUrl;
         return;
       } catch (err) {
