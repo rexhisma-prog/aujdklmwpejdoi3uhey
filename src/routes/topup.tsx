@@ -200,6 +200,18 @@ function TopupPage() {
           Zgjedh shumën dhe mënyrën e pagesës.
         </p>
 
+        {returnStatus === "success" && (
+          <div className="mt-4 rounded-xl border border-primary/30 bg-primary/10 px-4 py-3 text-sm text-foreground">
+            Pagesa u përfundua. Balanca jote përditësohet sapo OneFor ta konfirmojë (zakonisht në pak sekonda).
+          </div>
+        )}
+        {returnStatus === "cancel" && (
+          <div className="mt-4 rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+            Pagesa u anulua. Mund të provosh përsëri.
+          </div>
+        )}
+
+
         <form
           onSubmit={handleSubmit}
           className="mt-6 space-y-6 rounded-2xl border border-border bg-card p-6"
