@@ -19,7 +19,7 @@ export const Route = createFileRoute("/topup")({
   component: TopupPage,
 });
 
-type Method = "card" | "bank" | "manual";
+type Method = "card" | "onefor" | "bank" | "manual";
 
 const METHODS: {
   id: Method;
@@ -29,9 +29,15 @@ const METHODS: {
 }[] = [
   {
     id: "card",
-    label: "Kartelë / OneFor",
-    desc: "Paguaj menjëherë me OneFor. Balanca shtohet automatikisht.",
+    label: "Kartelë",
+    desc: "Paguaj me kartelë debiti/krediti. Balanca shtohet automatikisht.",
     icon: CreditCard,
+  },
+  {
+    id: "onefor",
+    label: "OneFor",
+    desc: "Paguaj me llogarinë tënde OneFor. Balanca shtohet automatikisht.",
+    icon: Wallet,
   },
   {
     id: "bank",
