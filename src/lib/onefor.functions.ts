@@ -5,8 +5,8 @@ const SITE_URL = "https://shtofollow.com";
 
 function getOneforConfig() {
   const baseUrl = (process.env.ONEFOR_BASE_URL || "https://api.staging.app.onefor.com/core").replace(/\/$/, "");
-  const apiKey = process.env.ONEFOR_API_KEY;
-  const apiSecret = process.env.ONEFOR_API_SECRET;
+  const apiKey = process.env.ONEFOR_API_KEY?.trim();
+  const apiSecret = process.env.ONEFOR_API_SECRET?.trim();
   if (!apiKey || !apiSecret) {
     throw new Error("Mungojnë kredencialet e OneFor (ONEFOR_API_KEY / ONEFOR_API_SECRET).");
   }
