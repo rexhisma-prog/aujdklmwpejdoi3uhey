@@ -1,6 +1,8 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
+import { createOneforTopup } from "@/lib/onefor.functions";
 import {
   ArrowLeft,
   CreditCard,
@@ -26,8 +28,8 @@ const METHODS: {
 }[] = [
   {
     id: "card",
-    label: "Kartelë krediti / debiti",
-    desc: "Paguaj online me kartelë. Konfirmohet pas verifikimit.",
+    label: "Kartelë / OneFor",
+    desc: "Paguaj menjëherë me OneFor. Balanca shtohet automatikisht.",
     icon: CreditCard,
   },
   {
@@ -62,6 +64,13 @@ function TopupPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [returnStatus, setReturnStatus] = useState<string | null>(null);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const s = params.get("status");
+    if (s === "success" || s === "cancel") setReturnStatus(s);
+  }, []);
 
   useEffect(() => {
     let mounted = true;
@@ -80,11 +89,28 @@ function TopupPage() {
     };
   }, [navigate]);
 
+  const startCardPayment = useServerFn(createOneforTopup);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userId || amount <= 0) return;
     setError(null);
     setSubmitting(true);
+
+    // Card payments go through OneFor: create a session and redirect.
+    if (method === "card") {
+      try {
+        const { redirectUrl } = await startCardPayment({ data: { amount } });
+        window.location.href = redirectUrl;
+        return;
+      } catch (err) {
+        setSubmitting(false);
+        setError(err instanceof Error ? err.message : "Pagesa dështoi.");
+        return;
+      }
+    }
+
+    // Bank transfer / manual requests are recorded for admin approval.
     const { error: err } = await supabase.from("topup_requests").insert({
       user_id: userId,
       amount_eur: amount,
@@ -173,6 +199,18 @@ function TopupPage() {
         <p className="mt-1 text-sm text-muted-foreground">
           Zgjedh shumën dhe mënyrën e pagesës.
         </p>
+
+        {returnStatus === "success" && (
+          <div className="mt-4 rounded-xl border border-primary/30 bg-primary/10 px-4 py-3 text-sm text-foreground">
+            Pagesa u përfundua. Balanca jote përditësohet sapo OneFor ta konfirmojë (zakonisht në pak sekonda).
+          </div>
+        )}
+        {returnStatus === "cancel" && (
+          <div className="mt-4 rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+            Pagesa u anulua. Mund të provosh përsëri.
+          </div>
+        )}
+
 
         <form
           onSubmit={handleSubmit}
@@ -283,7 +321,7 @@ function TopupPage() {
             className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] hover:opacity-90 disabled:opacity-60"
           >
             {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
-            Dërgo kërkesën
+            {method === "card" ? "Vazhdo te pagesa me OneFor" : "Dërgo kërkesën"}
           </button>
         </form>
       </main>

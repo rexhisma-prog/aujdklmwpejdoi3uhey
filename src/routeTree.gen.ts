@@ -16,6 +16,7 @@ import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as OrderServiceIdRouteImport } from './routes/order.$serviceId'
+import { Route as ApiPublicPaymentOneforCompleteRouteImport } from './routes/api/public/payment/onefor/complete'
 
 const TopupRoute = TopupRouteImport.update({
   id: '/topup',
@@ -52,6 +53,12 @@ const OrderServiceIdRoute = OrderServiceIdRouteImport.update({
   path: '/order/$serviceId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicPaymentOneforCompleteRoute =
+  ApiPublicPaymentOneforCompleteRouteImport.update({
+    id: '/api/public/payment/onefor/complete',
+    path: '/api/public/payment/onefor/complete',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -61,6 +68,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/topup': typeof TopupRoute
   '/order/$serviceId': typeof OrderServiceIdRoute
+  '/api/public/payment/onefor/complete': typeof ApiPublicPaymentOneforCompleteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -70,6 +78,7 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/topup': typeof TopupRoute
   '/order/$serviceId': typeof OrderServiceIdRoute
+  '/api/public/payment/onefor/complete': typeof ApiPublicPaymentOneforCompleteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -80,6 +89,7 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/topup': typeof TopupRoute
   '/order/$serviceId': typeof OrderServiceIdRoute
+  '/api/public/payment/onefor/complete': typeof ApiPublicPaymentOneforCompleteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,6 +101,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/topup'
     | '/order/$serviceId'
+    | '/api/public/payment/onefor/complete'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -100,6 +111,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/topup'
     | '/order/$serviceId'
+    | '/api/public/payment/onefor/complete'
   id:
     | '__root__'
     | '/'
@@ -109,6 +121,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/topup'
     | '/order/$serviceId'
+    | '/api/public/payment/onefor/complete'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -119,6 +132,7 @@ export interface RootRouteChildren {
   RegisterRoute: typeof RegisterRoute
   TopupRoute: typeof TopupRoute
   OrderServiceIdRoute: typeof OrderServiceIdRoute
+  ApiPublicPaymentOneforCompleteRoute: typeof ApiPublicPaymentOneforCompleteRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -172,6 +186,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OrderServiceIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/payment/onefor/complete': {
+      id: '/api/public/payment/onefor/complete'
+      path: '/api/public/payment/onefor/complete'
+      fullPath: '/api/public/payment/onefor/complete'
+      preLoaderRoute: typeof ApiPublicPaymentOneforCompleteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -183,6 +204,7 @@ const rootRouteChildren: RootRouteChildren = {
   RegisterRoute: RegisterRoute,
   TopupRoute: TopupRoute,
   OrderServiceIdRoute: OrderServiceIdRoute,
+  ApiPublicPaymentOneforCompleteRoute: ApiPublicPaymentOneforCompleteRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

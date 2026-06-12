@@ -130,6 +130,7 @@ export type Database = {
           created_at: string
           id: string
           method: string
+          provider_session_id: string | null
           reference: string | null
           status: string
           updated_at: string
@@ -140,6 +141,7 @@ export type Database = {
           created_at?: string
           id?: string
           method?: string
+          provider_session_id?: string | null
           reference?: string | null
           status?: string
           updated_at?: string
@@ -150,6 +152,7 @@ export type Database = {
           created_at?: string
           id?: string
           method?: string
+          provider_session_id?: string | null
           reference?: string | null
           status?: string
           updated_at?: string
@@ -184,6 +187,10 @@ export type Database = {
     }
     Functions: {
       approve_topup: { Args: { _request_id: string }; Returns: undefined }
+      complete_topup_by_session: {
+        Args: { _paid: boolean; _session_id: string }
+        Returns: boolean
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
