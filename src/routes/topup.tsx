@@ -82,11 +82,28 @@ function TopupPage() {
     };
   }, [navigate]);
 
+  const startCardPayment = useServerFn(createOneforTopup);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userId || amount <= 0) return;
     setError(null);
     setSubmitting(true);
+
+    // Card payments go through OneFor: create a session and redirect.
+    if (method === "card") {
+      try {
+        const { redirectUrl } = await startCardPayment({ data: { amount } });
+        window.location.href = redirectUrl;
+        return;
+      } catch (err) {
+        setSubmitting(false);
+        setError(err instanceof Error ? err.message : "Pagesa dështoi.");
+        return;
+      }
+    }
+
+    // Bank transfer / manual requests are recorded for admin approval.
     const { error: err } = await supabase.from("topup_requests").insert({
       user_id: userId,
       amount_eur: amount,
