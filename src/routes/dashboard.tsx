@@ -34,6 +34,7 @@ function ClientDashboard() {
   const [email, setEmail] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [services, setServices] = useState<Service[]>([]);
+  const [balance, setBalance] = useState<number>(0);
 
   useEffect(() => {
     let mounted = true;
@@ -53,6 +54,21 @@ function ClientDashboard() {
         return;
       }
       setEmail(user.email ?? "");
+
+      // Load or create the user's profile (balance)
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("balance_eur")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      if (!profile) {
+        await supabase
+          .from("profiles")
+          .insert({ user_id: user.id, email: user.email ?? null });
+        if (mounted) setBalance(0);
+      } else if (mounted) {
+        setBalance(Number(profile.balance_eur));
+      }
 
       const { data: svc } = await supabase
         .from("services")
