@@ -86,6 +86,6 @@ export const createOneforTopup = createServerFn({ method: "POST" })
 
     return {
       sessionId: session.session_id,
-      redirectUrl: `https://web.staging.app.onefor.com/web/merchant?sessionId=${session.session_id}`,
+      redirectUrl: `https://web.staging.app.onefor.com/web/merchant-redirection?sessionId=${session.session_id}`,
     };
   });
