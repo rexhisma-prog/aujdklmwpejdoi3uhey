@@ -28,8 +28,8 @@ const METHODS: {
 }[] = [
   {
     id: "card",
-    label: "Kartelë krediti / debiti",
-    desc: "Paguaj online me kartelë. Konfirmohet pas verifikimit.",
+    label: "Kartelë / OneFor",
+    desc: "Paguaj menjëherë me OneFor. Balanca shtohet automatikisht.",
     icon: CreditCard,
   },
   {
