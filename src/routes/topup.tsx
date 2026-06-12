@@ -105,13 +105,20 @@ function TopupPage() {
     setError(null);
     setSubmitting(true);
 
-    // Card & OneFor payments go through OneFor: create a session and redirect.
+    // Card & OneFor payments go through OneFor: create a session.
     if (method === "card" || method === "onefor") {
       try {
         const { redirectUrl } = await startCardPayment({
           data: { amount, channel: method },
         });
-        window.location.href = redirectUrl;
+        // Card -> redirect to the OneFor payment page.
+        // OneFor -> show a QR code the user scans with the OneFor app.
+        if (method === "onefor") {
+          setQrUrl(redirectUrl);
+          setSubmitting(false);
+        } else {
+          window.location.href = redirectUrl;
+        }
         return;
       } catch (err) {
         setSubmitting(false);
