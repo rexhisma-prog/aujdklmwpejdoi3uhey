@@ -20,12 +20,13 @@ function getOneforConfig() {
  */
 export const createOneforTopup = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: { amount: number }) => {
+  .inputValidator((input: { amount: number; channel?: "card" | "onefor" }) => {
     const amount = Number(input?.amount);
     if (!Number.isFinite(amount) || amount <= 0 || amount > 100000) {
       throw new Error("Shumë e pavlefshme.");
     }
-    return { amount: Math.round(amount * 100) / 100 };
+    const channel = input?.channel === "onefor" ? "onefor" : "card";
+    return { amount: Math.round(amount * 100) / 100, channel };
   })
   .handler(async ({ data, context }) => {
     const { userId } = context;
@@ -38,7 +39,7 @@ export const createOneforTopup = createServerFn({ method: "POST" })
       .insert({
         user_id: userId,
         amount_eur: data.amount,
-        method: "card",
+        method: data.channel,
         status: "pending",
       })
       .select("id")

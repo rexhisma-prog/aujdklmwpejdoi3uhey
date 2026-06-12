@@ -6,6 +6,7 @@ import { createOneforTopup } from "@/lib/onefor.functions";
 import {
   ArrowLeft,
   CreditCard,
+  Wallet,
   Landmark,
   HandCoins,
   Loader2,
@@ -18,7 +19,7 @@ export const Route = createFileRoute("/topup")({
   component: TopupPage,
 });
 
-type Method = "card" | "bank" | "manual";
+type Method = "card" | "onefor" | "bank" | "manual";
 
 const METHODS: {
   id: Method;
@@ -28,9 +29,15 @@ const METHODS: {
 }[] = [
   {
     id: "card",
-    label: "Kartelë / OneFor",
-    desc: "Paguaj menjëherë me OneFor. Balanca shtohet automatikisht.",
+    label: "Kartelë",
+    desc: "Paguaj me kartelë debiti/krediti. Balanca shtohet automatikisht.",
     icon: CreditCard,
+  },
+  {
+    id: "onefor",
+    label: "OneFor",
+    desc: "Paguaj me llogarinë tënde OneFor. Balanca shtohet automatikisht.",
+    icon: Wallet,
   },
   {
     id: "bank",
@@ -97,10 +104,12 @@ function TopupPage() {
     setError(null);
     setSubmitting(true);
 
-    // Card payments go through OneFor: create a session and redirect.
-    if (method === "card") {
+    // Card & OneFor payments go through OneFor: create a session and redirect.
+    if (method === "card" || method === "onefor") {
       try {
-        const { redirectUrl } = await startCardPayment({ data: { amount } });
+        const { redirectUrl } = await startCardPayment({
+          data: { amount, channel: method },
+        });
         window.location.href = redirectUrl;
         return;
       } catch (err) {
@@ -249,7 +258,7 @@ function TopupPage() {
             <label className="mb-2 block text-sm font-medium">
               Mënyra e pagesës
             </label>
-            <div className="grid gap-3 sm:grid-cols-3">
+            <div className="grid gap-3 sm:grid-cols-2">
               {METHODS.map((m) => {
                 const Icon = m.icon;
                 const active = method === m.id;
@@ -321,7 +330,11 @@ function TopupPage() {
             className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] hover:opacity-90 disabled:opacity-60"
           >
             {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
-            {method === "card" ? "Vazhdo te pagesa me OneFor" : "Dërgo kërkesën"}
+            {method === "card"
+              ? "Vazhdo te pagesa me kartelë"
+              : method === "onefor"
+                ? "Vazhdo te pagesa me OneFor"
+                : "Dërgo kërkesën"}
           </button>
         </form>
       </main>
