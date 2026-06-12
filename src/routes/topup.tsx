@@ -258,7 +258,7 @@ function TopupPage() {
             <label className="mb-2 block text-sm font-medium">
               Mënyra e pagesës
             </label>
-            <div className="grid gap-3 sm:grid-cols-3">
+            <div className="grid gap-3 sm:grid-cols-2">
               {METHODS.map((m) => {
                 const Icon = m.icon;
                 const active = method === m.id;
