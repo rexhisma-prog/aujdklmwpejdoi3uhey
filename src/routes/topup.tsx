@@ -330,7 +330,11 @@ function TopupPage() {
             className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] hover:opacity-90 disabled:opacity-60"
           >
             {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
-            {method === "card" ? "Vazhdo te pagesa me OneFor" : "Dërgo kërkesën"}
+            {method === "card"
+              ? "Vazhdo te pagesa me kartelë"
+              : method === "onefor"
+                ? "Vazhdo te pagesa me OneFor"
+                : "Dërgo kërkesën"}
           </button>
         </form>
       </main>
