@@ -224,7 +224,7 @@ function TopupPage() {
                 <p className="mb-2 font-semibold">Të dhënat bankare:</p>
                 <p className="text-muted-foreground">Banka: {BANK_DETAILS.bank}</p>
                 <p className="text-muted-foreground">Emri: {BANK_DETAILS.name}</p>
-                <p className="text-muted-foreground">IBAN: {BANK_DETAILS.iban}</p>
+                <p className="text-muted-foreground">Numri i llogarisë: {BANK_DETAILS.iban}</p>
               </div>
             )}
 
@@ -343,7 +343,7 @@ function TopupPage() {
               <p className="mb-1 font-semibold">Dërgo pagesën në:</p>
               <p className="text-muted-foreground">Banka: {BANK_DETAILS.bank}</p>
               <p className="text-muted-foreground">Emri: {BANK_DETAILS.name}</p>
-              <p className="text-muted-foreground">IBAN: {BANK_DETAILS.iban}</p>
+              <p className="text-muted-foreground">Numri i llogarisë: {BANK_DETAILS.iban}</p>
             </div>
           )}
 
