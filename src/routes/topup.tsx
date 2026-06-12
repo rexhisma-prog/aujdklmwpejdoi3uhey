@@ -151,6 +151,49 @@ function TopupPage() {
     );
   }
 
+  if (qrUrl) {
+    return (
+      <div className="min-h-screen bg-background text-foreground">
+        <header className="border-b border-border bg-card/50 backdrop-blur">
+          <div className="mx-auto flex max-w-2xl items-center gap-3 px-6 py-4">
+            <button
+              onClick={() => setQrUrl(null)}
+              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+            >
+              <ArrowLeft className="h-4 w-4" /> Kthehu
+            </button>
+          </div>
+        </header>
+        <main className="mx-auto flex max-w-2xl flex-col items-center px-6 py-10 text-center">
+          <h1 className="text-2xl font-bold">Skano me OneFor</h1>
+          <p className="mt-2 max-w-md text-sm text-muted-foreground">
+            Hap aplikacionin OneFor dhe skano këtë QR code për të paguar{" "}
+            <span className="font-semibold text-primary">{amount.toFixed(2)} €</span>.
+            Balanca shtohet automatikisht pas pagesës.
+          </p>
+
+          <div className="mt-8 rounded-3xl border border-border bg-white p-6 shadow-[var(--shadow-glow)]">
+            <QRCodeSVG value={qrUrl} size={240} level="M" />
+          </div>
+
+          <a
+            href={qrUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-8 inline-flex items-center justify-center gap-2 rounded-xl border border-primary/40 px-5 py-3 text-sm font-semibold text-primary hover:bg-primary/10"
+          >
+            Hap linkun e pagesës
+          </a>
+
+          <p className="mt-6 text-xs text-muted-foreground">
+            Pasi të paguash, kthehu te paneli — balanca përditësohet brenda pak sekondash.
+          </p>
+        </main>
+      </div>
+    );
+  }
+
+
   if (success) {
     return (
       <div className="min-h-screen bg-background">
