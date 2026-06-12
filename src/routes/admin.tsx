@@ -122,6 +122,7 @@ function AdminPage() {
           </div>
         </div>
 
+        <TopupsManager />
         <OrdersManager />
         <ServicesManager />
       </main>
@@ -438,6 +439,172 @@ function ServicesManager() {
           </button>
         </div>
       </div>
+    </div>
+  );
+}
+
+type Topup = {
+  id: string;
+  user_id: string;
+  amount_eur: number;
+  method: string;
+  reference: string | null;
+  status: string;
+  created_at: string;
+  profiles?: { email: string | null } | null;
+};
+
+const METHOD_LABEL: Record<string, string> = {
+  card: "Kartelë",
+  bank: "Transfertë bankare",
+  manual: "Kërkesë manuale",
+};
+
+function TopupsManager() {
+  const [topups, setTopups] = useState<Topup[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [savingId, setSavingId] = useState<string | null>(null);
+
+  const load = async () => {
+    const { data } = await supabase
+      .from("topup_requests")
+      .select("*")
+      .order("created_at", { ascending: false });
+    const rows = (data as Topup[]) ?? [];
+    const ids = [...new Set(rows.map((r) => r.user_id))];
+    if (ids.length) {
+      const { data: profs } = await supabase
+        .from("profiles")
+        .select("user_id, email")
+        .in("user_id", ids);
+      const map = new Map((profs ?? []).map((p) => [p.user_id, p.email]));
+      rows.forEach((r) => {
+        r.profiles = { email: map.get(r.user_id) ?? null };
+      });
+    }
+    setTopups(rows);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    load();
+    const channel = supabase
+      .channel("admin-topups")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "topup_requests" },
+        () => load(),
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  const approve = async (id: string) => {
+    setSavingId(id);
+    const { error } = await supabase.rpc("approve_topup", { _request_id: id });
+    if (error) alert(error.message);
+    setSavingId(null);
+    load();
+  };
+
+  const reject = async (id: string) => {
+    setSavingId(id);
+    await supabase.from("topup_requests").update({ status: "rejected" }).eq("id", id);
+    setSavingId(null);
+    load();
+  };
+
+  const badge = (s: string) => {
+    const map: Record<string, string> = {
+      pending: "bg-yellow-500/15 text-yellow-500 ring-yellow-500/30",
+      approved: "bg-green-500/15 text-green-500 ring-green-500/30",
+      rejected: "bg-red-500/15 text-red-500 ring-red-500/30",
+    };
+    return map[s] ?? "bg-muted text-muted-foreground";
+  };
+
+  const pendingCount = topups.filter((t) => t.status === "pending").length;
+
+  return (
+    <div className="rounded-2xl border border-border bg-card">
+      <div className="border-b border-border px-6 py-4">
+        <h2 className="font-semibold">Kërkesat për mbushje balanci</h2>
+        <p className="mt-1 text-xs text-muted-foreground">
+          {pendingCount} në pritje · përditësohet në kohë reale
+        </p>
+      </div>
+
+      {loading ? (
+        <div className="px-6 py-8 text-sm text-muted-foreground">Duke ngarkuar...</div>
+      ) : topups.length === 0 ? (
+        <div className="px-6 py-12 text-center text-sm text-muted-foreground">
+          Nuk ka kërkesa ende.
+        </div>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border text-left text-xs uppercase text-muted-foreground">
+                <th className="px-4 py-3">Data</th>
+                <th className="px-4 py-3">Klienti</th>
+                <th className="px-4 py-3">Shuma</th>
+                <th className="px-4 py-3">Mënyra</th>
+                <th className="px-4 py-3">Referenca</th>
+                <th className="px-4 py-3">Statusi</th>
+                <th className="px-4 py-3"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {topups.map((t) => (
+                <tr key={t.id} className="border-b border-border last:border-0 hover:bg-secondary/30">
+                  <td className="px-4 py-3 text-xs text-muted-foreground">
+                    {new Date(t.created_at).toLocaleString("sq-AL")}
+                  </td>
+                  <td className="px-4 py-3 text-muted-foreground">
+                    {t.profiles?.email ?? "—"}
+                  </td>
+                  <td className="px-4 py-3 font-semibold text-primary">
+                    {Number(t.amount_eur).toFixed(2)} €
+                  </td>
+                  <td className="px-4 py-3">{METHOD_LABEL[t.method] ?? t.method}</td>
+                  <td className="px-4 py-3 max-w-[180px] truncate text-xs text-muted-foreground" title={t.reference ?? ""}>
+                    {t.reference ?? "—"}
+                  </td>
+                  <td className="px-4 py-3">
+                    <span className={`rounded-full px-2 py-1 text-xs font-medium ring-1 ${badge(t.status)}`}>
+                      {t.status}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    {t.status === "pending" ? (
+                      <div className="flex justify-end gap-2">
+                        <button
+                          onClick={() => approve(t.id)}
+                          disabled={savingId === t.id}
+                          className="rounded-lg bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground hover:opacity-90 disabled:opacity-50"
+                        >
+                          {savingId === t.id ? "..." : "Aprovo"}
+                        </button>
+                        <button
+                          onClick={() => reject(t.id)}
+                          disabled={savingId === t.id}
+                          className="rounded-lg border border-border px-3 py-1 text-xs text-destructive hover:border-destructive disabled:opacity-50"
+                        >
+                          Refuzo
+                        </button>
+                      </div>
+                    ) : (
+                      <span className="text-xs text-muted-foreground">—</span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }

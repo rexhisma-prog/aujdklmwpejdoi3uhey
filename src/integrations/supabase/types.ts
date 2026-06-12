@@ -61,6 +61,30 @@ export type Database = {
           },
         ]
       }
+      profiles: {
+        Row: {
+          balance_eur: number
+          created_at: string
+          email: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          balance_eur?: number
+          created_at?: string
+          email?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          balance_eur?: number
+          created_at?: string
+          email?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       services: {
         Row: {
           active: boolean
@@ -100,6 +124,39 @@ export type Database = {
         }
         Relationships: []
       }
+      topup_requests: {
+        Row: {
+          amount_eur: number
+          created_at: string
+          id: string
+          method: string
+          reference: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount_eur: number
+          created_at?: string
+          id?: string
+          method?: string
+          reference?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount_eur?: number
+          created_at?: string
+          id?: string
+          method?: string
+          reference?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -126,6 +183,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      approve_topup: { Args: { _request_id: string }; Returns: undefined }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

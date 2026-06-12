@@ -34,6 +34,7 @@ function ClientDashboard() {
   const [email, setEmail] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [services, setServices] = useState<Service[]>([]);
+  const [balance, setBalance] = useState<number>(0);
 
   useEffect(() => {
     let mounted = true;
@@ -53,6 +54,21 @@ function ClientDashboard() {
         return;
       }
       setEmail(user.email ?? "");
+
+      // Load or create the user's profile (balance)
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("balance_eur")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      if (!profile) {
+        await supabase
+          .from("profiles")
+          .insert({ user_id: user.id, email: user.email ?? null });
+        if (mounted) setBalance(0);
+      } else if (mounted) {
+        setBalance(Number(profile.balance_eur));
+      }
 
       const { data: svc } = await supabase
         .from("services")
@@ -110,11 +126,14 @@ function ClientDashboard() {
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Wallet className="h-4 w-4" /> Balanca jote
               </div>
-              <div className="mt-2 text-4xl font-bold text-primary">0.00 €</div>
+              <div className="mt-2 text-4xl font-bold text-primary">{balance.toFixed(2)} €</div>
             </div>
-            <button className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] hover:opacity-90">
+            <Link
+              to="/topup"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] hover:opacity-90"
+            >
               <Plus className="h-4 w-4" /> Mbush balancin
-            </button>
+            </Link>
           </div>
         </section>
 
