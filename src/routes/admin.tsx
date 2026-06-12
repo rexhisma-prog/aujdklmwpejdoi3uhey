@@ -52,10 +52,10 @@ function AdminPage() {
   }
 
   const stats = [
-    { icon: Users, label: "Përdorues", value: "4,302" },
-    { icon: Wallet, label: "Balanca totale", value: "€ 38,210" },
-    { icon: ShoppingCart, label: "Porosi sot", value: "187" },
-    { icon: TrendingUp, label: "Të ardhura muaji", value: "€ 12,540" },
+    { icon: Users, label: "Përdorues", value: "0" },
+    { icon: Wallet, label: "Balanca totale", value: "€ 0.00" },
+    { icon: ShoppingCart, label: "Porosi sot", value: "0" },
+    { icon: TrendingUp, label: "Të ardhura muaji", value: "€ 0.00" },
   ];
   return (
     <div className="min-h-screen bg-background">
