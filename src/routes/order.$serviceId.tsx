@@ -2,6 +2,8 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft, Loader2, CheckCircle2, Clock, Sparkles } from "lucide-react";
+import igAutoConfirm from "@/assets/ig-auto-confirm.png.asset.json";
+import igFollowInvite from "@/assets/ig-follow-invite.jpg.asset.json";
 
 type Service = {
   id: string;
@@ -236,6 +238,33 @@ function OrderPage() {
               ⚠️ Profili duhet të jetë i hapur (public), jo privat — përndryshe porosia nuk mund të kryhet.
             </p>
           </div>
+
+          {service.platform?.toLowerCase() === "instagram" &&
+            service.service_type?.toLowerCase().includes("follow") && (
+            <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 p-4">
+              <p className="text-sm font-semibold text-amber-700 dark:text-amber-300">
+                ⚠️ E rëndësishme: çaktivizo "Automatically confirm anyone you follow"
+              </p>
+              <p className="mt-1 text-xs text-amber-700/90 dark:text-amber-300/90">
+                Para se të porosisësh followera, sigurohu që ky opsion në Instagram të jetë i <strong>fikur (off)</strong>.
+                Shko te: Settings → Follow and invite friends → Following → çaktivizo "Automatically confirm anyone you follow".
+              </p>
+              <div className="mt-3 space-y-3">
+                <img
+                  src={igFollowInvite.url}
+                  alt="Instagram: Follow and invite friends"
+                  className="w-full rounded-lg border border-border"
+                  loading="lazy"
+                />
+                <img
+                  src={igAutoConfirm.url}
+                  alt="Instagram: çaktivizo Automatically confirm anyone you follow"
+                  className="w-full rounded-lg border border-border"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          )}
 
           <div>
             <label className="mb-2 block text-sm font-medium">
