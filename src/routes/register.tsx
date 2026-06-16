@@ -64,6 +64,11 @@ function RegisterPage() {
         <Link to="/" className="text-sm text-muted-foreground hover:text-foreground">← Kthehu</Link>
         <h1 className="mt-4 text-3xl font-bold">Krijo llogari</h1>
         <p className="mt-1 text-sm text-muted-foreground">Filloj me wallet-in tënd EUR sot</p>
+        {hasRef && (
+          <div className="mt-4 inline-flex items-center gap-2 rounded-xl border border-primary/30 bg-primary/10 px-3 py-2 text-xs font-medium text-primary">
+            <Gift className="h-4 w-4" /> Je ftuar nga një mik — bonusi aplikohet pas mbushjes së parë.
+          </div>
+        )}
         <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
           <div>
             <label className="text-sm font-medium">Emri</label>
