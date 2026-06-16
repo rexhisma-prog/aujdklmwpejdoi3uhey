@@ -4,14 +4,16 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 const SITE_URL = "https://shtofollow.com";
 
 function getOneforConfig() {
-  const baseUrl = (process.env.ONEFOR_BASE_URL || "https://api.staging.app.onefor.com/core").replace(/\/$/, "");
+  const baseUrl = (process.env.ONEFOR_BASE_URL || "https://api.app.onefor.com/core").replace(/\/$/, "");
   const apiKey = process.env.ONEFOR_API_KEY?.trim();
   const apiSecret = process.env.ONEFOR_API_SECRET?.trim();
   if (!apiKey || !apiSecret) {
     throw new Error("Mungojnë kredencialet e OneFor (ONEFOR_API_KEY / ONEFOR_API_SECRET).");
   }
   const auth = Buffer.from(`${apiKey}:${apiSecret}`).toString("base64");
-  return { baseUrl, auth };
+  const isProd = baseUrl.includes("api.app.onefor.com");
+  const webBase = isProd ? "https://web.app.onefor.com" : "https://web.staging.app.onefor.com";
+  return { baseUrl, auth, webBase };
 }
 
 /**
@@ -30,7 +32,7 @@ export const createOneforTopup = createServerFn({ method: "POST" })
   })
   .handler(async ({ data, context }) => {
     const { userId } = context;
-    const { baseUrl, auth } = getOneforConfig();
+    const { baseUrl, auth, webBase } = getOneforConfig();
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
     // 1. Create a pending top-up request
@@ -87,6 +89,6 @@ export const createOneforTopup = createServerFn({ method: "POST" })
 
     return {
       sessionId: session.session_id,
-      redirectUrl: `https://web.staging.app.onefor.com/web/merchant-redirection?sessionId=${session.session_id}`,
+      redirectUrl: `${webBase}/web/merchant-redirection?sessionId=${session.session_id}`,
     };
   });
