@@ -519,13 +519,20 @@ function TopupsManager() {
   const badge = (s: string) => {
     const map: Record<string, string> = {
       pending: "bg-yellow-500/15 text-yellow-500 ring-yellow-500/30",
+      paid: "bg-blue-500/15 text-blue-500 ring-blue-500/30",
       approved: "bg-green-500/15 text-green-500 ring-green-500/30",
       rejected: "bg-red-500/15 text-red-500 ring-red-500/30",
+      failed: "bg-red-500/15 text-red-500 ring-red-500/30",
     };
     return map[s] ?? "bg-muted text-muted-foreground";
   };
 
-  const pendingCount = topups.filter((t) => t.status === "pending").length;
+  const statusLabel = (s: string) =>
+    s === "paid" ? "paguar · në pritje" : s;
+
+  const isActionable = (s: string) => s === "pending" || s === "paid";
+
+  const pendingCount = topups.filter((t) => isActionable(t.status)).length;
 
   return (
     <div className="rounded-2xl border border-border bg-card">
