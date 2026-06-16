@@ -457,6 +457,7 @@ type Topup = {
   reference: string | null;
   status: string;
   created_at: string;
+  email: string | null;
   profiles?: { email: string | null } | null;
 };
 
@@ -485,7 +486,8 @@ function TopupsManager() {
         .in("user_id", ids);
       const map = new Map((profs ?? []).map((p) => [p.user_id, p.email]));
       rows.forEach((r) => {
-        r.profiles = { email: map.get(r.user_id) ?? null };
+        // Prefer the email captured on the top-up itself; fall back to profile.
+        r.profiles = { email: r.email ?? map.get(r.user_id) ?? null };
       });
     }
     setTopups(rows);

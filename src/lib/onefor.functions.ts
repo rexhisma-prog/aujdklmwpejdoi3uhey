@@ -31,9 +31,20 @@ export const createOneforTopup = createServerFn({ method: "POST" })
     return { amount: Math.round(amount * 100) / 100, channel };
   })
   .handler(async ({ data, context }) => {
-    const { userId } = context;
+    const { userId, claims } = context;
     const { baseUrl, auth, webBase } = getOneforConfig();
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    // Resolve the payer's email so we always know whose balance to credit.
+    let email: string | null = (claims?.email as string | undefined) ?? null;
+    if (!email) {
+      const { data: prof } = await supabaseAdmin
+        .from("profiles")
+        .select("email")
+        .eq("user_id", userId)
+        .maybeSingle();
+      email = prof?.email ?? null;
+    }
 
     // 1. Create a pending top-up request
     const { data: topup, error: insErr } = await supabaseAdmin
@@ -43,6 +54,7 @@ export const createOneforTopup = createServerFn({ method: "POST" })
         amount_eur: data.amount,
         method: data.channel,
         status: "pending",
+        email,
       })
       .select("id")
       .single();
