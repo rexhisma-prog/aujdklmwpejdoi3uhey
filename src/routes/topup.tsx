@@ -392,7 +392,7 @@ function TopupPage() {
 
           <button
             type="submit"
-            disabled={submitting || amount <= 0}
+            disabled={submitting || amount < MIN_AMOUNT}
             className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] hover:opacity-90 disabled:opacity-60"
           >
             {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
