@@ -82,6 +82,8 @@ function TopupPage() {
   const [success, setSuccess] = useState(false);
   const [returnStatus, setReturnStatus] = useState<string | null>(null);
   const [qrUrl, setQrUrl] = useState<string | null>(null);
+  const [isReferred, setIsReferred] = useState(false);
+  const MIN_AMOUNT = isReferred ? REFERRED_MIN : DEFAULT_MIN;
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
