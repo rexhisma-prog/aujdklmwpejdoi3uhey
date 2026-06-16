@@ -32,7 +32,7 @@ export const createOneforTopup = createServerFn({ method: "POST" })
   })
   .handler(async ({ data, context }) => {
     const { userId } = context;
-    const { baseUrl, auth } = getOneforConfig();
+    const { baseUrl, auth, webBase } = getOneforConfig();
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
     // 1. Create a pending top-up request
