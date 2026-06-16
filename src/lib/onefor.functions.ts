@@ -24,8 +24,8 @@ export const createOneforTopup = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: { amount: number; channel?: "card" | "onefor" }) => {
     const amount = Number(input?.amount);
-    if (!Number.isFinite(amount) || amount <= 0 || amount > 100000) {
-      throw new Error("Shumë e pavlefshme.");
+    if (!Number.isFinite(amount) || amount < 10 || amount > 100000) {
+      throw new Error("Shuma minimale për mbushje është 10 €.");
     }
     const channel = input?.channel === "onefor" ? "onefor" : "card";
     return { amount: Math.round(amount * 100) / 100, channel };

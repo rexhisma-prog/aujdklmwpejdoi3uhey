@@ -60,7 +60,8 @@ const METHODS: {
   },
 ];
 
-const PRESETS = [5, 10, 20, 50, 100];
+const MIN_AMOUNT = 10;
+const PRESETS = [10, 20, 50, 100, 200];
 
 const BANK_DETAILS = {
   bank: "Teb Bank",
@@ -108,7 +109,11 @@ function TopupPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!userId || amount <= 0) return;
+    if (!userId) return;
+    if (amount < MIN_AMOUNT) {
+      setError(`Shuma minimale për mbushje është ${MIN_AMOUNT} €.`);
+      return;
+    }
     setError(null);
     setSubmitting(true);
 
@@ -303,13 +308,16 @@ function TopupPage() {
             </div>
             <input
               type="number"
-              min={1}
+              min={MIN_AMOUNT}
               step="0.5"
               value={amount}
               onChange={(e) => setAmount(Number(e.target.value))}
               required
               className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none"
             />
+            <p className="mt-1 text-xs text-muted-foreground">
+              Shuma minimale: {MIN_AMOUNT} €
+            </p>
           </div>
 
           <div>
@@ -384,7 +392,7 @@ function TopupPage() {
 
           <button
             type="submit"
-            disabled={submitting || amount <= 0}
+            disabled={submitting || amount < MIN_AMOUNT}
             className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] hover:opacity-90 disabled:opacity-60"
           >
             {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
