@@ -18,6 +18,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as OrderServiceIdRouteImport } from './routes/order.$serviceId'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
+import { Route as ApiPublicOneforWebhookRouteImport } from './routes/api/public/onefor/webhook'
 import { Route as ApiPublicPaymentOneforCompleteRouteImport } from './routes/api/public/payment/onefor/complete'
 
 const TopupRoute = TopupRouteImport.update({
@@ -66,6 +67,11 @@ const LovableEmailQueueProcessRoute =
     path: '/lovable/email/queue/process',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicOneforWebhookRoute = ApiPublicOneforWebhookRouteImport.update({
+  id: '/api/public/onefor/webhook',
+  path: '/api/public/onefor/webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicPaymentOneforCompleteRoute =
   ApiPublicPaymentOneforCompleteRouteImport.update({
     id: '/api/public/payment/onefor/complete',
@@ -82,6 +88,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/topup': typeof TopupRoute
   '/order/$serviceId': typeof OrderServiceIdRoute
+  '/api/public/onefor/webhook': typeof ApiPublicOneforWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/api/public/payment/onefor/complete': typeof ApiPublicPaymentOneforCompleteRoute
 }
@@ -94,6 +101,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/topup': typeof TopupRoute
   '/order/$serviceId': typeof OrderServiceIdRoute
+  '/api/public/onefor/webhook': typeof ApiPublicOneforWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/api/public/payment/onefor/complete': typeof ApiPublicPaymentOneforCompleteRoute
 }
@@ -107,6 +115,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/topup': typeof TopupRoute
   '/order/$serviceId': typeof OrderServiceIdRoute
+  '/api/public/onefor/webhook': typeof ApiPublicOneforWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/api/public/payment/onefor/complete': typeof ApiPublicPaymentOneforCompleteRoute
 }
@@ -121,6 +130,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/topup'
     | '/order/$serviceId'
+    | '/api/public/onefor/webhook'
     | '/lovable/email/queue/process'
     | '/api/public/payment/onefor/complete'
   fileRoutesByTo: FileRoutesByTo
@@ -133,6 +143,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/topup'
     | '/order/$serviceId'
+    | '/api/public/onefor/webhook'
     | '/lovable/email/queue/process'
     | '/api/public/payment/onefor/complete'
   id:
@@ -145,6 +156,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/topup'
     | '/order/$serviceId'
+    | '/api/public/onefor/webhook'
     | '/lovable/email/queue/process'
     | '/api/public/payment/onefor/complete'
   fileRoutesById: FileRoutesById
@@ -158,6 +170,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TopupRoute: typeof TopupRoute
   OrderServiceIdRoute: typeof OrderServiceIdRoute
+  ApiPublicOneforWebhookRoute: typeof ApiPublicOneforWebhookRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
   ApiPublicPaymentOneforCompleteRoute: typeof ApiPublicPaymentOneforCompleteRoute
 }
@@ -227,6 +240,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LovableEmailQueueProcessRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/onefor/webhook': {
+      id: '/api/public/onefor/webhook'
+      path: '/api/public/onefor/webhook'
+      fullPath: '/api/public/onefor/webhook'
+      preLoaderRoute: typeof ApiPublicOneforWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/payment/onefor/complete': {
       id: '/api/public/payment/onefor/complete'
       path: '/api/public/payment/onefor/complete'
@@ -246,6 +266,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TopupRoute: TopupRoute,
   OrderServiceIdRoute: OrderServiceIdRoute,
+  ApiPublicOneforWebhookRoute: ApiPublicOneforWebhookRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
   ApiPublicPaymentOneforCompleteRoute: ApiPublicPaymentOneforCompleteRoute,
 }
