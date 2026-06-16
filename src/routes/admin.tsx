@@ -236,15 +236,21 @@ function OrdersManager() {
                   </td>
                   <td className="px-4 py-3 font-mono">{o.quantity.toLocaleString()}</td>
                   <td className="px-4 py-3 max-w-[220px]">
-                    <a
-                      href={o.target_link}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="block truncate text-primary hover:underline"
-                      title={o.target_link}
-                    >
-                      {o.target_link}
-                    </a>
+                    {/^https?:\/\//i.test(o.target_link) ? (
+                      <a
+                        href={o.target_link}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="block truncate text-primary hover:underline"
+                        title={o.target_link}
+                      >
+                        {o.target_link}
+                      </a>
+                    ) : (
+                      <span className="block truncate" title={o.target_link}>
+                        {o.target_link}
+                      </span>
+                    )}
                   </td>
                   <td className="px-4 py-3 font-semibold text-primary">
                     {Number(o.total_price_eur).toFixed(2)} €
