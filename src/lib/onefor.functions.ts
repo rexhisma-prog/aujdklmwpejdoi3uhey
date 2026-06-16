@@ -89,6 +89,6 @@ export const createOneforTopup = createServerFn({ method: "POST" })
 
     return {
       sessionId: session.session_id,
-      redirectUrl: `${webBase}/web/merchant-redirection?sessionId=${session.session_id}`,
+      redirectUrl: `${webBase}/web/merchant?sessionId=${session.session_id}`,
     };
   });
