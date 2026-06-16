@@ -328,7 +328,7 @@ function SocialMockups() {
               <button className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-border py-1.5 text-xs font-semibold">
                 <UserPlus className="h-3.5 w-3.5" /> Follow
               </button>
-              <button className="rounded-lg border border-border px-2.5 py-1.5">
+              <button aria-label="Shpërndaj" className="rounded-lg border border-border px-2.5 py-1.5">
                 <Share2 className="h-3.5 w-3.5" />
               </button>
             </div>
