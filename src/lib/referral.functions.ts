@@ -28,8 +28,8 @@ export const claimReferral = createServerFn({ method: "POST" })
 
     const { data: linked, error } = await supabase.rpc("claim_referral", {
       _code: data.code,
-      _ip: ip,
-      _email: email,
+      _ip: ip ?? "",
+      _email: email ?? "",
     });
     if (error) {
       console.error("[referral] claim error", error);
