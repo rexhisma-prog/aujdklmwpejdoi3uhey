@@ -1,0 +1,14 @@
+# shtofollow.com
+
+> Shërbim për rritje në rrjetet sociale: Followers, Pëlqime dhe Shikime për Instagram, TikTok dhe Facebook, me wallet në EUR dhe pagesa të sigurta.
+
+shtofollow.com ndihmon përdoruesit të rrisin praninë e tyre në rrjetet sociale shpejt dhe me çmime të lira. Klientët mbushin balancin në EUR dhe porosisin shërbime për platforma të ndryshme.
+
+## Pages
+
+- [Ballina](/): Përmbledhje e shërbimeve, statistika live dhe dëshmi klientësh.
+
+## Optional
+
+- [Hyr](/login): Hyrja për përdoruesit ekzistues.
+- [Regjistrohu](/register): Krijimi i një llogarie të re.
