@@ -331,6 +331,7 @@ function TopupPage() {
             />
             <p className="mt-1 text-xs text-muted-foreground">
               Shuma minimale: {MIN_AMOUNT} €
+              {isReferred && " (llogari e regjistruar përmes referimit)"}
             </p>
           </div>
 
