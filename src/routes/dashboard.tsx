@@ -1,7 +1,9 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { Wallet, ShoppingCart, Instagram, Music2, Facebook, Heart, Eye, Users, LogOut, Plus } from "lucide-react";
+import { Wallet, ShoppingCart, Instagram, Music2, Facebook, Heart, Eye, Users, LogOut, Plus, Gift, Copy, Check } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
+import { claimReferral } from "@/lib/referral.functions";
 
 type Service = {
   id: string;
