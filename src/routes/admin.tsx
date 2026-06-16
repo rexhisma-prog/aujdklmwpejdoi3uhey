@@ -124,6 +124,7 @@ function AdminPage() {
 
         <TopupsManager />
         <OrdersManager />
+        <ReferralEarningsManager />
         <ServicesManager />
       </main>
     </div>
