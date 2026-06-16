@@ -52,12 +52,14 @@ function Index() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Header />
-      <Hero />
-      
-      <Features />
-      <LiveStats />
-      <SocialMockups />
-      <Testimonials />
+      <main>
+        <Hero />
+
+        <Features />
+        <LiveStats />
+        <SocialMockups />
+        <Testimonials />
+      </main>
       <Footer />
     </div>
   );
