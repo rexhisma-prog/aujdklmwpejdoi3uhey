@@ -308,13 +308,16 @@ function TopupPage() {
             </div>
             <input
               type="number"
-              min={1}
+              min={MIN_AMOUNT}
               step="0.5"
               value={amount}
               onChange={(e) => setAmount(Number(e.target.value))}
               required
               className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none"
             />
+            <p className="mt-1 text-xs text-muted-foreground">
+              Shuma minimale: {MIN_AMOUNT} €
+            </p>
           </div>
 
           <div>
