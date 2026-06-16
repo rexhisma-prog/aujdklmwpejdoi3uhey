@@ -43,6 +43,9 @@ function ClientDashboard() {
   const [loading, setLoading] = useState(true);
   const [services, setServices] = useState<Service[]>([]);
   const [balance, setBalance] = useState<number>(0);
+  const [referralCode, setReferralCode] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const claimRef = useServerFn(claimReferral);
 
   useEffect(() => {
     let mounted = true;
@@ -63,19 +66,36 @@ function ClientDashboard() {
       }
       setEmail(user.email ?? "");
 
-      // Load or create the user's profile (balance)
+      // Claim a pending referral link (if any), once.
+      try {
+        const pendingRef = localStorage.getItem("pending_ref");
+        if (pendingRef) {
+          await claimRef({ data: { code: pendingRef } });
+          localStorage.removeItem("pending_ref");
+        }
+      } catch {
+        // ignore
+      }
+
+      // Load or create the user's profile (balance + referral code)
       const { data: profile } = await supabase
         .from("profiles")
-        .select("balance_eur")
+        .select("balance_eur, referral_code")
         .eq("user_id", user.id)
         .maybeSingle();
       if (!profile) {
-        await supabase
+        const { data: created } = await supabase
           .from("profiles")
-          .insert({ user_id: user.id, email: user.email ?? null });
-        if (mounted) setBalance(0);
+          .insert({ user_id: user.id, email: user.email ?? null })
+          .select("balance_eur, referral_code")
+          .maybeSingle();
+        if (mounted) {
+          setBalance(0);
+          setReferralCode(created?.referral_code ?? null);
+        }
       } else if (mounted) {
         setBalance(Number(profile.balance_eur));
+        setReferralCode(profile.referral_code ?? null);
       }
 
       const { data: svc } = await supabase
@@ -91,7 +111,20 @@ function ClientDashboard() {
     return () => {
       mounted = false;
     };
-  }, [navigate]);
+  }, [navigate, claimRef]);
+
+  const referralLink = referralCode ? `https://shtofollow.com/ref/${referralCode}` : null;
+  const copyReferral = async () => {
+    if (!referralLink) return;
+    try {
+      await navigator.clipboard.writeText(referralLink);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // ignore
+    }
+  };
+
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
