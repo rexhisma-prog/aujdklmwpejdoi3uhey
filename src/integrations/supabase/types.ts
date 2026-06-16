@@ -379,6 +379,10 @@ export type Database = {
     }
     Functions: {
       approve_topup: { Args: { _request_id: string }; Returns: undefined }
+      claim_referral: {
+        Args: { _code: string; _email: string; _ip: string }
+        Returns: boolean
+      }
       complete_topup_by_session: {
         Args: { _paid: boolean; _session_id: string }
         Returns: boolean
