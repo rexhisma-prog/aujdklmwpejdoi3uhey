@@ -581,11 +581,11 @@ function TopupsManager() {
                   </td>
                   <td className="px-4 py-3">
                     <span className={`rounded-full px-2 py-1 text-xs font-medium ring-1 ${badge(t.status)}`}>
-                      {t.status}
+                      {statusLabel(t.status)}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-right">
-                    {t.status === "pending" ? (
+                    {isActionable(t.status) ? (
                       <div className="flex justify-end gap-2">
                         <button
                           onClick={() => approve(t.id)}
