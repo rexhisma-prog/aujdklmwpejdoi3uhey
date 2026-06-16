@@ -178,7 +178,39 @@ function ClientDashboard() {
           </div>
         </section>
 
-        {/* Services */}
+        {/* Referral promo */}
+        <section className="relative overflow-hidden rounded-3xl border border-primary/30 bg-gradient-to-br from-primary/20 via-card to-card p-6 shadow-[var(--shadow-glow)]">
+          <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-primary/20 blur-3xl" />
+          <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full bg-primary/15 px-3 py-1 text-xs font-medium text-primary ring-1 ring-primary/30">
+                <Gift className="h-3.5 w-3.5" /> Fito 15% Bonus
+              </div>
+              <h2 className="mt-3 text-xl font-bold">Programi i Referimeve</h2>
+              <p className="mt-1 max-w-md text-sm text-muted-foreground">
+                Fto shokët e tu dhe fito bonus sa herë që sjell klientë të rinj.
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={copyReferral}
+                disabled={!referralLink}
+                className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:opacity-90 disabled:opacity-50"
+              >
+                {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                {copied ? "U kopjua!" : "Kopjo Linkun"}
+              </button>
+              <Link
+                to="/referrals"
+                className="inline-flex items-center gap-2 rounded-xl border border-primary/40 px-4 py-2.5 text-sm font-semibold text-primary hover:bg-primary/10"
+              >
+                Referimet
+              </Link>
+            </div>
+          </div>
+        </section>
+
+
         <section>
           <h2 className="mb-4 text-lg font-semibold">Shërbimet tona</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
