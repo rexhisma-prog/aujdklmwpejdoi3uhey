@@ -154,6 +154,9 @@ export type Database = {
           created_at: string
           email: string | null
           referral_code: string | null
+          referral_earnings_eur: number
+          referred_by: string | null
+          signup_ip: string | null
           updated_at: string
           user_id: string
         }
@@ -162,6 +165,9 @@ export type Database = {
           created_at?: string
           email?: string | null
           referral_code?: string | null
+          referral_earnings_eur?: number
+          referred_by?: string | null
+          signup_ip?: string | null
           updated_at?: string
           user_id: string
         }
@@ -170,6 +176,9 @@ export type Database = {
           created_at?: string
           email?: string | null
           referral_code?: string | null
+          referral_earnings_eur?: number
+          referred_by?: string | null
+          signup_ip?: string | null
           updated_at?: string
           user_id?: string
         }
