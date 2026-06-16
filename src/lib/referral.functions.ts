@@ -78,7 +78,7 @@ export const getReferralData = createServerFn({ method: "GET" })
       totalEarnings: Number(profile?.referral_earnings_eur ?? 0),
       earnings: (earnings ?? []).map((e) => ({
         id: e.id,
-        email: e.referred_email,
+        email: null,
         date: e.created_at,
         topupAmount: Number(e.topup_amount_eur),
         bonus: Number(e.bonus_eur),
@@ -86,7 +86,7 @@ export const getReferralData = createServerFn({ method: "GET" })
       })),
       referrals: refs.map((r) => ({
         id: r.id,
-        email: r.referred_email,
+        email: null,
         status: r.status,
         bonusPaid: r.bonus_paid,
         date: r.created_at,
