@@ -153,6 +153,7 @@ export type Database = {
           balance_eur: number
           created_at: string
           email: string | null
+          referral_code: string | null
           updated_at: string
           user_id: string
         }
@@ -160,6 +161,7 @@ export type Database = {
           balance_eur?: number
           created_at?: string
           email?: string | null
+          referral_code?: string | null
           updated_at?: string
           user_id: string
         }
@@ -167,6 +169,7 @@ export type Database = {
           balance_eur?: number
           created_at?: string
           email?: string | null
+          referral_code?: string | null
           updated_at?: string
           user_id?: string
         }
