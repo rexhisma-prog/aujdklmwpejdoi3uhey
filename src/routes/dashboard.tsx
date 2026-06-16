@@ -106,7 +106,7 @@ function ClientDashboard() {
             <Link to="/" className="text-xs text-muted-foreground hover:text-foreground">
               ← Faqja kryesore
             </Link>
-            <h1 className="mt-1 text-2xl font-bold">Mirësevjen 👋</h1>
+            <h1 className="mt-1 text-2xl font-bold">Paneli i llogarisë</h1>
             <p className="text-xs text-muted-foreground">{email}</p>
           </div>
           <button
