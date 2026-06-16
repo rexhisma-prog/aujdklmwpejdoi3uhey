@@ -305,7 +305,7 @@ function TopupPage() {
           <div>
             <label className="mb-2 block text-sm font-medium">Shuma (€)</label>
             <div className="mb-3 flex flex-wrap gap-2">
-              {PRESETS.map((p) => (
+              {PRESETS.filter((p) => p >= MIN_AMOUNT).map((p) => (
                 <button
                   key={p}
                   type="button"
