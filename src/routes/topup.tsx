@@ -60,7 +60,8 @@ const METHODS: {
   },
 ];
 
-const MIN_AMOUNT = 10;
+const DEFAULT_MIN = 10;
+const REFERRED_MIN = 20;
 const PRESETS = [10, 20, 50, 100, 200];
 
 const BANK_DETAILS = {
@@ -81,6 +82,8 @@ function TopupPage() {
   const [success, setSuccess] = useState(false);
   const [returnStatus, setReturnStatus] = useState<string | null>(null);
   const [qrUrl, setQrUrl] = useState<string | null>(null);
+  const [isReferred, setIsReferred] = useState(false);
+  const MIN_AMOUNT = isReferred ? REFERRED_MIN : DEFAULT_MIN;
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -90,7 +93,7 @@ function TopupPage() {
 
   useEffect(() => {
     let mounted = true;
-    supabase.auth.getSession().then(({ data }) => {
+    supabase.auth.getSession().then(async ({ data }) => {
       if (!mounted) return;
       const user = data.session?.user;
       if (!user) {
@@ -98,12 +101,23 @@ function TopupPage() {
         return;
       }
       setUserId(user.id);
+      const { data: prof } = await supabase
+        .from("profiles")
+        .select("referred_by")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      if (!mounted) return;
+      if (prof?.referred_by) {
+        setIsReferred(true);
+        setAmount((a) => (a < REFERRED_MIN ? REFERRED_MIN : a));
+      }
       setLoading(false);
     });
     return () => {
       mounted = false;
     };
   }, [navigate]);
+
 
   const startCardPayment = useServerFn(createOneforTopup);
 
@@ -291,7 +305,7 @@ function TopupPage() {
           <div>
             <label className="mb-2 block text-sm font-medium">Shuma (€)</label>
             <div className="mb-3 flex flex-wrap gap-2">
-              {PRESETS.map((p) => (
+              {PRESETS.filter((p) => p >= MIN_AMOUNT).map((p) => (
                 <button
                   key={p}
                   type="button"
@@ -317,6 +331,7 @@ function TopupPage() {
             />
             <p className="mt-1 text-xs text-muted-foreground">
               Shuma minimale: {MIN_AMOUNT} €
+              {isReferred && " (llogari e regjistruar përmes referimit)"}
             </p>
           </div>
 
