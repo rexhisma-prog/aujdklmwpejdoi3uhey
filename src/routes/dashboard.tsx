@@ -1,7 +1,9 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { Wallet, ShoppingCart, Instagram, Music2, Facebook, Heart, Eye, Users, LogOut, Plus } from "lucide-react";
+import { Wallet, ShoppingCart, Instagram, Music2, Facebook, Heart, Eye, Users, LogOut, Plus, Gift, Copy, Check } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
+import { claimReferral } from "@/lib/referral.functions";
 
 type Service = {
   id: string;
@@ -41,6 +43,9 @@ function ClientDashboard() {
   const [loading, setLoading] = useState(true);
   const [services, setServices] = useState<Service[]>([]);
   const [balance, setBalance] = useState<number>(0);
+  const [referralCode, setReferralCode] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const claimRef = useServerFn(claimReferral);
 
   useEffect(() => {
     let mounted = true;
@@ -61,19 +66,36 @@ function ClientDashboard() {
       }
       setEmail(user.email ?? "");
 
-      // Load or create the user's profile (balance)
+      // Claim a pending referral link (if any), once.
+      try {
+        const pendingRef = localStorage.getItem("pending_ref");
+        if (pendingRef) {
+          await claimRef({ data: { code: pendingRef } });
+          localStorage.removeItem("pending_ref");
+        }
+      } catch {
+        // ignore
+      }
+
+      // Load or create the user's profile (balance + referral code)
       const { data: profile } = await supabase
         .from("profiles")
-        .select("balance_eur")
+        .select("balance_eur, referral_code")
         .eq("user_id", user.id)
         .maybeSingle();
       if (!profile) {
-        await supabase
+        const { data: created } = await supabase
           .from("profiles")
-          .insert({ user_id: user.id, email: user.email ?? null });
-        if (mounted) setBalance(0);
+          .insert({ user_id: user.id, email: user.email ?? null })
+          .select("balance_eur, referral_code")
+          .maybeSingle();
+        if (mounted) {
+          setBalance(0);
+          setReferralCode(created?.referral_code ?? null);
+        }
       } else if (mounted) {
         setBalance(Number(profile.balance_eur));
+        setReferralCode(profile.referral_code ?? null);
       }
 
       const { data: svc } = await supabase
@@ -89,7 +111,20 @@ function ClientDashboard() {
     return () => {
       mounted = false;
     };
-  }, [navigate]);
+  }, [navigate, claimRef]);
+
+  const referralLink = referralCode ? `https://shtofollow.com/ref/${referralCode}` : null;
+  const copyReferral = async () => {
+    if (!referralLink) return;
+    try {
+      await navigator.clipboard.writeText(referralLink);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // ignore
+    }
+  };
+
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -143,7 +178,39 @@ function ClientDashboard() {
           </div>
         </section>
 
-        {/* Services */}
+        {/* Referral promo */}
+        <section className="relative overflow-hidden rounded-3xl border border-primary/30 bg-gradient-to-br from-primary/20 via-card to-card p-6 shadow-[var(--shadow-glow)]">
+          <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-primary/20 blur-3xl" />
+          <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full bg-primary/15 px-3 py-1 text-xs font-medium text-primary ring-1 ring-primary/30">
+                <Gift className="h-3.5 w-3.5" /> Fito 15% Bonus
+              </div>
+              <h2 className="mt-3 text-xl font-bold">Programi i Referimeve</h2>
+              <p className="mt-1 max-w-md text-sm text-muted-foreground">
+                Fto shokët e tu dhe fito bonus sa herë që sjell klientë të rinj.
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={copyReferral}
+                disabled={!referralLink}
+                className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:opacity-90 disabled:opacity-50"
+              >
+                {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                {copied ? "U kopjua!" : "Kopjo Linkun"}
+              </button>
+              <Link
+                to="/referrals"
+                className="inline-flex items-center gap-2 rounded-xl border border-primary/40 px-4 py-2.5 text-sm font-semibold text-primary hover:bg-primary/10"
+              >
+                Referimet
+              </Link>
+            </div>
+          </div>
+        </section>
+
+
         <section>
           <h2 className="mb-4 text-lg font-semibold">Shërbimet tona</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

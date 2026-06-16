@@ -153,6 +153,10 @@ export type Database = {
           balance_eur: number
           created_at: string
           email: string | null
+          referral_code: string | null
+          referral_earnings_eur: number
+          referred_by: string | null
+          signup_ip: string | null
           updated_at: string
           user_id: string
         }
@@ -160,6 +164,10 @@ export type Database = {
           balance_eur?: number
           created_at?: string
           email?: string | null
+          referral_code?: string | null
+          referral_earnings_eur?: number
+          referred_by?: string | null
+          signup_ip?: string | null
           updated_at?: string
           user_id: string
         }
@@ -167,8 +175,78 @@ export type Database = {
           balance_eur?: number
           created_at?: string
           email?: string | null
+          referral_code?: string | null
+          referral_earnings_eur?: number
+          referred_by?: string | null
+          signup_ip?: string | null
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      referral_earnings: {
+        Row: {
+          bonus_eur: number
+          created_at: string
+          id: string
+          referred_email: string | null
+          referred_user_id: string
+          referrer_id: string
+          status: string
+          topup_amount_eur: number
+        }
+        Insert: {
+          bonus_eur: number
+          created_at?: string
+          id?: string
+          referred_email?: string | null
+          referred_user_id: string
+          referrer_id: string
+          status?: string
+          topup_amount_eur: number
+        }
+        Update: {
+          bonus_eur?: number
+          created_at?: string
+          id?: string
+          referred_email?: string | null
+          referred_user_id?: string
+          referrer_id?: string
+          status?: string
+          topup_amount_eur?: number
+        }
+        Relationships: []
+      }
+      referrals: {
+        Row: {
+          bonus_paid: boolean
+          created_at: string
+          id: string
+          referred_email: string | null
+          referred_user_id: string
+          referrer_id: string
+          signup_ip: string | null
+          status: string
+        }
+        Insert: {
+          bonus_paid?: boolean
+          created_at?: string
+          id?: string
+          referred_email?: string | null
+          referred_user_id: string
+          referrer_id: string
+          signup_ip?: string | null
+          status?: string
+        }
+        Update: {
+          bonus_paid?: boolean
+          created_at?: string
+          id?: string
+          referred_email?: string | null
+          referred_user_id?: string
+          referrer_id?: string
+          signup_ip?: string | null
+          status?: string
         }
         Relationships: []
       }
@@ -301,6 +379,10 @@ export type Database = {
     }
     Functions: {
       approve_topup: { Args: { _request_id: string }; Returns: undefined }
+      claim_referral: {
+        Args: { _code: string; _email: string; _ip: string }
+        Returns: boolean
+      }
       complete_topup_by_session: {
         Args: { _paid: boolean; _session_id: string }
         Returns: boolean
@@ -313,6 +395,7 @@ export type Database = {
         Args: { payload: Json; queue_name: string }
         Returns: number
       }
+      generate_referral_code: { Args: never; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

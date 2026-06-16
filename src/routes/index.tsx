@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { Instagram, Wallet, ShoppingCart, ShieldCheck, Heart, Eye, Users, TrendingUp, Music2, ArrowLeft, MoreHorizontal, ThumbsUp, MessageCircle, Share2, UserPlus, Play } from "lucide-react";
+import { Instagram, Wallet, ShoppingCart, ShieldCheck, Heart, Eye, Users, TrendingUp, Music2, ArrowLeft, MoreHorizontal, ThumbsUp, MessageCircle, Share2, UserPlus, Play, Gift } from "lucide-react";
 import { useCountUp } from "@/hooks/use-count-up";
 import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -57,11 +57,53 @@ function Index() {
 
         <Features />
         <LiveStats />
+        <ReferralPromo />
         <SocialMockups />
         <Testimonials />
       </main>
       <Footer />
     </div>
+  );
+}
+
+function ReferralPromo() {
+  return (
+    <section className="mx-auto max-w-5xl px-6 py-20">
+      <div className="relative overflow-hidden rounded-3xl border border-primary/30 bg-gradient-to-br from-primary/20 via-card to-card p-10 shadow-[var(--shadow-glow)]">
+        <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-primary/20 blur-3xl" />
+        <div className="relative">
+          <div className="inline-flex items-center gap-2 rounded-full bg-primary/15 px-3 py-1 text-xs font-medium text-primary ring-1 ring-primary/30">
+            <Gift className="h-3.5 w-3.5" /> Programi i Referimeve
+          </div>
+          <h2 className="mt-4 text-4xl font-bold tracking-tight">
+            Fto shokët, fito <span className="text-primary">15% bonus</span>
+          </h2>
+          <p className="mt-3 max-w-xl text-muted-foreground">
+            Fto shokët e tu në ShtoFollow.com dhe fito 15% bonus për çdo referim të suksesshëm.
+          </p>
+          <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+            {[
+              "Bonus automatik",
+              "Pa kufizim referimesh",
+              "Link unik për çdo përdorues",
+              "Fitimet shtohen direkt në balanc",
+            ].map((t) => (
+              <li key={t} className="flex items-center gap-2 text-sm">
+                <span className="text-primary">✅</span> {t}
+              </li>
+            ))}
+          </ul>
+          <div className="mt-8">
+            <Link
+              to="/register"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:opacity-90"
+            >
+              <Gift className="h-4 w-4" /> Merr linkun tënd
+            </Link>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 
