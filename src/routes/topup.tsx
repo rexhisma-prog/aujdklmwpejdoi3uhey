@@ -93,7 +93,7 @@ function TopupPage() {
 
   useEffect(() => {
     let mounted = true;
-    supabase.auth.getSession().then(({ data }) => {
+    supabase.auth.getSession().then(async ({ data }) => {
       if (!mounted) return;
       const user = data.session?.user;
       if (!user) {
@@ -101,12 +101,23 @@ function TopupPage() {
         return;
       }
       setUserId(user.id);
+      const { data: prof } = await supabase
+        .from("profiles")
+        .select("referred_by")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      if (!mounted) return;
+      if (prof?.referred_by) {
+        setIsReferred(true);
+        setAmount((a) => (a < REFERRED_MIN ? REFERRED_MIN : a));
+      }
       setLoading(false);
     });
     return () => {
       mounted = false;
     };
   }, [navigate]);
+
 
   const startCardPayment = useServerFn(createOneforTopup);
 
