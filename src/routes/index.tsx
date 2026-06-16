@@ -7,10 +7,19 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "shtofollow.com — Rritu në rrjetet sociale" },
-      { name: "description", content: "Shto Followers, Pëlqime dhe Shikime në Instagram, TikTok dhe Facebook. Wallet EUR, porosi të shpejta, transaksione të sigurta." },
-      { property: "og:title", content: "shtofollow.com — Rritu në rrjetet sociale" },
-      { property: "og:description", content: "Followers, Likes dhe Views për Instagram, TikTok, Facebook." },
+      { property: "og:url", content: "https://shtofollow.com/" },
+    ],
+    links: [{ rel: "canonical", href: "https://shtofollow.com/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "shtofollow.com",
+          url: "https://shtofollow.com",
+        }),
+      },
     ],
   }),
   component: Index,
