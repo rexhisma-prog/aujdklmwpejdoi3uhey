@@ -1,0 +1,1 @@
+REVOKE ALL ON FUNCTION public.set_topup_email() FROM public, anon, authenticated;
