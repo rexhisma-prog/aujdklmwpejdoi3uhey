@@ -54,10 +54,9 @@ function Index() {
       <Header />
       <main>
         <Hero />
-
+        <ReferralPromo />
         <Features />
         <LiveStats />
-        <ReferralPromo />
         <SocialMockups />
         <Testimonials />
       </main>
