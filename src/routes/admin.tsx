@@ -457,6 +457,7 @@ type Topup = {
   reference: string | null;
   status: string;
   created_at: string;
+  email: string | null;
   profiles?: { email: string | null } | null;
 };
 
