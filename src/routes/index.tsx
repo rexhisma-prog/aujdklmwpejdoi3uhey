@@ -7,10 +7,19 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "shtofollow.com — Rritu në rrjetet sociale" },
-      { name: "description", content: "Shto Followers, Pëlqime dhe Shikime në Instagram, TikTok dhe Facebook. Wallet EUR, porosi të shpejta, transaksione të sigurta." },
-      { property: "og:title", content: "shtofollow.com — Rritu në rrjetet sociale" },
-      { property: "og:description", content: "Followers, Likes dhe Views për Instagram, TikTok, Facebook." },
+      { property: "og:url", content: "https://shtofollow.com/" },
+    ],
+    links: [{ rel: "canonical", href: "https://shtofollow.com/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "shtofollow.com",
+          url: "https://shtofollow.com",
+        }),
+      },
     ],
   }),
   component: Index,
@@ -43,12 +52,14 @@ function Index() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Header />
-      <Hero />
-      
-      <Features />
-      <LiveStats />
-      <SocialMockups />
-      <Testimonials />
+      <main>
+        <Hero />
+
+        <Features />
+        <LiveStats />
+        <SocialMockups />
+        <Testimonials />
+      </main>
       <Footer />
     </div>
   );
@@ -317,7 +328,7 @@ function SocialMockups() {
               <button className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-border py-1.5 text-xs font-semibold">
                 <UserPlus className="h-3.5 w-3.5" /> Follow
               </button>
-              <button className="rounded-lg border border-border px-2.5 py-1.5">
+              <button aria-label="Shpërndaj" className="rounded-lg border border-border px-2.5 py-1.5">
                 <Share2 className="h-3.5 w-3.5" />
               </button>
             </div>

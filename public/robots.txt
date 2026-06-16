@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /topup
+Disallow: /order
+Disallow: /login
+Disallow: /register
+
+Sitemap: https://shtofollow.com/sitemap.xml

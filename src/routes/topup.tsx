@@ -16,7 +16,13 @@ import {
 } from "lucide-react";
 
 export const Route = createFileRoute("/topup")({
-  head: () => ({ meta: [{ title: "Mbush balancin — shtofollow.com" }] }),
+  head: () => ({
+    meta: [
+      { title: "Mbush balancin — shtofollow.com" },
+      { name: "description", content: "Mbush balancin e walletit tënd shtofollow.com në EUR me kartë, OneFor ose transfertë bankare." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+  }),
   component: TopupPage,
 });
 

@@ -25,7 +25,13 @@ const typeIcon: Record<string, typeof Heart> = {
 };
 
 export const Route = createFileRoute("/dashboard")({
-  head: () => ({ meta: [{ title: "Paneli im — shtofollow.com" }] }),
+  head: () => ({
+    meta: [
+      { title: "Paneli im — shtofollow.com" },
+      { name: "description", content: "Paneli i llogarisë shtofollow.com: shiko balancin, porosit shërbime dhe ndiq porositë e tua." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+  }),
   component: ClientDashboard,
 });
 
@@ -106,7 +112,7 @@ function ClientDashboard() {
             <Link to="/" className="text-xs text-muted-foreground hover:text-foreground">
               ← Faqja kryesore
             </Link>
-            <h1 className="mt-1 text-2xl font-bold">Mirësevjen 👋</h1>
+            <h1 className="mt-1 text-2xl font-bold">Paneli i llogarisë</h1>
             <p className="text-xs text-muted-foreground">{email}</p>
           </div>
           <button

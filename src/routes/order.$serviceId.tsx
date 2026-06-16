@@ -13,7 +13,13 @@ type Service = {
 };
 
 export const Route = createFileRoute("/order/$serviceId")({
-  head: () => ({ meta: [{ title: "Porosit shërbimin — shtofollow.com" }] }),
+  head: () => ({
+    meta: [
+      { title: "Porosit shërbimin — shtofollow.com" },
+      { name: "description", content: "Porosit shërbime për rrjetet sociale në shtofollow.com — zgjidh sasinë, vendos linkun dhe konfirmo porosinë." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+  }),
   component: OrderPage,
 });
 

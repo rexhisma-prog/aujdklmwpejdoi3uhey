@@ -4,7 +4,16 @@ import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 
 export const Route = createFileRoute("/register")({
-  head: () => ({ meta: [{ title: "Regjistrohu — shtofollow.com" }] }),
+  head: () => ({
+    meta: [
+      { title: "Regjistrohu — shtofollow.com" },
+      { name: "description", content: "Krijo një llogari falas në shtofollow.com dhe fillo të rrisësh Followers, Pëlqime dhe Shikime në Instagram, TikTok dhe Facebook." },
+      { property: "og:title", content: "Regjistrohu — shtofollow.com" },
+      { property: "og:description", content: "Krijo një llogari falas dhe fillo të rrisësh praninë në rrjetet sociale." },
+      { property: "og:url", content: "https://shtofollow.com/register" },
+    ],
+    links: [{ rel: "canonical", href: "https://shtofollow.com/register" }],
+  }),
   component: RegisterPage,
 });
 
