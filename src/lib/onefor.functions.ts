@@ -87,8 +87,9 @@ export const createOneforTopup = createServerFn({ method: "POST" })
       .update({ provider_session_id: session.session_id })
       .eq("id", topup.id);
 
+    const redirectPath = data.channel === "card" ? "merchant-redirection" : "merchant";
     return {
       sessionId: session.session_id,
-      redirectUrl: `${webBase}/web/merchant?sessionId=${session.session_id}`,
+      redirectUrl: `${webBase}/web/${redirectPath}?sessionId=${session.session_id}`,
     };
   });
