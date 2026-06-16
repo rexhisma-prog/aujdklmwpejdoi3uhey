@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TopupRouteImport } from './routes/topup'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardRouteImport } from './routes/dashboard'
@@ -21,6 +22,11 @@ import { Route as ApiPublicPaymentOneforCompleteRouteImport } from './routes/api
 const TopupRoute = TopupRouteImport.update({
   id: '/topup',
   path: '/topup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RegisterRoute = RegisterRouteImport.update({
@@ -66,6 +72,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/topup': typeof TopupRoute
   '/order/$serviceId': typeof OrderServiceIdRoute
   '/api/public/payment/onefor/complete': typeof ApiPublicPaymentOneforCompleteRoute
@@ -76,6 +83,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/topup': typeof TopupRoute
   '/order/$serviceId': typeof OrderServiceIdRoute
   '/api/public/payment/onefor/complete': typeof ApiPublicPaymentOneforCompleteRoute
@@ -87,6 +95,7 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/topup': typeof TopupRoute
   '/order/$serviceId': typeof OrderServiceIdRoute
   '/api/public/payment/onefor/complete': typeof ApiPublicPaymentOneforCompleteRoute
@@ -99,6 +108,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/register'
+    | '/sitemap.xml'
     | '/topup'
     | '/order/$serviceId'
     | '/api/public/payment/onefor/complete'
@@ -109,6 +119,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/register'
+    | '/sitemap.xml'
     | '/topup'
     | '/order/$serviceId'
     | '/api/public/payment/onefor/complete'
@@ -119,6 +130,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/register'
+    | '/sitemap.xml'
     | '/topup'
     | '/order/$serviceId'
     | '/api/public/payment/onefor/complete'
@@ -130,6 +142,7 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TopupRoute: typeof TopupRoute
   OrderServiceIdRoute: typeof OrderServiceIdRoute
   ApiPublicPaymentOneforCompleteRoute: typeof ApiPublicPaymentOneforCompleteRoute
@@ -142,6 +155,13 @@ declare module '@tanstack/react-router' {
       path: '/topup'
       fullPath: '/topup'
       preLoaderRoute: typeof TopupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/register': {
@@ -202,6 +222,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TopupRoute: TopupRoute,
   OrderServiceIdRoute: OrderServiceIdRoute,
   ApiPublicPaymentOneforCompleteRoute: ApiPublicPaymentOneforCompleteRoute,

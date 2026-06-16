@@ -32,6 +32,7 @@ export const Route = createRootRoute({
       { title: "shtofollow.com — Rritu në rrjetet sociale" },
       { name: "description", content: "Shto Followers, Pëlqime dhe Shikime në Instagram, TikTok dhe Facebook. Wallet EUR, porosi të shpejta, transaksione të sigurta." },
       { name: "author", content: "shtofollow.com" },
+      { property: "og:site_name", content: "shtofollow.com" },
       { property: "og:title", content: "shtofollow.com — Rritu në rrjetet sociale" },
       { property: "og:description", content: "Followers, Likes dhe Views për Instagram, TikTok, Facebook." },
       { property: "og:type", content: "website" },
@@ -43,6 +44,18 @@ export const Route = createRootRoute({
       {
         rel: "stylesheet",
         href: appCss,
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "shtofollow.com",
+          url: "https://shtofollow.com",
+          logo: "https://shtofollow.com/favicon.ico",
+        }),
       },
     ],
   }),
