@@ -87,11 +87,11 @@ export const createOneforTopup = createServerFn({ method: "POST" })
       .update({ provider_session_id: session.session_id })
       .eq("id", topup.id);
 
-    // Both card and OneFor payments go through OneFor's hosted checkout page.
-    // The checkout shows the card form when BKT card acquiring is enabled on
-    // the merchant account, otherwise it offers OneFor app login.
+    // OneFor app payments use the merchant checkout; card payments use the
+    // merchant-redirection (card acquiring) flow.
+    const checkoutPath = data.channel === "onefor" ? "merchant" : "merchant-redirection";
     return {
       sessionId: session.session_id,
-      redirectUrl: `${webBase}/web/merchant?sessionId=${session.session_id}`,
+      redirectUrl: `${webBase}/web/${checkoutPath}?sessionId=${session.session_id}`,
     };
   });
