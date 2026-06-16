@@ -232,6 +232,9 @@ function OrderPage() {
               placeholder={linkPlaceholder}
               className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none"
             />
+            <p className="mt-2 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-600 dark:text-amber-400">
+              ⚠️ Profili duhet të jetë i hapur (public), jo privat — përndryshe porosia nuk mund të kryhet.
+            </p>
           </div>
 
           <div>
