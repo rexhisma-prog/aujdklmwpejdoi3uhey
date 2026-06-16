@@ -239,6 +239,7 @@ export type Database = {
         Row: {
           amount_eur: number
           created_at: string
+          email: string | null
           id: string
           method: string
           provider_session_id: string | null
@@ -250,6 +251,7 @@ export type Database = {
         Insert: {
           amount_eur: number
           created_at?: string
+          email?: string | null
           id?: string
           method?: string
           provider_session_id?: string | null
@@ -261,6 +263,7 @@ export type Database = {
         Update: {
           amount_eur?: number
           created_at?: string
+          email?: string | null
           id?: string
           method?: string
           provider_session_id?: string | null
