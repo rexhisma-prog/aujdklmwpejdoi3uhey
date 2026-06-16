@@ -2,6 +2,8 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft, Loader2, CheckCircle2, Clock, Sparkles } from "lucide-react";
+import igAutoConfirm from "@/assets/ig-auto-confirm.png.asset.json";
+import igFollowInvite from "@/assets/ig-follow-invite.jpg.asset.json";
 
 type Service = {
   id: string;
