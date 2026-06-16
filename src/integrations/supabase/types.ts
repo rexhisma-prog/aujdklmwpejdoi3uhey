@@ -378,6 +378,17 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_list_referral_earnings: {
+        Args: never
+        Returns: {
+          bonus_eur: number
+          created_at: string
+          id: string
+          referred_email: string
+          status: string
+          topup_amount_eur: number
+        }[]
+      }
       approve_topup: { Args: { _request_id: string }; Returns: undefined }
       claim_referral: {
         Args: { _code: string; _email: string; _ip: string }

@@ -53,15 +53,17 @@ export const getReferralData = createServerFn({ method: "GET" })
       .eq("user_id", userId)
       .maybeSingle();
 
+    // Note: referred users' email addresses are intentionally NOT exposed to
+    // referrers for privacy reasons.
     const { data: referrals } = await supabase
       .from("referrals")
-      .select("id, referred_email, status, bonus_paid, created_at")
+      .select("id, status, bonus_paid, created_at")
       .eq("referrer_id", userId)
       .order("created_at", { ascending: false });
 
     const { data: earnings } = await supabase
       .from("referral_earnings")
-      .select("id, referred_email, topup_amount_eur, bonus_eur, status, created_at")
+      .select("id, topup_amount_eur, bonus_eur, status, created_at")
       .eq("referrer_id", userId)
       .order("created_at", { ascending: false });
 
@@ -76,7 +78,7 @@ export const getReferralData = createServerFn({ method: "GET" })
       totalEarnings: Number(profile?.referral_earnings_eur ?? 0),
       earnings: (earnings ?? []).map((e) => ({
         id: e.id,
-        email: e.referred_email,
+        email: null,
         date: e.created_at,
         topupAmount: Number(e.topup_amount_eur),
         bonus: Number(e.bonus_eur),
@@ -84,7 +86,7 @@ export const getReferralData = createServerFn({ method: "GET" })
       })),
       referrals: refs.map((r) => ({
         id: r.id,
-        email: r.referred_email,
+        email: null,
         status: r.status,
         bonusPaid: r.bonus_paid,
         date: r.created_at,

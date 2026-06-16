@@ -146,9 +146,7 @@ function ReferralEarningsManager() {
 
   useEffect(() => {
     supabase
-      .from("referral_earnings")
-      .select("id, referred_email, topup_amount_eur, bonus_eur, status, created_at")
-      .order("created_at", { ascending: false })
+      .rpc("admin_list_referral_earnings")
       .then(({ data }) => {
         setRows((data as ReferralEarning[]) ?? []);
         setLoading(false);
