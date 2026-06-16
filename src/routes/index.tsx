@@ -78,11 +78,11 @@ function ReferralPromo() {
             Fto shokët, fito <span className="text-primary">15% bonus</span>
           </h2>
           <p className="mt-3 max-w-xl text-muted-foreground">
-            Fto shokët e tu në ShtoFollow.com dhe fito 15% bonus për çdo referim të suksesshëm.
+            Fto shokët e tu në ShtoFollow.com dhe fito 15% bonus pasi ata të bëjnë depozitën e parë të suksesshme. Përdoruesit e referuar kanë minimum 20€ për mbushje.
           </p>
           <ul className="mt-6 grid gap-3 sm:grid-cols-2">
             {[
-              "Bonus automatik",
+              "15% bonus pas depozitës së parë",
               "Pa kufizim referimesh",
               "Link unik për çdo përdorues",
               "Fitimet shtohen direkt në balanc",
