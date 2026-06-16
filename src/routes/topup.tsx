@@ -109,7 +109,11 @@ function TopupPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!userId || amount <= 0) return;
+    if (!userId) return;
+    if (amount < MIN_AMOUNT) {
+      setError(`Shuma minimale për mbushje është ${MIN_AMOUNT} €.`);
+      return;
+    }
     setError(null);
     setSubmitting(true);
 
