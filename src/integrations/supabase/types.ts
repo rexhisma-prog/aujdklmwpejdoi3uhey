@@ -184,6 +184,39 @@ export type Database = {
         }
         Relationships: []
       }
+      referral_earnings: {
+        Row: {
+          bonus_eur: number
+          created_at: string
+          id: string
+          referred_email: string | null
+          referred_user_id: string
+          referrer_id: string
+          status: string
+          topup_amount_eur: number
+        }
+        Insert: {
+          bonus_eur: number
+          created_at?: string
+          id?: string
+          referred_email?: string | null
+          referred_user_id: string
+          referrer_id: string
+          status?: string
+          topup_amount_eur: number
+        }
+        Update: {
+          bonus_eur?: number
+          created_at?: string
+          id?: string
+          referred_email?: string | null
+          referred_user_id?: string
+          referrer_id?: string
+          status?: string
+          topup_amount_eur?: number
+        }
+        Relationships: []
+      }
       referrals: {
         Row: {
           bonus_paid: boolean
