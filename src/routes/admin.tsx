@@ -84,43 +84,8 @@ function AdminPage() {
           ))}
         </div>
 
-        <div className="rounded-2xl border border-border bg-card">
-          <div className="flex items-center justify-between border-b border-border px-6 py-4">
-            <h2 className="font-semibold">Të gjithë përdoruesit</h2>
-            <input
-              placeholder="Kërko..."
-              className="rounded-lg border border-border bg-background px-3 py-1.5 text-sm outline-none focus:border-primary"
-            />
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-border text-left text-xs uppercase text-muted-foreground">
-                  <th className="px-6 py-3">Emri</th>
-                  <th className="px-6 py-3">Email</th>
-                  <th className="px-6 py-3">Wallet</th>
-                  <th className="px-6 py-3">Porosi</th>
-                  <th className="px-6 py-3"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((u) => (
-                  <tr key={u.id} className="border-b border-border last:border-0 hover:bg-secondary/40">
-                    <td className="px-6 py-4 font-medium">{u.name}</td>
-                    <td className="px-6 py-4 text-muted-foreground">{u.email}</td>
-                    <td className="px-6 py-4 font-semibold text-primary">{u.balance}</td>
-                    <td className="px-6 py-4">{u.orders}</td>
-                    <td className="px-6 py-4 text-right">
-                      <button className="rounded-lg border border-border px-3 py-1 text-xs hover:border-primary hover:text-primary">
-                        Detaje
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <UsersManager />
+
 
         <TopupsManager />
         <OrdersManager />
