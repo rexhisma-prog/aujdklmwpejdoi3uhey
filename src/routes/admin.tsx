@@ -309,6 +309,7 @@ function OrdersManager() {
             <thead>
               <tr className="border-b border-border text-left text-xs uppercase text-muted-foreground">
                 <th className="px-4 py-3">Data</th>
+                <th className="px-4 py-3">Klienti</th>
                 <th className="px-4 py-3">Shërbimi</th>
                 <th className="px-4 py-3">Sasia</th>
                 <th className="px-4 py-3">Linku</th>
@@ -322,6 +323,9 @@ function OrdersManager() {
                 <tr key={o.id} className="border-b border-border last:border-0 hover:bg-secondary/30">
                   <td className="px-4 py-3 text-xs text-muted-foreground">
                     {new Date(o.created_at).toLocaleString("sq-AL")}
+                  </td>
+                  <td className="px-4 py-3 max-w-[180px] truncate" title={emails[o.user_id] ?? o.user_id}>
+                    {emails[o.user_id] ?? "—"}
                   </td>
                   <td className="px-4 py-3">
                     <div className="font-medium">{o.services?.name ?? "—"}</div>
