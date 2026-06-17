@@ -14,6 +14,31 @@ type Service = {
   quantity: number;
 };
 
+type Order = {
+  id: string;
+  service_id: string;
+  quantity: number;
+  target_link: string;
+  total_price_eur: number;
+  status: string;
+  created_at: string;
+  services?: { name: string; platform: string } | null;
+};
+
+const statusLabel: Record<string, string> = {
+  pending: "Në pritje",
+  in_progress: "Duke u procesuar",
+  completed: "Realizuar",
+  cancelled: "Anuluar",
+};
+
+const statusBadgeClass: Record<string, string> = {
+  pending: "bg-yellow-500/15 text-yellow-500 ring-yellow-500/30",
+  in_progress: "bg-blue-500/15 text-blue-500 ring-blue-500/30",
+  completed: "bg-green-500/15 text-green-500 ring-green-500/30",
+  cancelled: "bg-red-500/15 text-red-500 ring-red-500/30",
+};
+
 const platformIcon: Record<string, typeof Instagram> = {
   instagram: Instagram,
   tiktok: Music2,
