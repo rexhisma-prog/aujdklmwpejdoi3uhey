@@ -356,12 +356,39 @@ function ClientDashboard() {
           <div className="border-b border-border px-6 py-4">
             <h2 className="font-semibold">Porositë e mia</h2>
           </div>
-          <div className="flex flex-col items-center justify-center px-6 py-12 text-center">
-            <ShoppingCart className="mb-3 h-10 w-10 text-muted-foreground" />
-            <p className="text-sm text-muted-foreground">
-              Nuk ke porosi ende. Zgjedh një shërbim më lart për të filluar.
-            </p>
-          </div>
+          {orders.length === 0 ? (
+            <div className="flex flex-col items-center justify-center px-6 py-12 text-center">
+              <ShoppingCart className="mb-3 h-10 w-10 text-muted-foreground" />
+              <p className="text-sm text-muted-foreground">
+                Nuk ke porosi ende. Zgjedh një shërbim më lart për të filluar.
+              </p>
+            </div>
+          ) : (
+            <div className="divide-y divide-border">
+              {orders.map((o) => (
+                <div key={o.id} className="flex items-center justify-between gap-4 px-6 py-4">
+                  <div className="min-w-0">
+                    <div className="font-medium">{o.services?.name ?? "Shërbim"}</div>
+                    <div className="truncate text-xs text-muted-foreground">
+                      {o.quantity.toLocaleString()} · {new Date(o.created_at).toLocaleDateString("sq-AL")}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm font-semibold text-primary">
+                      {Number(o.total_price_eur).toFixed(2)} €
+                    </span>
+                    <span
+                      className={`rounded-full px-2.5 py-1 text-xs font-medium ring-1 ${
+                        statusBadgeClass[o.status] ?? "bg-muted text-muted-foreground ring-border"
+                      }`}
+                    >
+                      {statusLabel[o.status] ?? o.status}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </section>
       </main>
     </div>
