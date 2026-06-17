@@ -100,8 +100,10 @@ function UsersManager() {
   const [rows, setRows] = useState<ProfileRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [edits, setEdits] = useState<Record<string, string>>({});
+  const [savingId, setSavingId] = useState<string | null>(null);
 
-  useEffect(() => {
+  const load = () => {
     supabase
       .from("profiles")
       .select("user_id, email, balance_eur")
@@ -110,7 +112,34 @@ function UsersManager() {
         setRows((data as ProfileRow[]) ?? []);
         setLoading(false);
       });
-  }, []);
+  };
+
+  useEffect(() => { load(); }, []);
+
+  const saveBalance = async (userId: string) => {
+    const raw = edits[userId];
+    const value = Number(raw);
+    if (raw === undefined || raw === "" || Number.isNaN(value) || value < 0) {
+      alert("Vendos një shumë të vlefshme (≥ 0).");
+      return;
+    }
+    setSavingId(userId);
+    const { error } = await supabase
+      .from("profiles")
+      .update({ balance_eur: value })
+      .eq("user_id", userId);
+    setSavingId(null);
+    if (error) {
+      alert("Gabim gjatë ruajtjes: " + error.message);
+      return;
+    }
+    setEdits((prev) => {
+      const next = { ...prev };
+      delete next[userId];
+      return next;
+    });
+    load();
+  };
 
   const filtered = rows.filter((r) =>
     (r.email ?? "").toLowerCase().includes(search.toLowerCase()),
