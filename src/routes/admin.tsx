@@ -169,6 +169,7 @@ function UsersManager() {
               <tr className="border-b border-border text-left text-xs uppercase text-muted-foreground">
                 <th className="px-6 py-3">Email</th>
                 <th className="px-6 py-3">Wallet</th>
+                <th className="px-6 py-3">Ndrysho balancin</th>
               </tr>
             </thead>
             <tbody>
@@ -176,6 +177,26 @@ function UsersManager() {
                 <tr key={u.user_id} className="border-b border-border last:border-0 hover:bg-secondary/40">
                   <td className="px-6 py-4 text-muted-foreground">{u.email ?? "—"}</td>
                   <td className="px-6 py-4 font-semibold text-primary">{Number(u.balance_eur).toFixed(2)} €</td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        value={edits[u.user_id] ?? ""}
+                        onChange={(e) => setEdits((prev) => ({ ...prev, [u.user_id]: e.target.value }))}
+                        placeholder={Number(u.balance_eur).toFixed(2)}
+                        className="w-24 rounded-lg border border-border bg-background px-2 py-1.5 text-sm outline-none focus:border-primary"
+                      />
+                      <button
+                        onClick={() => saveBalance(u.user_id)}
+                        disabled={savingId === u.user_id || edits[u.user_id] === undefined}
+                        className="rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground disabled:opacity-50"
+                      >
+                        {savingId === u.user_id ? "..." : "Ruaj"}
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>
