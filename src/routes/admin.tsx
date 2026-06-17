@@ -18,6 +18,50 @@ type ProfileRow = {
 function AdminPage() {
   const navigate = useNavigate();
   const [allowed, setAllowed] = useState(false);
+  const [statsData, setStatsData] = useState({
+    users: 0,
+    totalBalance: 0,
+    ordersToday: 0,
+    monthRevenue: 0,
+  });
+
+  const loadStats = async () => {
+    const { data: profiles } = await supabase
+      .from("profiles")
+      .select("balance_eur");
+    const users = profiles?.length ?? 0;
+    const totalBalance = (profiles ?? []).reduce(
+      (s, p) => s + Number(p.balance_eur ?? 0),
+      0,
+    );
+
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+    const { count: ordersToday } = await supabase
+      .from("orders")
+      .select("id", { count: "exact", head: true })
+      .gte("created_at", startOfDay.toISOString());
+
+    const startOfMonth = new Date();
+    startOfMonth.setDate(1);
+    startOfMonth.setHours(0, 0, 0, 0);
+    const { data: topups } = await supabase
+      .from("topup_requests")
+      .select("amount_eur, status, created_at")
+      .eq("status", "approved")
+      .gte("created_at", startOfMonth.toISOString());
+    const monthRevenue = (topups ?? []).reduce(
+      (s, t) => s + Number(t.amount_eur ?? 0),
+      0,
+    );
+
+    setStatsData({
+      users,
+      totalBalance,
+      ordersToday: ordersToday ?? 0,
+      monthRevenue,
+    });
+  };
 
   useEffect(() => {
     let mounted = true;
@@ -34,6 +78,7 @@ function AdminPage() {
         .eq("user_id", user.id);
       if (roles?.some((r) => r.role === "super_admin")) {
         setAllowed(true);
+        loadStats();
       } else {
         navigate({ to: "/dashboard" });
       }
@@ -52,10 +97,10 @@ function AdminPage() {
   }
 
   const stats = [
-    { icon: Users, label: "Përdorues", value: "0" },
-    { icon: Wallet, label: "Balanca totale", value: "€ 0.00" },
-    { icon: ShoppingCart, label: "Porosi sot", value: "0" },
-    { icon: TrendingUp, label: "Të ardhura muaji", value: "€ 0.00" },
+    { icon: Users, label: "Përdorues", value: String(statsData.users) },
+    { icon: Wallet, label: "Balanca totale", value: `€ ${statsData.totalBalance.toFixed(2)}` },
+    { icon: ShoppingCart, label: "Porosi sot", value: String(statsData.ordersToday) },
+    { icon: TrendingUp, label: "Të ardhura muaji (depozita të pranuara)", value: `€ ${statsData.monthRevenue.toFixed(2)}` },
   ];
   return (
     <div className="min-h-screen bg-background">
