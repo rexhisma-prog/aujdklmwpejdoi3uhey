@@ -134,11 +134,57 @@ function ClientDashboard() {
         setServices((svc as Service[]) ?? []);
         setLoading(false);
       }
+
+      // Load the user's orders
+      const { data: ord } = await supabase
+        .from("orders")
+        .select("id, service_id, quantity, target_link, total_price_eur, status, created_at, services(name, platform)")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+      if (mounted) setOrders((ord as Order[]) ?? []);
     });
     return () => {
       mounted = false;
     };
   }, [navigate, claimRef]);
+
+  // Realtime: notify the user when an order status changes
+  useEffect(() => {
+    let channel: ReturnType<typeof supabase.channel> | null = null;
+    supabase.auth.getSession().then(({ data }) => {
+      const user = data.session?.user;
+      if (!user) return;
+      channel = supabase
+        .channel("client-orders")
+        .on(
+          "postgres_changes",
+          { event: "UPDATE", schema: "public", table: "orders", filter: `user_id=eq.${user.id}` },
+          (payload) => {
+            const newRow = payload.new as { id: string; status: string; service_id: string };
+            const oldRow = payload.old as { status: string };
+            setOrders((prev) =>
+              prev.map((o) => (o.id === newRow.id ? { ...o, status: newRow.status } : o)),
+            );
+            if (
+              newRow.status !== oldRow.status &&
+              (newRow.status === "completed" || newRow.status === "in_progress")
+            ) {
+              setOrders((prev) => {
+                const svcName =
+                  prev.find((o) => o.id === newRow.id)?.services?.name ?? "Porosia";
+                setNotice({ status: newRow.status, serviceName: svcName });
+                return prev;
+              });
+            }
+          },
+        )
+        .subscribe();
+    });
+    return () => {
+      if (channel) supabase.removeChannel(channel);
+    };
+  }, []);
+
 
   const referralLink = referralCode ? `https://shtofollow.com/ref/${referralCode}` : null;
   const copyReferral = async () => {
