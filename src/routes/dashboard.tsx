@@ -14,6 +14,31 @@ type Service = {
   quantity: number;
 };
 
+type Order = {
+  id: string;
+  service_id: string;
+  quantity: number;
+  target_link: string;
+  total_price_eur: number;
+  status: string;
+  created_at: string;
+  services?: { name: string; platform: string } | null;
+};
+
+const statusLabel: Record<string, string> = {
+  pending: "Në pritje",
+  in_progress: "Duke u procesuar",
+  completed: "Realizuar",
+  cancelled: "Anuluar",
+};
+
+const statusBadgeClass: Record<string, string> = {
+  pending: "bg-yellow-500/15 text-yellow-500 ring-yellow-500/30",
+  in_progress: "bg-blue-500/15 text-blue-500 ring-blue-500/30",
+  completed: "bg-green-500/15 text-green-500 ring-green-500/30",
+  cancelled: "bg-red-500/15 text-red-500 ring-red-500/30",
+};
+
 const platformIcon: Record<string, typeof Instagram> = {
   instagram: Instagram,
   tiktok: Music2,
@@ -45,6 +70,8 @@ function ClientDashboard() {
   const [balance, setBalance] = useState<number>(0);
   const [referralCode, setReferralCode] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [notice, setNotice] = useState<{ status: string; serviceName: string } | null>(null);
   const claimRef = useServerFn(claimReferral);
 
   useEffect(() => {
@@ -107,11 +134,57 @@ function ClientDashboard() {
         setServices((svc as Service[]) ?? []);
         setLoading(false);
       }
+
+      // Load the user's orders
+      const { data: ord } = await supabase
+        .from("orders")
+        .select("id, service_id, quantity, target_link, total_price_eur, status, created_at, services(name, platform)")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+      if (mounted) setOrders((ord as Order[]) ?? []);
     });
     return () => {
       mounted = false;
     };
   }, [navigate, claimRef]);
+
+  // Realtime: notify the user when an order status changes
+  useEffect(() => {
+    let channel: ReturnType<typeof supabase.channel> | null = null;
+    supabase.auth.getSession().then(({ data }) => {
+      const user = data.session?.user;
+      if (!user) return;
+      channel = supabase
+        .channel("client-orders")
+        .on(
+          "postgres_changes",
+          { event: "UPDATE", schema: "public", table: "orders", filter: `user_id=eq.${user.id}` },
+          (payload) => {
+            const newRow = payload.new as { id: string; status: string; service_id: string };
+            const oldRow = payload.old as { status: string };
+            setOrders((prev) =>
+              prev.map((o) => (o.id === newRow.id ? { ...o, status: newRow.status } : o)),
+            );
+            if (
+              newRow.status !== oldRow.status &&
+              (newRow.status === "completed" || newRow.status === "in_progress")
+            ) {
+              setOrders((prev) => {
+                const svcName =
+                  prev.find((o) => o.id === newRow.id)?.services?.name ?? "Porosia";
+                setNotice({ status: newRow.status, serviceName: svcName });
+                return prev;
+              });
+            }
+          },
+        )
+        .subscribe();
+    });
+    return () => {
+      if (channel) supabase.removeChannel(channel);
+    };
+  }, []);
+
 
   const referralLink = referralCode ? `https://shtofollow.com/ref/${referralCode}` : null;
   const copyReferral = async () => {
@@ -141,6 +214,43 @@ function ClientDashboard() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {notice && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
+          <div
+            className={`w-full max-w-md rounded-3xl border bg-card p-8 text-center shadow-2xl ${
+              notice.status === "completed"
+                ? "border-green-500/40"
+                : "border-blue-500/40"
+            }`}
+          >
+            <div
+              className={`mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full ${
+                notice.status === "completed"
+                  ? "bg-green-500/15 text-green-500"
+                  : "bg-blue-500/15 text-blue-500"
+              }`}
+            >
+              {notice.status === "completed" ? (
+                <Check className="h-10 w-10" />
+              ) : (
+                <ShoppingCart className="h-10 w-10" />
+              )}
+            </div>
+            <h2 className="text-2xl font-bold">
+              {notice.status === "completed"
+                ? "Porosia juaj është realizuar me sukses! 🎉"
+                : "Porosia juaj është duke u procesuar ⏳"}
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">{notice.serviceName}</p>
+            <button
+              onClick={() => setNotice(null)}
+              className="mt-6 w-full rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground hover:opacity-90"
+            >
+              Në rregull
+            </button>
+          </div>
+        </div>
+      )}
       <header className="border-b border-border bg-card/50 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <div>
@@ -246,12 +356,39 @@ function ClientDashboard() {
           <div className="border-b border-border px-6 py-4">
             <h2 className="font-semibold">Porositë e mia</h2>
           </div>
-          <div className="flex flex-col items-center justify-center px-6 py-12 text-center">
-            <ShoppingCart className="mb-3 h-10 w-10 text-muted-foreground" />
-            <p className="text-sm text-muted-foreground">
-              Nuk ke porosi ende. Zgjedh një shërbim më lart për të filluar.
-            </p>
-          </div>
+          {orders.length === 0 ? (
+            <div className="flex flex-col items-center justify-center px-6 py-12 text-center">
+              <ShoppingCart className="mb-3 h-10 w-10 text-muted-foreground" />
+              <p className="text-sm text-muted-foreground">
+                Nuk ke porosi ende. Zgjedh një shërbim më lart për të filluar.
+              </p>
+            </div>
+          ) : (
+            <div className="divide-y divide-border">
+              {orders.map((o) => (
+                <div key={o.id} className="flex items-center justify-between gap-4 px-6 py-4">
+                  <div className="min-w-0">
+                    <div className="font-medium">{o.services?.name ?? "Shërbim"}</div>
+                    <div className="truncate text-xs text-muted-foreground">
+                      {o.quantity.toLocaleString()} · {new Date(o.created_at).toLocaleDateString("sq-AL")}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm font-semibold text-primary">
+                      {Number(o.total_price_eur).toFixed(2)} €
+                    </span>
+                    <span
+                      className={`rounded-full px-2.5 py-1 text-xs font-medium ring-1 ${
+                        statusBadgeClass[o.status] ?? "bg-muted text-muted-foreground ring-border"
+                      }`}
+                    >
+                      {statusLabel[o.status] ?? o.status}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </section>
       </main>
     </div>
