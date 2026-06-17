@@ -227,6 +227,7 @@ const STATUSES = ["pending", "in_progress", "completed", "cancelled"];
 
 function OrdersManager() {
   const [orders, setOrders] = useState<Order[]>([]);
+  const [emails, setEmails] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
   const [savingId, setSavingId] = useState<string | null>(null);
 
@@ -235,7 +236,21 @@ function OrdersManager() {
       .from("orders")
       .select("*, services(name, platform, service_type)")
       .order("created_at", { ascending: false });
-    setOrders((data as Order[]) ?? []);
+    const list = (data as Order[]) ?? [];
+    setOrders(list);
+
+    const userIds = [...new Set(list.map((o) => o.user_id))];
+    if (userIds.length > 0) {
+      const { data: profiles } = await supabase
+        .from("profiles")
+        .select("user_id, email")
+        .in("user_id", userIds);
+      const map: Record<string, string> = {};
+      (profiles ?? []).forEach((p: { user_id: string; email: string | null }) => {
+        if (p.email) map[p.user_id] = p.email;
+      });
+      setEmails(map);
+    }
     setLoading(false);
   };
 
