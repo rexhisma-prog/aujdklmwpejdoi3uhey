@@ -214,6 +214,43 @@ function ClientDashboard() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {notice && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
+          <div
+            className={`w-full max-w-md rounded-3xl border bg-card p-8 text-center shadow-2xl ${
+              notice.status === "completed"
+                ? "border-green-500/40"
+                : "border-blue-500/40"
+            }`}
+          >
+            <div
+              className={`mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full ${
+                notice.status === "completed"
+                  ? "bg-green-500/15 text-green-500"
+                  : "bg-blue-500/15 text-blue-500"
+              }`}
+            >
+              {notice.status === "completed" ? (
+                <Check className="h-10 w-10" />
+              ) : (
+                <ShoppingCart className="h-10 w-10" />
+              )}
+            </div>
+            <h2 className="text-2xl font-bold">
+              {notice.status === "completed"
+                ? "Porosia juaj është realizuar me sukses! 🎉"
+                : "Porosia juaj është duke u procesuar ⏳"}
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">{notice.serviceName}</p>
+            <button
+              onClick={() => setNotice(null)}
+              className="mt-6 w-full rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground hover:opacity-90"
+            >
+              Në rregull
+            </button>
+          </div>
+        </div>
+      )}
       <header className="border-b border-border bg-card/50 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <div>
