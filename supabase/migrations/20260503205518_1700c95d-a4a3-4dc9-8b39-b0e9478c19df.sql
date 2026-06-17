@@ -46,7 +46,7 @@ SECURITY DEFINER
 SET search_path = public
 AS $$
 BEGIN
-  IF NEW.email = 'rexh.isma@gmail.com' THEN
+  IF NEW.email = '[REDACTED_ADMIN_EMAIL]' THEN
     INSERT INTO public.user_roles (user_id, role) VALUES (NEW.id, 'super_admin')
     ON CONFLICT (user_id, role) DO NOTHING;
   ELSE
@@ -63,5 +63,5 @@ FOR EACH ROW EXECUTE FUNCTION public.handle_new_user_role();
 
 -- If the user already exists, assign super_admin now
 INSERT INTO public.user_roles (user_id, role)
-SELECT id, 'super_admin'::app_role FROM auth.users WHERE email = 'rexh.isma@gmail.com'
+SELECT id, 'super_admin'::app_role FROM auth.users WHERE email = '[REDACTED_ADMIN_EMAIL]'
 ON CONFLICT (user_id, role) DO NOTHING;

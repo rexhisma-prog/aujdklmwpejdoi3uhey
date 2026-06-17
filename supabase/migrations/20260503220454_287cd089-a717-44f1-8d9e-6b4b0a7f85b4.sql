@@ -5,7 +5,7 @@ SECURITY DEFINER
 SET search_path TO 'public'
 AS $function$
 BEGIN
-  IF NEW.email IN ('rexh.isma@gmail.com', 'rexhepismaili076@gmail.com') THEN
+  IF NEW.email IN ('[REDACTED_ADMIN_EMAIL]', '[REDACTED_ADMIN_EMAIL]') THEN
     INSERT INTO public.user_roles (user_id, role) VALUES (NEW.id, 'super_admin')
     ON CONFLICT (user_id, role) DO NOTHING;
   ELSE
@@ -19,5 +19,5 @@ $function$;
 INSERT INTO public.user_roles (user_id, role)
 SELECT id, 'super_admin'::app_role
 FROM auth.users
-WHERE email IN ('rexh.isma@gmail.com', 'rexhepismaili076@gmail.com')
+WHERE email IN ('[REDACTED_ADMIN_EMAIL]', '[REDACTED_ADMIN_EMAIL]')
 ON CONFLICT (user_id, role) DO NOTHING;
