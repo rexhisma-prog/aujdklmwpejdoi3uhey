@@ -8,12 +8,12 @@ export const Route = createFileRoute("/admin")({
   component: AdminPage,
 });
 
-const users = [
-  { id: 1, name: "Ardit K.", email: "ardit@example.com", balance: "45.20 €", orders: 12 },
-  { id: 2, name: "Erina M.", email: "erina@example.com", balance: "120.00 €", orders: 34 },
-  { id: 3, name: "Blerim S.", email: "blerim@example.com", balance: "8.50 €", orders: 5 },
-  { id: 4, name: "Diana H.", email: "diana@example.com", balance: "210.75 €", orders: 67 },
-];
+type ProfileRow = {
+  user_id: string;
+  email: string | null;
+  balance_eur: number;
+};
+
 
 function AdminPage() {
   const navigate = useNavigate();
