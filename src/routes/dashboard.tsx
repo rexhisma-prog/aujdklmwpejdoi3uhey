@@ -70,6 +70,8 @@ function ClientDashboard() {
   const [balance, setBalance] = useState<number>(0);
   const [referralCode, setReferralCode] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [notice, setNotice] = useState<{ status: string; serviceName: string } | null>(null);
   const claimRef = useServerFn(claimReferral);
 
   useEffect(() => {
