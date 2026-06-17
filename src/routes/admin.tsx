@@ -96,6 +96,68 @@ function AdminPage() {
   );
 }
 
+function UsersManager() {
+  const [rows, setRows] = useState<ProfileRow[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    supabase
+      .from("profiles")
+      .select("user_id, email, balance_eur")
+      .order("balance_eur", { ascending: false })
+      .then(({ data }) => {
+        setRows((data as ProfileRow[]) ?? []);
+        setLoading(false);
+      });
+  }, []);
+
+  const filtered = rows.filter((r) =>
+    (r.email ?? "").toLowerCase().includes(search.toLowerCase()),
+  );
+
+  return (
+    <div className="rounded-2xl border border-border bg-card">
+      <div className="flex items-center justify-between border-b border-border px-6 py-4">
+        <h2 className="font-semibold">Të gjithë përdoruesit</h2>
+        <input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Kërko..."
+          className="rounded-lg border border-border bg-background px-3 py-1.5 text-sm outline-none focus:border-primary"
+        />
+      </div>
+      {loading ? (
+        <div className="px-6 py-8 text-sm text-muted-foreground">Duke ngarkuar...</div>
+      ) : filtered.length === 0 ? (
+        <div className="px-6 py-12 text-center text-sm text-muted-foreground">
+          Nuk ka përdorues.
+        </div>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border text-left text-xs uppercase text-muted-foreground">
+                <th className="px-6 py-3">Email</th>
+                <th className="px-6 py-3">Wallet</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map((u) => (
+                <tr key={u.user_id} className="border-b border-border last:border-0 hover:bg-secondary/40">
+                  <td className="px-6 py-4 text-muted-foreground">{u.email ?? "—"}</td>
+                  <td className="px-6 py-4 font-semibold text-primary">{Number(u.balance_eur).toFixed(2)} €</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}
+
+
 type ReferralEarning = {
   id: string;
   referred_email: string | null;
