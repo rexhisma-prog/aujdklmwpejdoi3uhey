@@ -100,8 +100,10 @@ function UsersManager() {
   const [rows, setRows] = useState<ProfileRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [edits, setEdits] = useState<Record<string, string>>({});
+  const [savingId, setSavingId] = useState<string | null>(null);
 
-  useEffect(() => {
+  const load = () => {
     supabase
       .from("profiles")
       .select("user_id, email, balance_eur")
@@ -110,7 +112,34 @@ function UsersManager() {
         setRows((data as ProfileRow[]) ?? []);
         setLoading(false);
       });
-  }, []);
+  };
+
+  useEffect(() => { load(); }, []);
+
+  const saveBalance = async (userId: string) => {
+    const raw = edits[userId];
+    const value = Number(raw);
+    if (raw === undefined || raw === "" || Number.isNaN(value) || value < 0) {
+      alert("Vendos një shumë të vlefshme (≥ 0).");
+      return;
+    }
+    setSavingId(userId);
+    const { error } = await supabase
+      .from("profiles")
+      .update({ balance_eur: value })
+      .eq("user_id", userId);
+    setSavingId(null);
+    if (error) {
+      alert("Gabim gjatë ruajtjes: " + error.message);
+      return;
+    }
+    setEdits((prev) => {
+      const next = { ...prev };
+      delete next[userId];
+      return next;
+    });
+    load();
+  };
 
   const filtered = rows.filter((r) =>
     (r.email ?? "").toLowerCase().includes(search.toLowerCase()),
@@ -140,6 +169,7 @@ function UsersManager() {
               <tr className="border-b border-border text-left text-xs uppercase text-muted-foreground">
                 <th className="px-6 py-3">Email</th>
                 <th className="px-6 py-3">Wallet</th>
+                <th className="px-6 py-3">Ndrysho balancin</th>
               </tr>
             </thead>
             <tbody>
@@ -147,6 +177,26 @@ function UsersManager() {
                 <tr key={u.user_id} className="border-b border-border last:border-0 hover:bg-secondary/40">
                   <td className="px-6 py-4 text-muted-foreground">{u.email ?? "—"}</td>
                   <td className="px-6 py-4 font-semibold text-primary">{Number(u.balance_eur).toFixed(2)} €</td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        value={edits[u.user_id] ?? ""}
+                        onChange={(e) => setEdits((prev) => ({ ...prev, [u.user_id]: e.target.value }))}
+                        placeholder={Number(u.balance_eur).toFixed(2)}
+                        className="w-24 rounded-lg border border-border bg-background px-2 py-1.5 text-sm outline-none focus:border-primary"
+                      />
+                      <button
+                        onClick={() => saveBalance(u.user_id)}
+                        disabled={savingId === u.user_id || edits[u.user_id] === undefined}
+                        className="rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground disabled:opacity-50"
+                      >
+                        {savingId === u.user_id ? "..." : "Ruaj"}
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>
