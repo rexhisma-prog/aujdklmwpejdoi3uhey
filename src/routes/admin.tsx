@@ -8,12 +8,12 @@ export const Route = createFileRoute("/admin")({
   component: AdminPage,
 });
 
-const users = [
-  { id: 1, name: "Ardit K.", email: "ardit@example.com", balance: "45.20 €", orders: 12 },
-  { id: 2, name: "Erina M.", email: "erina@example.com", balance: "120.00 €", orders: 34 },
-  { id: 3, name: "Blerim S.", email: "blerim@example.com", balance: "8.50 €", orders: 5 },
-  { id: 4, name: "Diana H.", email: "diana@example.com", balance: "210.75 €", orders: 67 },
-];
+type ProfileRow = {
+  user_id: string;
+  email: string | null;
+  balance_eur: number;
+};
+
 
 function AdminPage() {
   const navigate = useNavigate();
@@ -84,43 +84,8 @@ function AdminPage() {
           ))}
         </div>
 
-        <div className="rounded-2xl border border-border bg-card">
-          <div className="flex items-center justify-between border-b border-border px-6 py-4">
-            <h2 className="font-semibold">Të gjithë përdoruesit</h2>
-            <input
-              placeholder="Kërko..."
-              className="rounded-lg border border-border bg-background px-3 py-1.5 text-sm outline-none focus:border-primary"
-            />
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-border text-left text-xs uppercase text-muted-foreground">
-                  <th className="px-6 py-3">Emri</th>
-                  <th className="px-6 py-3">Email</th>
-                  <th className="px-6 py-3">Wallet</th>
-                  <th className="px-6 py-3">Porosi</th>
-                  <th className="px-6 py-3"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((u) => (
-                  <tr key={u.id} className="border-b border-border last:border-0 hover:bg-secondary/40">
-                    <td className="px-6 py-4 font-medium">{u.name}</td>
-                    <td className="px-6 py-4 text-muted-foreground">{u.email}</td>
-                    <td className="px-6 py-4 font-semibold text-primary">{u.balance}</td>
-                    <td className="px-6 py-4">{u.orders}</td>
-                    <td className="px-6 py-4 text-right">
-                      <button className="rounded-lg border border-border px-3 py-1 text-xs hover:border-primary hover:text-primary">
-                        Detaje
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <UsersManager />
+
 
         <TopupsManager />
         <OrdersManager />
@@ -130,6 +95,68 @@ function AdminPage() {
     </div>
   );
 }
+
+function UsersManager() {
+  const [rows, setRows] = useState<ProfileRow[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    supabase
+      .from("profiles")
+      .select("user_id, email, balance_eur")
+      .order("balance_eur", { ascending: false })
+      .then(({ data }) => {
+        setRows((data as ProfileRow[]) ?? []);
+        setLoading(false);
+      });
+  }, []);
+
+  const filtered = rows.filter((r) =>
+    (r.email ?? "").toLowerCase().includes(search.toLowerCase()),
+  );
+
+  return (
+    <div className="rounded-2xl border border-border bg-card">
+      <div className="flex items-center justify-between border-b border-border px-6 py-4">
+        <h2 className="font-semibold">Të gjithë përdoruesit</h2>
+        <input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Kërko..."
+          className="rounded-lg border border-border bg-background px-3 py-1.5 text-sm outline-none focus:border-primary"
+        />
+      </div>
+      {loading ? (
+        <div className="px-6 py-8 text-sm text-muted-foreground">Duke ngarkuar...</div>
+      ) : filtered.length === 0 ? (
+        <div className="px-6 py-12 text-center text-sm text-muted-foreground">
+          Nuk ka përdorues.
+        </div>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border text-left text-xs uppercase text-muted-foreground">
+                <th className="px-6 py-3">Email</th>
+                <th className="px-6 py-3">Wallet</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map((u) => (
+                <tr key={u.user_id} className="border-b border-border last:border-0 hover:bg-secondary/40">
+                  <td className="px-6 py-4 text-muted-foreground">{u.email ?? "—"}</td>
+                  <td className="px-6 py-4 font-semibold text-primary">{Number(u.balance_eur).toFixed(2)} €</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}
+
 
 type ReferralEarning = {
   id: string;
