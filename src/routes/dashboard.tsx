@@ -367,25 +367,33 @@ function ClientDashboard() {
           ) : (
             <div className="divide-y divide-border">
               {orders.map((o) => (
-                <div key={o.id} className="flex items-center justify-between gap-4 px-6 py-4">
-                  <div className="min-w-0">
-                    <div className="font-medium">{o.services?.name ?? "Shërbim"}</div>
-                    <div className="truncate text-xs text-muted-foreground">
-                      {o.quantity.toLocaleString()} · {new Date(o.created_at).toLocaleDateString("sq-AL")}
+                <div key={o.id} className="px-6 py-4">
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="min-w-0">
+                      <div className="font-medium">{o.services?.name ?? "Shërbim"}</div>
+                      <div className="truncate text-xs text-muted-foreground">
+                        {o.quantity.toLocaleString()} · {new Date(o.created_at).toLocaleDateString("sq-AL")}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-sm font-semibold text-primary">
+                        {Number(o.total_price_eur).toFixed(2)} €
+                      </span>
+                      <span
+                        className={`rounded-full px-2.5 py-1 text-xs font-medium ring-1 ${
+                          statusBadgeClass[o.status] ?? "bg-muted text-muted-foreground ring-border"
+                        }`}
+                      >
+                        {statusLabel[o.status] ?? o.status}
+                      </span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-sm font-semibold text-primary">
-                      {Number(o.total_price_eur).toFixed(2)} €
-                    </span>
-                    <span
-                      className={`rounded-full px-2.5 py-1 text-xs font-medium ring-1 ${
-                        statusBadgeClass[o.status] ?? "bg-muted text-muted-foreground ring-border"
-                      }`}
-                    >
-                      {statusLabel[o.status] ?? o.status}
-                    </span>
-                  </div>
+                  {o.status === "cancelled" && o.notes ? (
+                    <div className="mt-3 rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-500">
+                      <span className="font-semibold">Arsyeja e refuzimit: </span>
+                      {o.notes}
+                    </div>
+                  ) : null}
                 </div>
               ))}
             </div>
