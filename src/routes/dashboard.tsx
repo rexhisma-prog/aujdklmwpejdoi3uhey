@@ -21,6 +21,7 @@ type Order = {
   target_link: string;
   total_price_eur: number;
   status: string;
+  notes: string | null;
   created_at: string;
   services?: { name: string; platform: string } | null;
 };
@@ -138,7 +139,7 @@ function ClientDashboard() {
       // Load the user's orders
       const { data: ord } = await supabase
         .from("orders")
-        .select("id, service_id, quantity, target_link, total_price_eur, status, created_at, services(name, platform)")
+        .select("id, service_id, quantity, target_link, total_price_eur, status, notes, created_at, services(name, platform)")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false });
       if (mounted) setOrders((ord as Order[]) ?? []);
@@ -160,10 +161,10 @@ function ClientDashboard() {
           "postgres_changes",
           { event: "UPDATE", schema: "public", table: "orders", filter: `user_id=eq.${user.id}` },
           (payload) => {
-            const newRow = payload.new as { id: string; status: string; service_id: string };
+            const newRow = payload.new as { id: string; status: string; service_id: string; notes: string | null };
             const oldRow = payload.old as { status: string };
             setOrders((prev) =>
-              prev.map((o) => (o.id === newRow.id ? { ...o, status: newRow.status } : o)),
+              prev.map((o) => (o.id === newRow.id ? { ...o, status: newRow.status, notes: newRow.notes } : o)),
             );
             if (
               newRow.status !== oldRow.status &&
@@ -366,25 +367,33 @@ function ClientDashboard() {
           ) : (
             <div className="divide-y divide-border">
               {orders.map((o) => (
-                <div key={o.id} className="flex items-center justify-between gap-4 px-6 py-4">
-                  <div className="min-w-0">
-                    <div className="font-medium">{o.services?.name ?? "Shërbim"}</div>
-                    <div className="truncate text-xs text-muted-foreground">
-                      {o.quantity.toLocaleString()} · {new Date(o.created_at).toLocaleDateString("sq-AL")}
+                <div key={o.id} className="px-6 py-4">
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="min-w-0">
+                      <div className="font-medium">{o.services?.name ?? "Shërbim"}</div>
+                      <div className="truncate text-xs text-muted-foreground">
+                        {o.quantity.toLocaleString()} · {new Date(o.created_at).toLocaleDateString("sq-AL")}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-sm font-semibold text-primary">
+                        {Number(o.total_price_eur).toFixed(2)} €
+                      </span>
+                      <span
+                        className={`rounded-full px-2.5 py-1 text-xs font-medium ring-1 ${
+                          statusBadgeClass[o.status] ?? "bg-muted text-muted-foreground ring-border"
+                        }`}
+                      >
+                        {statusLabel[o.status] ?? o.status}
+                      </span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-sm font-semibold text-primary">
-                      {Number(o.total_price_eur).toFixed(2)} €
-                    </span>
-                    <span
-                      className={`rounded-full px-2.5 py-1 text-xs font-medium ring-1 ${
-                        statusBadgeClass[o.status] ?? "bg-muted text-muted-foreground ring-border"
-                      }`}
-                    >
-                      {statusLabel[o.status] ?? o.status}
-                    </span>
-                  </div>
+                  {o.status === "cancelled" && o.notes ? (
+                    <div className="mt-3 rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-500">
+                      <span className="font-semibold">Arsyeja e refuzimit: </span>
+                      {o.notes}
+                    </div>
+                  ) : null}
                 </div>
               ))}
             </div>

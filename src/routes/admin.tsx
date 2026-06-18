@@ -381,6 +381,7 @@ function OrdersManager() {
   const [emails, setEmails] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
   const [savingId, setSavingId] = useState<string | null>(null);
+  const [noteDrafts, setNoteDrafts] = useState<Record<string, string>>({});
 
   const load = async () => {
     const { data } = await supabase
@@ -424,6 +425,19 @@ function OrdersManager() {
     setSavingId(id);
     await supabase.from("orders").update({ status }).eq("id", id);
     setSavingId(null);
+    load();
+  };
+
+  const saveNote = async (id: string) => {
+    setSavingId(id);
+    const note = (noteDrafts[id] ?? "").trim();
+    await supabase.from("orders").update({ notes: note || null }).eq("id", id);
+    setSavingId(null);
+    setNoteDrafts((prev) => {
+      const next = { ...prev };
+      delete next[id];
+      return next;
+    });
     load();
   };
 
@@ -519,8 +533,25 @@ function OrdersManager() {
                       ))}
                     </select>
                   </td>
-                  <td className="px-4 py-3 max-w-[180px] truncate text-xs text-muted-foreground" title={o.notes ?? ""}>
-                    {o.notes ?? "—"}
+                  <td className="px-4 py-3 min-w-[220px]">
+                    <div className="flex items-start gap-2">
+                      <textarea
+                        value={noteDrafts[o.id] ?? o.notes ?? ""}
+                        onChange={(e) =>
+                          setNoteDrafts((prev) => ({ ...prev, [o.id]: e.target.value }))
+                        }
+                        placeholder="Arsyeja e refuzimit / shënim..."
+                        rows={2}
+                        className="w-full resize-y rounded-lg border border-border bg-background px-2 py-1 text-xs"
+                      />
+                      <button
+                        onClick={() => saveNote(o.id)}
+                        disabled={savingId === o.id || (noteDrafts[o.id] ?? o.notes ?? "") === (o.notes ?? "")}
+                        className="shrink-0 rounded-lg border border-border px-2 py-1 text-xs font-medium hover:border-primary hover:text-primary disabled:opacity-40"
+                      >
+                        Ruaj
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
