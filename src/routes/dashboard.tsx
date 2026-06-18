@@ -21,6 +21,7 @@ type Order = {
   target_link: string;
   total_price_eur: number;
   status: string;
+  notes: string | null;
   created_at: string;
   services?: { name: string; platform: string } | null;
 };
