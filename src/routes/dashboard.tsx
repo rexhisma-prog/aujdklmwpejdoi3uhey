@@ -139,7 +139,7 @@ function ClientDashboard() {
       // Load the user's orders
       const { data: ord } = await supabase
         .from("orders")
-        .select("id, service_id, quantity, target_link, total_price_eur, status, created_at, services(name, platform)")
+        .select("id, service_id, quantity, target_link, total_price_eur, status, notes, created_at, services(name, platform)")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false });
       if (mounted) setOrders((ord as Order[]) ?? []);
