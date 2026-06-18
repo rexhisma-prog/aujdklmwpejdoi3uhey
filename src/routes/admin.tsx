@@ -149,6 +149,8 @@ function UsersManager() {
   const [search, setSearch] = useState("");
   const [edits, setEdits] = useState<Record<string, string>>({});
   const [savingId, setSavingId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const removeUser = useServerFn(deleteUserAccount);
 
   const load = () => {
     supabase
