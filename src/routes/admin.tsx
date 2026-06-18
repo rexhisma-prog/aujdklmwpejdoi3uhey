@@ -190,9 +190,24 @@ function UsersManager() {
     load();
   };
 
+  const deleteUser = async (userId: string, email: string | null) => {
+    if (!confirm(`A je i sigurt që do të fshish përdoruesin ${email ?? userId}? Ky veprim është i pakthyeshëm.`)) return;
+    setDeletingId(userId);
+    try {
+      await removeUser({ data: { userId } });
+      setRows((prev) => prev.filter((r) => r.user_id !== userId));
+    } catch (e) {
+      alert("Gabim gjatë fshirjes: " + (e as Error).message);
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
   const filtered = rows.filter((r) =>
     (r.email ?? "").toLowerCase().includes(search.toLowerCase()),
   );
+
+
 
   return (
     <div className="rounded-2xl border border-border bg-card">
