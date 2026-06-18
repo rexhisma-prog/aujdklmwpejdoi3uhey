@@ -533,8 +533,25 @@ function OrdersManager() {
                       ))}
                     </select>
                   </td>
-                  <td className="px-4 py-3 max-w-[180px] truncate text-xs text-muted-foreground" title={o.notes ?? ""}>
-                    {o.notes ?? "—"}
+                  <td className="px-4 py-3 min-w-[220px]">
+                    <div className="flex items-start gap-2">
+                      <textarea
+                        value={noteDrafts[o.id] ?? o.notes ?? ""}
+                        onChange={(e) =>
+                          setNoteDrafts((prev) => ({ ...prev, [o.id]: e.target.value }))
+                        }
+                        placeholder="Arsyeja e refuzimit / shënim..."
+                        rows={2}
+                        className="w-full resize-y rounded-lg border border-border bg-background px-2 py-1 text-xs"
+                      />
+                      <button
+                        onClick={() => saveNote(o.id)}
+                        disabled={savingId === o.id || (noteDrafts[o.id] ?? o.notes ?? "") === (o.notes ?? "")}
+                        className="shrink-0 rounded-lg border border-border px-2 py-1 text-xs font-medium hover:border-primary hover:text-primary disabled:opacity-40"
+                      >
+                        Ruaj
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
