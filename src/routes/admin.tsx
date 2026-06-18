@@ -1,7 +1,9 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Users, Wallet, TrendingUp, ShoppingCart } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
+import { deleteUserAccount } from "@/lib/admin.functions";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({ meta: [{ title: "Super Admin — shtofollow.com" }, { name: "robots", content: "noindex, nofollow" }] }),
