@@ -234,6 +234,7 @@ function UsersManager() {
                 <th className="px-6 py-3">Email</th>
                 <th className="px-6 py-3">Wallet</th>
                 <th className="px-6 py-3">Ndrysho balancin</th>
+                <th className="px-6 py-3"></th>
               </tr>
             </thead>
             <tbody>
