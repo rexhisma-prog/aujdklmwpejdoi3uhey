@@ -873,6 +873,16 @@ function TopupsManager() {
                           Refuzo
                         </button>
                       </div>
+                    ) : isFailed(t.status) ? (
+                      <div className="flex justify-end">
+                        <button
+                          onClick={() => removeTopup(t.id)}
+                          disabled={savingId === t.id}
+                          className="rounded-lg border border-border px-3 py-1 text-xs text-destructive hover:border-destructive disabled:opacity-50"
+                        >
+                          {savingId === t.id ? "..." : "Fshi"}
+                        </button>
+                      </div>
                     ) : (
                       <span className="text-xs text-muted-foreground">—</span>
                     )}
