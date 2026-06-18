@@ -161,10 +161,10 @@ function ClientDashboard() {
           "postgres_changes",
           { event: "UPDATE", schema: "public", table: "orders", filter: `user_id=eq.${user.id}` },
           (payload) => {
-            const newRow = payload.new as { id: string; status: string; service_id: string };
+            const newRow = payload.new as { id: string; status: string; service_id: string; notes: string | null };
             const oldRow = payload.old as { status: string };
             setOrders((prev) =>
-              prev.map((o) => (o.id === newRow.id ? { ...o, status: newRow.status } : o)),
+              prev.map((o) => (o.id === newRow.id ? { ...o, status: newRow.status, notes: newRow.notes } : o)),
             );
             if (
               newRow.status !== oldRow.status &&
