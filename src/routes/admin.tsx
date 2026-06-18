@@ -262,6 +262,15 @@ function UsersManager() {
                       </button>
                     </div>
                   </td>
+                  <td className="px-6 py-4 text-right">
+                    <button
+                      onClick={() => deleteUser(u.user_id, u.email)}
+                      disabled={deletingId === u.user_id}
+                      className="rounded-lg border border-border px-3 py-1.5 text-xs text-destructive hover:border-destructive disabled:opacity-50"
+                    >
+                      {deletingId === u.user_id ? "..." : "Fshi"}
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
