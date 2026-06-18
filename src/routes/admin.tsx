@@ -774,6 +774,19 @@ function TopupsManager() {
     load();
   };
 
+  const removeTopup = async (id: string) => {
+    if (!confirm("A je i sigurt që do të fshish këtë transaksion të dështuar?")) return;
+    setSavingId(id);
+    const { error } = await supabase.from("topup_requests").delete().eq("id", id);
+    if (error) alert(error.message);
+    setSavingId(null);
+    load();
+  };
+
+  const isFailed = (s: string) => s === "rejected" || s === "failed";
+
+
+
   const badge = (s: string) => {
     const map: Record<string, string> = {
       pending: "bg-yellow-500/15 text-yellow-500 ring-yellow-500/30",
