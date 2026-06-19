@@ -729,6 +729,7 @@ function ServicesManager() {
                       <option value="followers">Followers</option>
                       <option value="likes">Likes</option>
                       <option value="views">Views</option>
+                      <option value="profile_closure">Mbyllje Fake</option>
                     </select>
                   </td>
                   <td className="px-4 py-3">
