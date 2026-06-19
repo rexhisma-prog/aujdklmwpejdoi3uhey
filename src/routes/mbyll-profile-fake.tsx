@@ -11,6 +11,7 @@ import {
   FileText,
   Eye,
   Headphones,
+  Clock,
 } from "lucide-react";
 
 export const Route = createFileRoute("/mbyll-profile-fake")({
@@ -122,6 +123,10 @@ function MbyllProfileFake() {
               Ndihmojmë persona dhe biznese të mbyllin profile dhe faqe false që përdorin emrin, fotografinë ose markën
               e tyre në Instagram, Facebook dhe TikTok.
             </p>
+            <div className="mx-auto mt-6 inline-flex items-center gap-2 rounded-xl border border-primary/20 bg-primary/5 px-4 py-2 text-sm text-foreground">
+              <Clock className="h-4 w-4 text-primary" />
+              Mbyllja mund të zgjasë nga <span className="font-semibold text-primary">2 deri në 72 orë</span>.
+            </div>
             <div className="mt-10">
               <a
                 href="#cmimet"
