@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { Instagram, Wallet, ShoppingCart, ShieldCheck, Heart, Eye, Users, TrendingUp, Music2, ArrowLeft, MoreHorizontal, ThumbsUp, MessageCircle, Share2, UserPlus, Play, Gift } from "lucide-react";
+import { Instagram, Wallet, ShoppingCart, ShieldCheck, Heart, Eye, Users, TrendingUp, Music2, ArrowLeft, MoreHorizontal, ThumbsUp, MessageCircle, Share2, UserPlus, Play, Gift, Shield } from "lucide-react";
 import { useCountUp } from "@/hooks/use-count-up";
 import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
