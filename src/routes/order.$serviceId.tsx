@@ -109,6 +109,8 @@ function OrderPage() {
     );
   }
 
+  const isClosure = service.service_type === "profile_closure";
+
   const unitLabel =
     service.service_type === "followers"
       ? "followers"
