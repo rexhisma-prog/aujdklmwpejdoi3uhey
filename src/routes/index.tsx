@@ -299,7 +299,7 @@ function LiveStats() {
   const stats = [
     { icon: Users, value: fmt(12480 + periods * 500), label: "Followers të dërguar sot" },
     { icon: Eye, value: fmt(98210 + periods * 1000), label: "Shikime në rrjete sociale" },
-    { icon: Heart, value: fmt(4302 + periods * 1500), label: "Përdorues aktivë" },
+    { icon: Heart, value: fmt(2233), label: "Përdorues aktivë" },
   ];
   return (
     <section className="border-y border-border bg-card/50">
