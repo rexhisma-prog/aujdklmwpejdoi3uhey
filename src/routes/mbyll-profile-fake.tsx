@@ -14,6 +14,7 @@ import {
   Eye,
   Headphones,
   Clock,
+  MessageCircle,
 } from "lucide-react";
 
 export const Route = createFileRoute("/mbyll-profile-fake")({
