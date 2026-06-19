@@ -61,9 +61,9 @@ const platformIcon: Record<string, typeof Instagram> = {
 
 const tiers = [
   {
-    title: "Profile/Faqe me pak ndjekës",
+    title: "Deri në 2.000 ndjekës",
     desc: "Për profile dhe faqe të vogla që përdorin identitetin tuaj.",
-    size: "pak",
+    keyword: "pak",
     prices: [
       { platform: "Instagram", price: "99.99€" },
       { platform: "Facebook", price: "99.99€" },
@@ -71,14 +71,22 @@ const tiers = [
     ],
   },
   {
-    title: "Profile/Faqe me shumë ndjekës",
-    desc: "Për profile dhe faqe të mëdha me ndjekës të shumtë.",
+    title: "2.001 – 50.000 ndjekës",
+    desc: "Për profile dhe faqe me ndjekës të shumtë.",
     highlight: true,
-    size: "shumë",
+    keyword: "shumë",
     prices: [
       { platform: "Instagram", price: "249.99€" },
       { platform: "Facebook", price: "199.99€" },
       { platform: "TikTok", price: "129.99€" },
+    ],
+  },
+  {
+    title: "50.001 – 250.000 ndjekës",
+    desc: "Për profile dhe faqe të mëdha me audiencë të madhe.",
+    keyword: "vip",
+    prices: [
+      { platform: "Instagram", price: "362.49€" },
     ],
   },
 ];
