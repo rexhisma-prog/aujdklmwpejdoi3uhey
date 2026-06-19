@@ -263,8 +263,16 @@ function MbyllProfileFake() {
             <ShieldCheck className="mx-auto h-10 w-10 text-primary" />
             <h2 className="mt-4 text-2xl font-bold">Gati për të mbyllur profilin fake?</h2>
             <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-              Na kontakto dhe nis procesin sot. Të asistojmë deri në mbylljen përfundimtare.
+              Na kontakto vetëm në WhatsApp dhe nis procesin sot. Të asistojmë deri në mbylljen përfundimtare.
             </p>
+            <a
+              href="https://wa.me/491634371067"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mx-auto mt-6 inline-flex items-center gap-2 rounded-xl border border-primary/30 bg-primary/10 px-4 py-2 text-sm font-semibold text-primary transition hover:bg-primary/15"
+            >
+              <MessageCircle className="h-4 w-4" /> +49 163 4371067
+            </a>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Link
                 to="/register"
