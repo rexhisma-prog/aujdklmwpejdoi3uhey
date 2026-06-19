@@ -61,9 +61,9 @@ const platformIcon: Record<string, typeof Instagram> = {
 
 const tiers = [
   {
-    title: "Profile/Faqe me pak ndjekës",
+    title: "Deri në 2.000 ndjekës",
     desc: "Për profile dhe faqe të vogla që përdorin identitetin tuaj.",
-    size: "pak",
+    keyword: "pak",
     prices: [
       { platform: "Instagram", price: "99.99€" },
       { platform: "Facebook", price: "99.99€" },
@@ -71,14 +71,22 @@ const tiers = [
     ],
   },
   {
-    title: "Profile/Faqe me shumë ndjekës",
-    desc: "Për profile dhe faqe të mëdha me ndjekës të shumtë.",
+    title: "2.001 – 50.000 ndjekës",
+    desc: "Për profile dhe faqe me ndjekës të shumtë.",
     highlight: true,
-    size: "shumë",
+    keyword: "shumë",
     prices: [
       { platform: "Instagram", price: "249.99€" },
       { platform: "Facebook", price: "199.99€" },
       { platform: "TikTok", price: "129.99€" },
+    ],
+  },
+  {
+    title: "50.001 – 250.000 ndjekës",
+    desc: "Për profile dhe faqe të mëdha me audiencë të madhe.",
+    keyword: "vip",
+    prices: [
+      { platform: "Instagram", price: "362.49€" },
     ],
   },
 ];
@@ -110,8 +118,7 @@ function MbyllProfileFake() {
     };
   }, []);
 
-  const findServiceId = (platform: string, size: string) => {
-    const keyword = size === "pak" ? "pak" : "shumë";
+  const findServiceId = (platform: string, keyword: string) => {
     return services.find(
       (s) =>
         s.platform.toLowerCase() === platform.toLowerCase() &&
@@ -178,7 +185,7 @@ function MbyllProfileFake() {
             <p className="mt-3 text-muted-foreground">Çmime fikse sipas madhësisë së profilit ose faqes.</p>
           </div>
 
-          <div className="mt-10 grid gap-6 md:grid-cols-2">
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
             {tiers.map((tier) => (
               <div
                 key={tier.title}
@@ -193,7 +200,7 @@ function MbyllProfileFake() {
                 <ul className="mt-6 space-y-3">
                   {tier.prices.map((p) => {
                     const Icon = platformIcon[p.platform] ?? Shield;
-                    const serviceId = findServiceId(p.platform, tier.size);
+                    const serviceId = findServiceId(p.platform, tier.keyword);
                     const content = (
                       <>
                         <span className="inline-flex items-center gap-2 text-sm font-medium">
