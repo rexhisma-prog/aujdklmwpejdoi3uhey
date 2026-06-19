@@ -625,6 +625,7 @@ function OrdersManager() {
             </tbody>
           </table>
         </div>
+        </>
       )}
     </div>
   );
