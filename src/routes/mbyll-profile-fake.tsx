@@ -93,7 +93,34 @@ const included = [
 ];
 
 function MbyllProfileFake() {
+  const [services, setServices] = useState<ClosureService[]>([]);
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      const { data } = await supabase
+        .from("services")
+        .select("id, platform, name")
+        .eq("service_type", "profile_closure")
+        .eq("active", true);
+      if (mounted && data) setServices(data as ClosureService[]);
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  const findServiceId = (platform: string, size: string) => {
+    const keyword = size === "pak" ? "pak" : "shumë";
+    return services.find(
+      (s) =>
+        s.platform.toLowerCase() === platform.toLowerCase() &&
+        s.name.toLowerCase().includes(keyword),
+    )?.id;
+  };
+
   return (
+
     <div className="min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-50 border-b border-border/50 bg-background/70 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
