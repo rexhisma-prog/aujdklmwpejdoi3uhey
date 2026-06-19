@@ -185,7 +185,7 @@ function MbyllProfileFake() {
             <p className="mt-3 text-muted-foreground">Çmime fikse sipas madhësisë së profilit ose faqes.</p>
           </div>
 
-          <div className="mt-10 grid gap-6 md:grid-cols-2">
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
             {tiers.map((tier) => (
               <div
                 key={tier.title}
