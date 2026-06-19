@@ -13,6 +13,7 @@ import { Route as TopupRouteImport } from './routes/topup'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ReferralsRouteImport } from './routes/referrals'
+import { Route as MbyllProfileFakeRouteImport } from './routes/mbyll-profile-fake'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as AdminRouteImport } from './routes/admin'
@@ -41,6 +42,11 @@ const RegisterRoute = RegisterRouteImport.update({
 const ReferralsRoute = ReferralsRouteImport.update({
   id: '/referrals',
   path: '/referrals',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MbyllProfileFakeRoute = MbyllProfileFakeRouteImport.update({
+  id: '/mbyll-profile-fake',
+  path: '/mbyll-profile-fake',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -96,6 +102,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
+  '/mbyll-profile-fake': typeof MbyllProfileFakeRoute
   '/referrals': typeof ReferralsRoute
   '/register': typeof RegisterRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -111,6 +118,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
+  '/mbyll-profile-fake': typeof MbyllProfileFakeRoute
   '/referrals': typeof ReferralsRoute
   '/register': typeof RegisterRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -127,6 +135,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
+  '/mbyll-profile-fake': typeof MbyllProfileFakeRoute
   '/referrals': typeof ReferralsRoute
   '/register': typeof RegisterRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -144,6 +153,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/dashboard'
     | '/login'
+    | '/mbyll-profile-fake'
     | '/referrals'
     | '/register'
     | '/sitemap.xml'
@@ -159,6 +169,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/dashboard'
     | '/login'
+    | '/mbyll-profile-fake'
     | '/referrals'
     | '/register'
     | '/sitemap.xml'
@@ -174,6 +185,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/dashboard'
     | '/login'
+    | '/mbyll-profile-fake'
     | '/referrals'
     | '/register'
     | '/sitemap.xml'
@@ -190,6 +202,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   DashboardRoute: typeof DashboardRoute
   LoginRoute: typeof LoginRoute
+  MbyllProfileFakeRoute: typeof MbyllProfileFakeRoute
   ReferralsRoute: typeof ReferralsRoute
   RegisterRoute: typeof RegisterRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -229,6 +242,13 @@ declare module '@tanstack/react-router' {
       path: '/referrals'
       fullPath: '/referrals'
       preLoaderRoute: typeof ReferralsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mbyll-profile-fake': {
+      id: '/mbyll-profile-fake'
+      path: '/mbyll-profile-fake'
+      fullPath: '/mbyll-profile-fake'
+      preLoaderRoute: typeof MbyllProfileFakeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -302,6 +322,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   DashboardRoute: DashboardRoute,
   LoginRoute: LoginRoute,
+  MbyllProfileFakeRoute: MbyllProfileFakeRoute,
   ReferralsRoute: ReferralsRoute,
   RegisterRoute: RegisterRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
