@@ -109,6 +109,8 @@ function OrderPage() {
     );
   }
 
+  const isClosure = service.service_type === "profile_closure";
+
   const unitLabel =
     service.service_type === "followers"
       ? "followers"
@@ -139,19 +141,28 @@ function OrderPage() {
             <div className="mx-auto mt-6 flex max-w-md items-center justify-center gap-3 rounded-2xl border border-primary/20 bg-primary/5 px-5 py-4">
               <Clock className="h-5 w-5 shrink-0 text-primary" />
               <p className="text-sm text-foreground">
-                Shërbimi do të kryhet brenda <span className="font-semibold text-primary">2 orësh</span>.
+                {isClosure ? (
+                  <>Mbyllja mund të zgjasë nga <span className="font-semibold text-primary">2 deri në 72 orë</span>.</>
+                ) : (
+                  <>Shërbimi do të kryhet brenda <span className="font-semibold text-primary">2 orësh</span>.</>
+                )}
               </p>
             </div>
 
             <div className="mt-6 space-y-1 text-sm text-muted-foreground">
               <p className="flex items-center justify-center gap-2">
                 <Sparkles className="h-4 w-4 text-primary" />
-                Sasia: <span className="font-semibold text-foreground">{quantity.toLocaleString()} {unitLabel}</span>
+                {isClosure ? (
+                  <span className="font-semibold text-foreground">{service.name}</span>
+                ) : (
+                  <>Sasia: <span className="font-semibold text-foreground">{quantity.toLocaleString()} {unitLabel}</span></>
+                )}
               </p>
               <p>
                 Totali: <span className="font-semibold text-primary">{total.toFixed(2)} €</span>
               </p>
             </div>
+
 
             <p className="mt-6 text-xs text-muted-foreground">
               Të ftojmë të na kontaktosh në çdo moment nëse ke pyetje. Faleminderit që zgjodhe <span className="font-semibold text-foreground">ShtoFollow.com</span>! 💙
@@ -197,47 +208,54 @@ function OrderPage() {
       <main className="mx-auto max-w-2xl px-6 py-8">
         <h1 className="text-2xl font-bold">Porosit: {service.name}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          {Number(service.price_eur).toFixed(2)} € për 1,000 {unitLabel}
+          {isClosure
+            ? `Çmim fiks: ${Number(service.price_eur).toFixed(2)} €`
+            : `${Number(service.price_eur).toFixed(2)} € për 1,000 ${unitLabel}`}
         </p>
 
         <form
           onSubmit={handleSubmit}
           className="mt-6 space-y-5 rounded-2xl border border-border bg-card p-6"
         >
-          <div>
-            <label className="mb-2 block text-sm font-medium">
-              Sasia ({unitLabel})
-            </label>
-            <input
-              type="number"
-              min={service.quantity || 100}
-              step={100}
-              value={quantity}
-              onChange={(e) => setQuantity(Number(e.target.value))}
-              required
-              className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none"
-            />
-            <p className="mt-1 text-xs text-muted-foreground">
-              Minimumi: {service.quantity}
-            </p>
-          </div>
+          {!isClosure && (
+            <div>
+              <label className="mb-2 block text-sm font-medium">
+                Sasia ({unitLabel})
+              </label>
+              <input
+                type="number"
+                min={service.quantity || 100}
+                step={100}
+                value={quantity}
+                onChange={(e) => setQuantity(Number(e.target.value))}
+                required
+                className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none"
+              />
+              <p className="mt-1 text-xs text-muted-foreground">
+                Minimumi: {service.quantity}
+              </p>
+            </div>
+          )}
 
           <div>
             <label className="mb-2 block text-sm font-medium">
-              Linku i profilit / fotos / videos
+              {isClosure ? "Linku i profilit / faqes fake" : "Linku i profilit / fotos / videos"}
             </label>
             <input
               type="url"
               value={link}
               onChange={(e) => setLink(e.target.value)}
               required
-              placeholder={linkPlaceholder}
+              placeholder={isClosure ? "https://instagram.com/profili_fake" : linkPlaceholder}
               className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none"
             />
-            <p className="mt-2 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-600 dark:text-amber-400">
-              ⚠️ Profili duhet të jetë i hapur (public), jo privat — përndryshe porosia nuk mund të kryhet.
-            </p>
+            {!isClosure && (
+              <p className="mt-2 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-600 dark:text-amber-400">
+                ⚠️ Profili duhet të jetë i hapur (public), jo privat — përndryshe porosia nuk mund të kryhet.
+              </p>
+            )}
           </div>
+
 
           {service.platform?.toLowerCase() === "instagram" &&
             service.service_type?.toLowerCase().includes("follow") && (

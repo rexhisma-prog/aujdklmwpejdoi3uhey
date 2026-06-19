@@ -729,6 +729,7 @@ function ServicesManager() {
                       <option value="followers">Followers</option>
                       <option value="likes">Likes</option>
                       <option value="views">Views</option>
+                      <option value="profile_closure">Mbyllje Fake</option>
                     </select>
                   </td>
                   <td className="px-4 py-3">
@@ -781,6 +782,7 @@ function ServicesManager() {
             <option value="followers">Followers</option>
             <option value="likes">Likes</option>
             <option value="views">Views</option>
+            <option value="profile_closure">Mbyllje Fake</option>
           </select>
           <input type="number" step="0.01" placeholder="Çmimi € / 1000" value={newSvc.price_eur}
             onChange={(e) => setNewSvc({ ...newSvc, price_eur: Number(e.target.value) })}

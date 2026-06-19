@@ -1,4 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import {
   ShieldCheck,
   Shield,
@@ -61,6 +63,7 @@ const tiers = [
   {
     title: "Profile/Faqe me pak ndjekës",
     desc: "Për profile dhe faqe të vogla që përdorin identitetin tuaj.",
+    size: "pak",
     prices: [
       { platform: "Instagram", price: "99.99€" },
       { platform: "Facebook", price: "99.99€" },
@@ -71,6 +74,7 @@ const tiers = [
     title: "Profile/Faqe me shumë ndjekës",
     desc: "Për profile dhe faqe të mëdha me ndjekës të shumtë.",
     highlight: true,
+    size: "shumë",
     prices: [
       { platform: "Instagram", price: "249.99€" },
       { platform: "Facebook", price: "199.99€" },
@@ -78,6 +82,8 @@ const tiers = [
     ],
   },
 ];
+
+type ClosureService = { id: string; platform: string; name: string };
 
 const included = [
   { icon: FileSearch, text: "Analiza e rastit" },
@@ -87,7 +93,34 @@ const included = [
 ];
 
 function MbyllProfileFake() {
+  const [services, setServices] = useState<ClosureService[]>([]);
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      const { data } = await supabase
+        .from("services")
+        .select("id, platform, name")
+        .eq("service_type", "profile_closure")
+        .eq("active", true);
+      if (mounted && data) setServices(data as ClosureService[]);
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  const findServiceId = (platform: string, size: string) => {
+    const keyword = size === "pak" ? "pak" : "shumë";
+    return services.find(
+      (s) =>
+        s.platform.toLowerCase() === platform.toLowerCase() &&
+        s.name.toLowerCase().includes(keyword),
+    )?.id;
+  };
+
   return (
+
     <div className="min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-50 border-b border-border/50 bg-background/70 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
@@ -160,19 +193,39 @@ function MbyllProfileFake() {
                 <ul className="mt-6 space-y-3">
                   {tier.prices.map((p) => {
                     const Icon = platformIcon[p.platform] ?? Shield;
-                    return (
+                    const serviceId = findServiceId(p.platform, tier.size);
+                    const content = (
+                      <>
+                        <span className="inline-flex items-center gap-2 text-sm font-medium">
+                          <Icon className="h-4 w-4 text-primary" /> {p.platform}
+                        </span>
+                        <span className="inline-flex items-center gap-2">
+                          <span className="text-lg font-bold text-primary">{p.price}</span>
+                          {serviceId && <Shield className="h-4 w-4 text-primary" />}
+                        </span>
+                      </>
+                    );
+                    return serviceId ? (
+                      <li key={p.platform}>
+                        <Link
+                          to="/order/$serviceId"
+                          params={{ serviceId }}
+                          className="flex items-center justify-between rounded-xl border border-border bg-background px-4 py-3 transition hover:border-primary/50 hover:bg-primary/5"
+                        >
+                          {content}
+                        </Link>
+                      </li>
+                    ) : (
                       <li
                         key={p.platform}
                         className="flex items-center justify-between rounded-xl border border-border bg-background px-4 py-3"
                       >
-                        <span className="inline-flex items-center gap-2 text-sm font-medium">
-                          <Icon className="h-4 w-4 text-primary" /> {p.platform}
-                        </span>
-                        <span className="text-lg font-bold text-primary">{p.price}</span>
+                        {content}
                       </li>
                     );
                   })}
                 </ul>
+
               </div>
             ))}
           </div>
