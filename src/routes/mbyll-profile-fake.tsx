@@ -193,19 +193,39 @@ function MbyllProfileFake() {
                 <ul className="mt-6 space-y-3">
                   {tier.prices.map((p) => {
                     const Icon = platformIcon[p.platform] ?? Shield;
-                    return (
+                    const serviceId = findServiceId(p.platform, tier.size);
+                    const content = (
+                      <>
+                        <span className="inline-flex items-center gap-2 text-sm font-medium">
+                          <Icon className="h-4 w-4 text-primary" /> {p.platform}
+                        </span>
+                        <span className="inline-flex items-center gap-2">
+                          <span className="text-lg font-bold text-primary">{p.price}</span>
+                          {serviceId && <Shield className="h-4 w-4 text-primary" />}
+                        </span>
+                      </>
+                    );
+                    return serviceId ? (
+                      <li key={p.platform}>
+                        <Link
+                          to="/order/$serviceId"
+                          params={{ serviceId }}
+                          className="flex items-center justify-between rounded-xl border border-border bg-background px-4 py-3 transition hover:border-primary/50 hover:bg-primary/5"
+                        >
+                          {content}
+                        </Link>
+                      </li>
+                    ) : (
                       <li
                         key={p.platform}
                         className="flex items-center justify-between rounded-xl border border-border bg-background px-4 py-3"
                       >
-                        <span className="inline-flex items-center gap-2 text-sm font-medium">
-                          <Icon className="h-4 w-4 text-primary" /> {p.platform}
-                        </span>
-                        <span className="text-lg font-bold text-primary">{p.price}</span>
+                        {content}
                       </li>
                     );
                   })}
                 </ul>
+
               </div>
             ))}
           </div>
