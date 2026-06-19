@@ -293,7 +293,8 @@ function Features() {
 
 function LiveStats() {
   // Numrat rriten gradualisht çdo 12 orë (followers +500, shikime +1000, përdorues +1500)
-  const periods = Math.floor(Date.now() / (12 * 60 * 60 * 1000));
+  const START = Date.UTC(2026, 5, 1); // 1 qershor 2026
+  const periods = Math.max(0, Math.floor((Date.now() - START) / (12 * 60 * 60 * 1000)));
   const fmt = (n: number) => n.toLocaleString("en-US");
   const stats = [
     { icon: Users, value: fmt(12480 + periods * 500), label: "Followers të dërguar sot" },
