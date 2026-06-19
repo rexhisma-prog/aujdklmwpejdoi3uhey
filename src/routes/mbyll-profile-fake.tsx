@@ -63,6 +63,7 @@ const tiers = [
   {
     title: "Profile/Faqe me pak ndjekës",
     desc: "Për profile dhe faqe të vogla që përdorin identitetin tuaj.",
+    size: "pak",
     prices: [
       { platform: "Instagram", price: "99.99€" },
       { platform: "Facebook", price: "99.99€" },
@@ -73,6 +74,7 @@ const tiers = [
     title: "Profile/Faqe me shumë ndjekës",
     desc: "Për profile dhe faqe të mëdha me ndjekës të shumtë.",
     highlight: true,
+    size: "shumë",
     prices: [
       { platform: "Instagram", price: "249.99€" },
       { platform: "Facebook", price: "199.99€" },
@@ -80,6 +82,8 @@ const tiers = [
     ],
   },
 ];
+
+type ClosureService = { id: string; platform: string; name: string };
 
 const included = [
   { icon: FileSearch, text: "Analiza e rastit" },
