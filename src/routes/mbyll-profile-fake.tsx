@@ -200,7 +200,7 @@ function MbyllProfileFake() {
                 <ul className="mt-6 space-y-3">
                   {tier.prices.map((p) => {
                     const Icon = platformIcon[p.platform] ?? Shield;
-                    const serviceId = findServiceId(p.platform, tier.size);
+                    const serviceId = findServiceId(p.platform, tier.keyword);
                     const content = (
                       <>
                         <span className="inline-flex items-center gap-2 text-sm font-medium">
