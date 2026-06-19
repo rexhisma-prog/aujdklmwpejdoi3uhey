@@ -118,8 +118,7 @@ function MbyllProfileFake() {
     };
   }, []);
 
-  const findServiceId = (platform: string, size: string) => {
-    const keyword = size === "pak" ? "pak" : "shumë";
+  const findServiceId = (platform: string, keyword: string) => {
     return services.find(
       (s) =>
         s.platform.toLowerCase() === platform.toLowerCase() &&
