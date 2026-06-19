@@ -54,6 +54,7 @@ function Index() {
       <Header />
       <main>
         <Hero />
+        <FakeProfileBanner />
         <ReferralPromo />
         <Features />
         <LiveStats />
