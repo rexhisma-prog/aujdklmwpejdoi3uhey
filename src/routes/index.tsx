@@ -292,10 +292,13 @@ function Features() {
 }
 
 function LiveStats() {
+  // Numrat rriten gradualisht çdo 12 orë (followers +500, shikime +1000, përdorues +1500)
+  const periods = Math.floor(Date.now() / (12 * 60 * 60 * 1000));
+  const fmt = (n: number) => n.toLocaleString("en-US");
   const stats = [
-    { icon: Users, value: "12,480", label: "Followers të dërguar sot" },
-    { icon: Eye, value: "98,210", label: "Shikime në rrjete sociale" },
-    { icon: Heart, value: "4,302", label: "Përdorues aktivë" },
+    { icon: Users, value: fmt(12480 + periods * 500), label: "Followers të dërguar sot" },
+    { icon: Eye, value: fmt(98210 + periods * 1000), label: "Shikime në rrjete sociale" },
+    { icon: Heart, value: fmt(4302 + periods * 1500), label: "Përdorues aktivë" },
   ];
   return (
     <section className="border-y border-border bg-card/50">
