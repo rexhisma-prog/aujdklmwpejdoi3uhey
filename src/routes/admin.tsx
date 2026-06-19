@@ -469,7 +469,74 @@ function OrdersManager() {
           Nuk ka porosi ende.
         </div>
       ) : (
-        <div className="overflow-x-auto">
+        <>
+        {/* Mobile cards */}
+        <div className="space-y-4 p-4 md:hidden">
+          {orders.map((o) => (
+            <div key={o.id} className="rounded-xl border border-border bg-background p-4">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-xs text-muted-foreground">
+                  {new Date(o.created_at).toLocaleString("sq-AL")}
+                </span>
+                <select
+                  value={o.status}
+                  onChange={(e) => updateStatus(o.id, e.target.value)}
+                  disabled={savingId === o.id}
+                  className={`rounded-full px-2 py-1 text-xs font-medium ring-1 ${statusBadge(o.status)} bg-transparent`}
+                >
+                  {STATUSES.map((s) => (
+                    <option key={s} value={s} className="bg-background text-foreground">
+                      {s}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="mt-2 font-medium">{o.services?.name ?? "—"}</div>
+              <div className="text-xs text-muted-foreground">
+                {o.services?.platform} · {o.services?.service_type} · {o.quantity.toLocaleString()} copë
+              </div>
+              <div className="mt-1 text-xs text-muted-foreground break-all">
+                {emails[o.user_id] ?? "—"}
+              </div>
+              <div className="mt-1 break-all text-xs">
+                {/^https?:\/\//i.test(o.target_link) ? (
+                  <a href={o.target_link} target="_blank" rel="noreferrer" className="text-primary hover:underline">
+                    {o.target_link}
+                  </a>
+                ) : (
+                  o.target_link
+                )}
+              </div>
+              <div className="mt-1 font-semibold text-primary">
+                {Number(o.total_price_eur).toFixed(2)} €
+              </div>
+              <div className="mt-3">
+                <label className="text-xs font-medium text-muted-foreground">
+                  Shënime / Arsyeja e refuzimit
+                </label>
+                <textarea
+                  value={noteDrafts[o.id] ?? o.notes ?? ""}
+                  onChange={(e) =>
+                    setNoteDrafts((prev) => ({ ...prev, [o.id]: e.target.value }))
+                  }
+                  placeholder="Arsyeja e refuzimit / shënim..."
+                  rows={2}
+                  className="mt-1 w-full resize-y rounded-lg border border-border bg-background px-2 py-1 text-xs"
+                />
+                <button
+                  onClick={() => saveNote(o.id)}
+                  disabled={savingId === o.id || (noteDrafts[o.id] ?? o.notes ?? "") === (o.notes ?? "")}
+                  className="mt-2 w-full rounded-lg border border-border px-2 py-1.5 text-xs font-medium hover:border-primary hover:text-primary disabled:opacity-40"
+                >
+                  Ruaj shënimin
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop table */}
+        <div className="hidden overflow-x-auto md:block">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border text-left text-xs uppercase text-muted-foreground">
@@ -558,6 +625,7 @@ function OrdersManager() {
             </tbody>
           </table>
         </div>
+        </>
       )}
     </div>
   );
