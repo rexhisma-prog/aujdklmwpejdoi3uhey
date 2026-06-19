@@ -141,7 +141,11 @@ function OrderPage() {
             <div className="mx-auto mt-6 flex max-w-md items-center justify-center gap-3 rounded-2xl border border-primary/20 bg-primary/5 px-5 py-4">
               <Clock className="h-5 w-5 shrink-0 text-primary" />
               <p className="text-sm text-foreground">
-                Shërbimi do të kryhet brenda <span className="font-semibold text-primary">2 orësh</span>.
+                {isClosure ? (
+                  <>Mbyllja mund të zgjasë nga <span className="font-semibold text-primary">2 deri në 72 orë</span>.</>
+                ) : (
+                  <>Shërbimi do të kryhet brenda <span className="font-semibold text-primary">2 orësh</span>.</>
+                )}
               </p>
             </div>
 
