@@ -148,12 +148,17 @@ function OrderPage() {
             <div className="mt-6 space-y-1 text-sm text-muted-foreground">
               <p className="flex items-center justify-center gap-2">
                 <Sparkles className="h-4 w-4 text-primary" />
-                Sasia: <span className="font-semibold text-foreground">{quantity.toLocaleString()} {unitLabel}</span>
+                {isClosure ? (
+                  <span className="font-semibold text-foreground">{service.name}</span>
+                ) : (
+                  <>Sasia: <span className="font-semibold text-foreground">{quantity.toLocaleString()} {unitLabel}</span></>
+                )}
               </p>
               <p>
                 Totali: <span className="font-semibold text-primary">{total.toFixed(2)} €</span>
               </p>
             </div>
+
 
             <p className="mt-6 text-xs text-muted-foreground">
               Të ftojmë të na kontaktosh në çdo moment nëse ke pyetje. Faleminderit që zgjodhe <span className="font-semibold text-foreground">ShtoFollow.com</span>! 💙
