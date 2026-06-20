@@ -25,13 +25,13 @@ export const Route = createFileRoute("/mbyll-profile-fake")({
       {
         name: "description",
         content:
-          "Mbyllim profile dhe faqe false në Instagram, Twitter dhe TikTok që përdorin emrin, fotografinë ose markën tuaj. Çmim fiks 269.99€. Nëse mbyllja nuk realizohet, paratë kthehen 100%.",
+          "Mbyllim profile dhe faqe false në Instagram, Twitter dhe TikTok që përdorin emrin, fotografinë ose markën tuaj. Çmim fiks 249.99€. Nëse mbyllja nuk realizohet, paratë kthehen 100%.",
       },
       { property: "og:title", content: "Mbyllja e Profileve dhe Faqeve Fake — ShtoFollow.com" },
       {
         property: "og:description",
         content:
-          "Ndihmojmë persona dhe biznese të mbyllin profile dhe faqe false në Instagram, Twitter dhe TikTok. Çmim fiks 269.99€ — kthim parash 100% nëse nuk realizohet.",
+          "Ndihmojmë persona dhe biznese të mbyllin profile dhe faqe false në Instagram, Twitter dhe TikTok. Çmim fiks 249.99€ — kthim parash 100% nëse nuk realizohet.",
       },
       { property: "og:url", content: "https://shtofollow.com/mbyll-profile-fake" },
     ],
@@ -47,7 +47,7 @@ export const Route = createFileRoute("/mbyll-profile-fake")({
             "Mbyllim profile dhe faqe false në Instagram, Twitter dhe TikTok që përdorin emrin, fotografinë ose markën tuaj.",
           provider: { "@type": "Organization", name: "ShtoFollow.com", url: "https://shtofollow.com" },
           areaServed: "AL",
-          offers: { "@type": "Offer", priceCurrency: "EUR", price: "269.99" },
+          offers: { "@type": "Offer", priceCurrency: "EUR", price: "249.99" },
         }),
       },
     ],
@@ -61,7 +61,7 @@ const platformIcon: Record<string, typeof Instagram> = {
   TikTok: Music2,
 };
 
-const CLOSURE_PRICE = "269.99€";
+const CLOSURE_PRICE = "249.99€";
 
 const platforms = [
   { platform: "Instagram", price: CLOSURE_PRICE },
@@ -124,7 +124,7 @@ function MbyllProfileFake() {
           <div className="absolute inset-0 -z-10" style={{ background: "var(--gradient-hero)" }} />
           <div className="mx-auto max-w-4xl px-6 pt-20 pb-16 text-center">
             <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-medium text-primary">
-              <Shield className="h-3.5 w-3.5" /> Çmim fiks 269.99€
+              <Shield className="h-3.5 w-3.5" /> Çmim fiks 249.99€
             </div>
             <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-[var(--shadow-glow)]">
               <Shield className="h-8 w-8" />
@@ -168,7 +168,7 @@ function MbyllProfileFake() {
               Një çmim i vetëm fiks për të gjitha platformat.
             </p>
             <div className="mx-auto mt-6 inline-flex items-baseline gap-1">
-              <span className="text-5xl font-bold text-primary">269.99€</span>
+              <span className="text-5xl font-bold text-primary">249.99€</span>
               <span className="text-muted-foreground">/ profil</span>
             </div>
           </div>
