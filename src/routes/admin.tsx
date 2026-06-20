@@ -559,6 +559,35 @@ function OrdersManager() {
                   Ruaj shënimin
                 </button>
               </div>
+              <div className="mt-3">
+                <label className="text-xs font-medium text-muted-foreground">
+                  Ndjekës para → pas
+                </label>
+                <div className="mt-1 flex items-center gap-2">
+                  <input
+                    type="number"
+                    value={beforeDrafts[o.id] ?? (o.followers_before ?? "")}
+                    onChange={(e) => setBeforeDrafts((prev) => ({ ...prev, [o.id]: e.target.value }))}
+                    placeholder="Para"
+                    className="w-full rounded-lg border border-border bg-background px-2 py-1 text-xs"
+                  />
+                  <span className="text-xs text-muted-foreground">→</span>
+                  <input
+                    type="number"
+                    value={afterDrafts[o.id] ?? (o.followers_after ?? "")}
+                    onChange={(e) => setAfterDrafts((prev) => ({ ...prev, [o.id]: e.target.value }))}
+                    placeholder="Pas"
+                    className="w-full rounded-lg border border-border bg-background px-2 py-1 text-xs"
+                  />
+                </div>
+                <button
+                  onClick={() => saveFollowers(o.id, { before: o.followers_before, after: o.followers_after })}
+                  disabled={savingId === o.id || (beforeDrafts[o.id] === undefined && afterDrafts[o.id] === undefined)}
+                  className="mt-2 w-full rounded-lg border border-border px-2 py-1.5 text-xs font-medium hover:border-primary hover:text-primary disabled:opacity-40"
+                >
+                  Ruaj ndjekësit
+                </button>
+              </div>
             </div>
           ))}
         </div>
