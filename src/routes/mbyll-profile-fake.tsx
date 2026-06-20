@@ -137,11 +137,17 @@ function MbyllProfileFake() {
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
               Ndihmojmë persona dhe biznese të mbyllin profile dhe faqe false që përdorin emrin, fotografinë ose markën
-              e tyre në Instagram, Facebook dhe TikTok.
+              e tyre në Instagram, Twitter dhe TikTok.
             </p>
-            <div className="mx-auto mt-6 inline-flex items-center gap-2 rounded-xl border border-primary/20 bg-primary/5 px-4 py-2 text-sm text-foreground">
-              <Clock className="h-4 w-4 text-primary" />
-              Mbyllja mund të zgjasë nga <span className="font-semibold text-primary">2 deri në 72 orë</span>.
+            <div className="mx-auto mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+              <div className="inline-flex items-center gap-2 rounded-xl border border-primary/20 bg-primary/5 px-4 py-2 text-sm text-foreground">
+                <Clock className="h-4 w-4 text-primary" />
+                Mbyllja zgjat nga <span className="font-semibold text-primary">2 deri në 72 orë</span>.
+              </div>
+              <div className="inline-flex items-center gap-2 rounded-xl border border-primary/20 bg-primary/5 px-4 py-2 text-sm text-foreground">
+                <RotateCcw className="h-4 w-4 text-primary" />
+                Nuk realizohet? <span className="font-semibold text-primary">Kthim parash 100%</span>.
+              </div>
             </div>
             <div className="mt-10">
               <a
