@@ -289,6 +289,28 @@ function ClientDashboard() {
           </div>
         </section>
 
+        {/* Contact / support */}
+        <section className="rounded-3xl border border-border bg-card/50 p-6">
+          <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+            <div>
+              <div className="flex items-center gap-2 text-sm font-semibold">
+                <MessageCircle className="h-4 w-4 text-primary" /> Ke nevojë për ndihmë?
+              </div>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Na kontakto në WhatsApp në <span className="font-semibold text-foreground">+49 163 4371067</span>
+              </p>
+            </div>
+            <a
+              href="https://wa.me/491634371067"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] hover:opacity-90"
+            >
+              <MessageCircle className="h-4 w-4" /> Kontakto në WhatsApp
+            </a>
+          </div>
+        </section>
+
         {/* Referral promo */}
         <section className="relative overflow-hidden rounded-3xl border border-primary/30 bg-gradient-to-br from-primary/20 via-card to-card p-6 shadow-[var(--shadow-glow)]">
           <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-primary/20 blur-3xl" />
