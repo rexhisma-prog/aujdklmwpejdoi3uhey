@@ -198,9 +198,6 @@ function LiveGrowthCard() {
     const t2 = setInterval(() => {
       setProgress((p) => (p >= 99 ? 70 : p + Math.floor(Math.random() * 5) + 1));
     }, 1200);
-    const t3 = setInterval(() => {
-      setPlatformIdx((i) => (i + 1) % platforms.length);
-    }, 2500);
     const t4 = setInterval(() => {
       setFeed((prev) => {
         const next = {
@@ -215,7 +212,6 @@ function LiveGrowthCard() {
     return () => {
       clearInterval(t1);
       clearInterval(t2);
-      clearInterval(t3);
       clearInterval(t4);
     };
   }, []);
