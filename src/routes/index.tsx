@@ -200,7 +200,7 @@ function Hero() {
             </span>
           </h1>
           <p className="mx-auto mt-5 max-w-md text-base leading-relaxed text-muted-foreground">
-            Platforma numër #1 në Shqipëri për rritjen e Instagram, TikTok dhe Facebook në kohë reale.
+            Platforma numër #1 në Kosovë për rritjen e Instagram, TikTok dhe Facebook në kohë reale.
           </p>
         </div>
 
