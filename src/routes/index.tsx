@@ -154,12 +154,6 @@ function Header() {
           <Link to="/login" className="rounded-lg px-4 py-2 text-sm font-medium text-muted-foreground transition hover:text-foreground">
             Hyr
           </Link>
-          <Link
-            to="/register"
-            className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:opacity-90"
-          >
-            Regjistrohu
-          </Link>
         </nav>
       </div>
     </header>
@@ -653,7 +647,7 @@ function Footer() {
         <p className="text-sm text-muted-foreground">© 2026 shtofollow.com. Të gjitha të drejtat të rezervuara.</p>
         <div className="flex gap-4 text-sm text-muted-foreground">
           <Link to="/login" className="hover:text-foreground">Hyr</Link>
-          <Link to="/register" className="hover:text-foreground">Regjistrohu</Link>
+          
           <Link to="/admin" className="hover:text-foreground">Admin</Link>
         </div>
       </div>
