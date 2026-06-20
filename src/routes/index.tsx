@@ -184,7 +184,7 @@ function Hero() {
             <span className="h-5 w-5 rounded-full border border-background bg-primary/30" />
           </div>
           <span className="text-[10px] font-semibold uppercase tracking-widest text-primary">
-            2,233+ klientë aktivë
+            2,233+ klientë aktivë në Kosovë
           </span>
         </div>
 
