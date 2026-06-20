@@ -205,38 +205,8 @@ function Hero() {
         </div>
 
         {/* Growth visualization card */}
-        <div className="relative w-full max-w-[320px] overflow-hidden rounded-3xl border border-border bg-card/60 p-6 shadow-[var(--shadow-elegant)] backdrop-blur-xl">
-          <svg
-            viewBox="0 0 100 100"
-            preserveAspectRatio="none"
-            className="pointer-events-none absolute inset-0 h-full w-full fill-none stroke-primary stroke-2 opacity-10"
-          >
-            <path d="M0,80 Q25,75 40,50 T70,30 T100,10" />
-          </svg>
-          <div className="relative grid grid-cols-2 gap-4">
-            <div className="flex flex-col gap-4">
-              <div className="rounded-2xl border border-border bg-background/40 p-3 text-left">
-                <div className="mb-2 inline-flex h-7 w-7 items-center justify-center rounded-lg bg-primary/15 text-primary">
-                  <Instagram className="h-4 w-4" />
-                </div>
-                <span className="block text-[10px] text-muted-foreground">Instagram</span>
-                <span className="block text-sm font-bold">+12.4k</span>
-              </div>
-              <div className="rounded-2xl bg-primary p-3 text-left text-primary-foreground shadow-[var(--shadow-glow)]">
-                <div className="mb-2 inline-flex h-7 w-7 items-center justify-center rounded-lg bg-background/20">
-                  <Music2 className="h-4 w-4" />
-                </div>
-                <span className="block text-[10px] font-bold opacity-80">TikTok</span>
-                <span className="block text-sm font-black">AKTIV</span>
-              </div>
-            </div>
-            <div className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-border bg-background/40 p-4">
-              <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent [animation-duration:8s]" />
-              <span className="text-[10px] uppercase tracking-tight text-muted-foreground">Përpunim...</span>
-              <span className="text-xs font-bold text-primary">98%</span>
-            </div>
-          </div>
-        </div>
+        <LiveGrowthCard />
+
 
         {/* CTAs */}
         <div className="flex w-full max-w-[320px] flex-col gap-3">
