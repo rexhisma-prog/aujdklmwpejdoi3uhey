@@ -104,6 +104,8 @@ export type Database = {
       orders: {
         Row: {
           created_at: string
+          followers_after: number | null
+          followers_before: number | null
           id: string
           notes: string | null
           quantity: number
@@ -116,6 +118,8 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          followers_after?: number | null
+          followers_before?: number | null
           id?: string
           notes?: string | null
           quantity: number
@@ -128,6 +132,8 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          followers_after?: number | null
+          followers_before?: number | null
           id?: string
           notes?: string | null
           quantity?: number

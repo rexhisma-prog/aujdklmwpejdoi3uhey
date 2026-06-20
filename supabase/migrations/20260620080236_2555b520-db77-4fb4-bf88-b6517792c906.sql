@@ -1,0 +1,1 @@
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS followers_before integer, ADD COLUMN IF NOT EXISTS followers_after integer;

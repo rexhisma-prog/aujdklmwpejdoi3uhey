@@ -370,6 +370,8 @@ type Order = {
   total_price_eur: number;
   status: string;
   notes: string | null;
+  followers_before: number | null;
+  followers_after: number | null;
   created_at: string;
   services?: { name: string; platform: string; service_type: string } | null;
 };
@@ -382,6 +384,8 @@ function OrdersManager() {
   const [loading, setLoading] = useState(true);
   const [savingId, setSavingId] = useState<string | null>(null);
   const [noteDrafts, setNoteDrafts] = useState<Record<string, string>>({});
+  const [beforeDrafts, setBeforeDrafts] = useState<Record<string, string>>({});
+  const [afterDrafts, setAfterDrafts] = useState<Record<string, string>>({});
 
   const load = async () => {
     const { data } = await supabase
@@ -434,6 +438,30 @@ function OrdersManager() {
     await supabase.from("orders").update({ notes: note || null }).eq("id", id);
     setSavingId(null);
     setNoteDrafts((prev) => {
+      const next = { ...prev };
+      delete next[id];
+      return next;
+    });
+    load();
+  };
+
+  const saveFollowers = async (id: string, current: { before: number | null; after: number | null }) => {
+    setSavingId(id);
+    const rawBefore = beforeDrafts[id];
+    const rawAfter = afterDrafts[id];
+    const before = rawBefore === undefined ? current.before : rawBefore === "" ? null : Number(rawBefore);
+    const after = rawAfter === undefined ? current.after : rawAfter === "" ? null : Number(rawAfter);
+    await supabase
+      .from("orders")
+      .update({ followers_before: before, followers_after: after })
+      .eq("id", id);
+    setSavingId(null);
+    setBeforeDrafts((prev) => {
+      const next = { ...prev };
+      delete next[id];
+      return next;
+    });
+    setAfterDrafts((prev) => {
       const next = { ...prev };
       delete next[id];
       return next;
@@ -531,6 +559,35 @@ function OrdersManager() {
                   Ruaj shënimin
                 </button>
               </div>
+              <div className="mt-3">
+                <label className="text-xs font-medium text-muted-foreground">
+                  Ndjekës para → pas
+                </label>
+                <div className="mt-1 flex items-center gap-2">
+                  <input
+                    type="number"
+                    value={beforeDrafts[o.id] ?? (o.followers_before ?? "")}
+                    onChange={(e) => setBeforeDrafts((prev) => ({ ...prev, [o.id]: e.target.value }))}
+                    placeholder="Para"
+                    className="w-full rounded-lg border border-border bg-background px-2 py-1 text-xs"
+                  />
+                  <span className="text-xs text-muted-foreground">→</span>
+                  <input
+                    type="number"
+                    value={afterDrafts[o.id] ?? (o.followers_after ?? "")}
+                    onChange={(e) => setAfterDrafts((prev) => ({ ...prev, [o.id]: e.target.value }))}
+                    placeholder="Pas"
+                    className="w-full rounded-lg border border-border bg-background px-2 py-1 text-xs"
+                  />
+                </div>
+                <button
+                  onClick={() => saveFollowers(o.id, { before: o.followers_before, after: o.followers_after })}
+                  disabled={savingId === o.id || (beforeDrafts[o.id] === undefined && afterDrafts[o.id] === undefined)}
+                  className="mt-2 w-full rounded-lg border border-border px-2 py-1.5 text-xs font-medium hover:border-primary hover:text-primary disabled:opacity-40"
+                >
+                  Ruaj ndjekësit
+                </button>
+              </div>
             </div>
           ))}
         </div>
@@ -547,6 +604,7 @@ function OrdersManager() {
                 <th className="px-4 py-3">Linku</th>
                 <th className="px-4 py-3">Totali</th>
                 <th className="px-4 py-3">Statusi</th>
+                <th className="px-4 py-3">Ndjekës para/pas</th>
                 <th className="px-4 py-3">Shënime</th>
               </tr>
             </thead>
@@ -599,6 +657,32 @@ function OrdersManager() {
                         </option>
                       ))}
                     </select>
+                  </td>
+                  <td className="px-4 py-3 min-w-[170px]">
+                    <div className="flex items-center gap-1">
+                      <input
+                        type="number"
+                        value={beforeDrafts[o.id] ?? (o.followers_before ?? "")}
+                        onChange={(e) => setBeforeDrafts((prev) => ({ ...prev, [o.id]: e.target.value }))}
+                        placeholder="Para"
+                        className="w-16 rounded-lg border border-border bg-background px-2 py-1 text-xs"
+                      />
+                      <span className="text-xs text-muted-foreground">→</span>
+                      <input
+                        type="number"
+                        value={afterDrafts[o.id] ?? (o.followers_after ?? "")}
+                        onChange={(e) => setAfterDrafts((prev) => ({ ...prev, [o.id]: e.target.value }))}
+                        placeholder="Pas"
+                        className="w-16 rounded-lg border border-border bg-background px-2 py-1 text-xs"
+                      />
+                      <button
+                        onClick={() => saveFollowers(o.id, { before: o.followers_before, after: o.followers_after })}
+                        disabled={savingId === o.id || (beforeDrafts[o.id] === undefined && afterDrafts[o.id] === undefined)}
+                        className="shrink-0 rounded-lg border border-border px-2 py-1 text-xs font-medium hover:border-primary hover:text-primary disabled:opacity-40"
+                      >
+                        Ruaj
+                      </button>
+                    </div>
                   </td>
                   <td className="px-4 py-3 min-w-[220px]">
                     <div className="flex items-start gap-2">
