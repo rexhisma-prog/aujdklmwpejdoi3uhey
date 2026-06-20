@@ -96,11 +96,9 @@ function MbyllProfileFake() {
     };
   }, []);
 
-  const findServiceId = (platform: string, keyword: string) => {
+  const findServiceId = (platform: string) => {
     return services.find(
-      (s) =>
-        s.platform.toLowerCase() === platform.toLowerCase() &&
-        s.name.toLowerCase().includes(keyword),
+      (s) => s.platform.toLowerCase() === platform.toLowerCase(),
     )?.id;
   };
 
