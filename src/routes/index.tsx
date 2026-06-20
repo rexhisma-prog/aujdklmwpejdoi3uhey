@@ -210,7 +210,7 @@ function LiveGrowthCard() {
         };
         return [next, ...prev].slice(0, 3);
       });
-    }, 2000);
+    }, 300000);
     return () => {
       clearInterval(t1);
       clearInterval(t2);
