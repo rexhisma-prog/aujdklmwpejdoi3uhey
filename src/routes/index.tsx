@@ -166,6 +166,136 @@ function Header() {
   );
 }
 
+function LiveGrowthCard() {
+  const cities = ["Prishtinë", "Prizren", "Pejë", "Gjakovë", "Ferizaj", "Mitrovicë", "Gjilan", "Vushtrri"];
+  const platforms = [
+    { name: "Instagram", icon: Instagram, action: "Followers" },
+    { name: "TikTok", icon: Music2, action: "Shikime" },
+    { name: "Facebook", icon: ThumbsUp, action: "Pëlqime" },
+  ];
+
+  const [followers, setFollowers] = useState(12480);
+  const [progress, setProgress] = useState(72);
+  const [platformIdx, setPlatformIdx] = useState(0);
+  const [feed, setFeed] = useState<{ id: number; city: string; qty: number; platform: string }[]>([]);
+
+  useEffect(() => {
+    const t1 = setInterval(() => {
+      setFollowers((f) => f + Math.floor(Math.random() * 9) + 1);
+    }, 1500);
+    const t2 = setInterval(() => {
+      setProgress((p) => (p >= 99 ? 70 : p + Math.floor(Math.random() * 5) + 1));
+    }, 1200);
+    const t3 = setInterval(() => {
+      setPlatformIdx((i) => (i + 1) % platforms.length);
+    }, 2500);
+    const t4 = setInterval(() => {
+      setFeed((prev) => {
+        const next = {
+          id: Date.now(),
+          city: cities[Math.floor(Math.random() * cities.length)],
+          qty: (Math.floor(Math.random() * 9) + 1) * 100,
+          platform: platforms[Math.floor(Math.random() * platforms.length)].name,
+        };
+        return [next, ...prev].slice(0, 3);
+      });
+    }, 2000);
+    return () => {
+      clearInterval(t1);
+      clearInterval(t2);
+      clearInterval(t3);
+      clearInterval(t4);
+    };
+  }, []);
+
+  const active = platforms[platformIdx];
+  const ActiveIcon = active.icon;
+  const circ = 2 * Math.PI * 20;
+
+  return (
+    <div className="relative w-full max-w-[320px] overflow-hidden rounded-3xl border border-border bg-card/60 p-5 shadow-[var(--shadow-elegant)] backdrop-blur-xl">
+      <svg
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+        className="pointer-events-none absolute inset-0 h-full w-full fill-none stroke-primary stroke-2 opacity-10"
+      >
+        <path d="M0,80 Q25,75 40,50 T70,30 T100,10" />
+      </svg>
+
+      <div className="relative grid grid-cols-2 gap-3">
+        {/* Live followers counter */}
+        <div className="rounded-2xl border border-border bg-background/40 p-3 text-left">
+          <div className="mb-2 inline-flex items-center gap-1.5">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+            </span>
+            <span className="text-[9px] font-bold uppercase tracking-widest text-primary">Live</span>
+          </div>
+          <span className="block text-[10px] text-muted-foreground">Followers sot</span>
+          <span className="block text-lg font-black tabular-nums">{followers.toLocaleString("en-US")}</span>
+        </div>
+
+        {/* Rotating platform */}
+        <div key={active.name} className="animate-[fade-in_0.4s_ease] rounded-2xl bg-primary p-3 text-left text-primary-foreground shadow-[var(--shadow-glow)]">
+          <div className="mb-2 inline-flex h-7 w-7 items-center justify-center rounded-lg bg-background/20">
+            <ActiveIcon className="h-4 w-4" />
+          </div>
+          <span className="block text-[10px] font-bold opacity-80">{active.name}</span>
+          <span className="block text-sm font-black">{active.action} ↑</span>
+        </div>
+      </div>
+
+      {/* Progress ring */}
+      <div className="relative mt-3 flex items-center gap-3 rounded-2xl border border-border bg-background/40 p-3">
+        <div className="relative h-12 w-12 shrink-0">
+          <svg viewBox="0 0 48 48" className="h-12 w-12 -rotate-90">
+            <circle cx="24" cy="24" r="20" className="fill-none stroke-border" strokeWidth="4" />
+            <circle
+              cx="24"
+              cy="24"
+              r="20"
+              className="fill-none stroke-primary transition-[stroke-dashoffset] duration-700"
+              strokeWidth="4"
+              strokeLinecap="round"
+              strokeDasharray={circ}
+              strokeDashoffset={circ - (progress / 100) * circ}
+            />
+          </svg>
+          <span className="absolute inset-0 flex items-center justify-center text-[10px] font-bold tabular-nums text-primary">
+            {progress}%
+          </span>
+        </div>
+        <div className="text-left">
+          <span className="block text-[10px] uppercase tracking-tight text-muted-foreground">Duke përpunuar</span>
+          <span className="block text-xs font-semibold">Porositë në kohë reale</span>
+        </div>
+      </div>
+
+      {/* Live order feed */}
+      <div className="mt-3 space-y-1.5">
+        {feed.length === 0 && (
+          <div className="rounded-xl border border-border/60 bg-background/30 px-3 py-2 text-[10px] text-muted-foreground">
+            Duke u lidhur me serverin...
+          </div>
+        )}
+        {feed.map((f) => (
+          <div
+            key={f.id}
+            className="flex animate-[fade-in_0.4s_ease] items-center gap-2 rounded-xl border border-border/60 bg-background/30 px-3 py-2 text-left text-[10px]"
+          >
+            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+            <span className="text-muted-foreground">
+              <span className="font-semibold text-foreground">{f.city}</span> · +{f.qty} {f.platform}
+            </span>
+            <span className="ml-auto shrink-0 font-semibold text-primary">tani</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function Hero() {
   return (
     <section className="relative overflow-hidden">
