@@ -5,7 +5,7 @@ import {
   ShieldCheck,
   Shield,
   Instagram,
-  Facebook,
+  Twitter,
   Music2,
   Check,
   ArrowLeft,
@@ -14,6 +14,7 @@ import {
   Eye,
   Headphones,
   Clock,
+  RotateCcw,
   MessageCircle,
 } from "lucide-react";
 
