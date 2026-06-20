@@ -132,7 +132,19 @@ function ClientDashboard() {
         .eq("active", true)
         .order("sort_order");
       if (mounted) {
-        setServices((svc as Service[]) ?? []);
+        const platformRank: Record<string, number> = { instagram: 0, tiktok: 1, facebook: 2 };
+        const typeRank: Record<string, number> = { followers: 0, likes: 1, views: 2 };
+        const list = ((svc as Service[]) ?? [])
+          .filter((s) => s.service_type !== "profile_closure")
+          .sort((a, b) => {
+            const pa = platformRank[a.platform] ?? 99;
+            const pb = platformRank[b.platform] ?? 99;
+            if (pa !== pb) return pa - pb;
+            const ta = typeRank[a.service_type] ?? 99;
+            const tb = typeRank[b.service_type] ?? 99;
+            return ta - tb;
+          });
+        setServices(list);
         setLoading(false);
       }
 
