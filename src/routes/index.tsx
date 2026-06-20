@@ -349,7 +349,7 @@ function Testimonials() {
     { name: "Diana H.", text: "Wallet-i funksionon perfekt, mbusha 20€ dhe brenda minutash kisha porosinë gati." },
     { name: "Krenar V.", text: "I përdora për Instagram dhe rezultatet erdhen menjëherë. Çmime shumë konkurruese!" },
     { name: "Anila B.", text: "Mbështetja e klientit është e shkëlqyer. Më ndihmuan brenda pak minutash." },
-    { name: "Genti P.", text: "Më e mira faqe për followers në Shqipëri. Pa probleme, pa vonesa!" },
+    { name: "Genti P.", text: "Më e mira faqe për followers në Kosovë. Pa probleme, pa vonesa!" },
     { name: "Elsa R.", text: "Për Facebook page-in tim erdhen 5K followers brenda një dite. Mahnitëse!" },
     { name: "Driton M.", text: "Pagesa me kartë e thjeshtë dhe e sigurt. Do rekomandoj te të gjithë miqtë." },
     { name: "Vesa K.", text: "Likes erdhen menjëherë sapo bëra porosinë. Cilësi e lartë, çmim i ulët." },
