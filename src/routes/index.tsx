@@ -362,7 +362,7 @@ function Testimonials() {
         <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
           <TrendingUp className="h-3.5 w-3.5" /> Çfarë thonë klientët
         </div>
-        <h2 className="mt-4 text-4xl font-bold tracking-tight">Mbi 800 klientë të kënaqur</h2>
+        <h2 className="mt-4 text-4xl font-bold tracking-tight">Mbi 800 klientë të kënaqur në Kosovë</h2>
       </div>
 
       <div className="relative mt-12 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
