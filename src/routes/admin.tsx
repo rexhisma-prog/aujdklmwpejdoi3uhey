@@ -658,6 +658,32 @@ function OrdersManager() {
                       ))}
                     </select>
                   </td>
+                  <td className="px-4 py-3 min-w-[170px]">
+                    <div className="flex items-center gap-1">
+                      <input
+                        type="number"
+                        value={beforeDrafts[o.id] ?? (o.followers_before ?? "")}
+                        onChange={(e) => setBeforeDrafts((prev) => ({ ...prev, [o.id]: e.target.value }))}
+                        placeholder="Para"
+                        className="w-16 rounded-lg border border-border bg-background px-2 py-1 text-xs"
+                      />
+                      <span className="text-xs text-muted-foreground">→</span>
+                      <input
+                        type="number"
+                        value={afterDrafts[o.id] ?? (o.followers_after ?? "")}
+                        onChange={(e) => setAfterDrafts((prev) => ({ ...prev, [o.id]: e.target.value }))}
+                        placeholder="Pas"
+                        className="w-16 rounded-lg border border-border bg-background px-2 py-1 text-xs"
+                      />
+                      <button
+                        onClick={() => saveFollowers(o.id, { before: o.followers_before, after: o.followers_after })}
+                        disabled={savingId === o.id || (beforeDrafts[o.id] === undefined && afterDrafts[o.id] === undefined)}
+                        className="shrink-0 rounded-lg border border-border px-2 py-1 text-xs font-medium hover:border-primary hover:text-primary disabled:opacity-40"
+                      >
+                        Ruaj
+                      </button>
+                    </div>
+                  </td>
                   <td className="px-4 py-3 min-w-[220px]">
                     <div className="flex items-start gap-2">
                       <textarea
