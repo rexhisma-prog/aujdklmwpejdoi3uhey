@@ -468,6 +468,8 @@ function OrdersManager() {
     });
     load();
   };
+
+  const statusBadge = (s: string) => {
     const map: Record<string, string> = {
       pending: "bg-yellow-500/15 text-yellow-500 ring-yellow-500/30",
       in_progress: "bg-blue-500/15 text-blue-500 ring-blue-500/30",
