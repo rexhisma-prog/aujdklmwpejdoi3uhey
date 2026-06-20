@@ -57,40 +57,16 @@ export const Route = createFileRoute("/mbyll-profile-fake")({
 
 const platformIcon: Record<string, typeof Instagram> = {
   Instagram,
-  Facebook,
+  Twitter,
   TikTok: Music2,
 };
 
-const tiers = [
-  {
-    title: "Deri në 2.000 ndjekës",
-    desc: "Për profile dhe faqe të vogla që përdorin identitetin tuaj.",
-    keyword: "pak",
-    prices: [
-      { platform: "Instagram", price: "99.99€" },
-      { platform: "Facebook", price: "99.99€" },
-      { platform: "TikTok", price: "99.99€" },
-    ],
-  },
-  {
-    title: "2.001 – 50.000 ndjekës",
-    desc: "Për profile dhe faqe me ndjekës të shumtë.",
-    highlight: true,
-    keyword: "shumë",
-    prices: [
-      { platform: "Instagram", price: "249.99€" },
-      { platform: "Facebook", price: "199.99€" },
-      { platform: "TikTok", price: "129.99€" },
-    ],
-  },
-  {
-    title: "50.001 – 250.000 ndjekës",
-    desc: "Për profile dhe faqe të mëdha me audiencë të madhe.",
-    keyword: "vip",
-    prices: [
-      { platform: "Instagram", price: "362.49€" },
-    ],
-  },
+const CLOSURE_PRICE = "269.99€";
+
+const platforms = [
+  { platform: "Instagram", price: CLOSURE_PRICE },
+  { platform: "Twitter", price: CLOSURE_PRICE },
+  { platform: "TikTok", price: CLOSURE_PRICE },
 ];
 
 type ClosureService = { id: string; platform: string; name: string };
