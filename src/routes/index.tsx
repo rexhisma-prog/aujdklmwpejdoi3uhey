@@ -647,7 +647,7 @@ function Footer() {
         <p className="text-sm text-muted-foreground">© 2026 shtofollow.com. Të gjitha të drejtat të rezervuara.</p>
         <div className="flex gap-4 text-sm text-muted-foreground">
           <Link to="/login" className="hover:text-foreground">Hyr</Link>
-          <Link to="/register" className="hover:text-foreground">Regjistrohu</Link>
+          
           <Link to="/admin" className="hover:text-foreground">Admin</Link>
         </div>
       </div>
