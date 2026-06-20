@@ -604,6 +604,7 @@ function OrdersManager() {
                 <th className="px-4 py-3">Linku</th>
                 <th className="px-4 py-3">Totali</th>
                 <th className="px-4 py-3">Statusi</th>
+                <th className="px-4 py-3">Ndjekës para/pas</th>
                 <th className="px-4 py-3">Shënime</th>
               </tr>
             </thead>
