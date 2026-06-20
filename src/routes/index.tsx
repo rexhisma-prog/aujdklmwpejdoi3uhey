@@ -167,7 +167,18 @@ function Header() {
 }
 
 function LiveGrowthCard() {
-  const cities = ["Prishtinë", "Prizren", "Pejë", "Gjakovë", "Ferizaj", "Mitrovicë", "Gjilan", "Vushtrri"];
+  const emails = [
+    "ar****@gmail.com",
+    "bl****@gmail.com",
+    "dr****@hotmail.com",
+    "en****@gmail.com",
+    "fl****@gmail.com",
+    "gj****@yahoo.com",
+    "le****@gmail.com",
+    "ri****@gmail.com",
+    "va****@gmail.com",
+    "ze****@hotmail.com",
+  ];
   const platforms = [
     { name: "Instagram", icon: Instagram, action: "Followers" },
     { name: "TikTok", icon: Music2, action: "Shikime" },
@@ -177,7 +188,7 @@ function LiveGrowthCard() {
   const [followers, setFollowers] = useState(12480);
   const [progress, setProgress] = useState(72);
   const [platformIdx, setPlatformIdx] = useState(0);
-  const [feed, setFeed] = useState<{ id: number; city: string; qty: number; platform: string }[]>([]);
+  const [feed, setFeed] = useState<{ id: number; email: string; qty: number; platform: string }[]>([]);
 
   useEffect(() => {
     const t1 = setInterval(() => {
@@ -193,7 +204,7 @@ function LiveGrowthCard() {
       setFeed((prev) => {
         const next = {
           id: Date.now(),
-          city: cities[Math.floor(Math.random() * cities.length)],
+          email: emails[Math.floor(Math.random() * emails.length)],
           qty: (Math.floor(Math.random() * 9) + 1) * 100,
           platform: platforms[Math.floor(Math.random() * platforms.length)].name,
         };
@@ -286,7 +297,7 @@ function LiveGrowthCard() {
           >
             <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
             <span className="text-muted-foreground">
-              <span className="font-semibold text-foreground">{f.city}</span> · +{f.qty} {f.platform}
+              <span className="font-semibold text-foreground">{f.email}</span> · +{f.qty} {f.platform}
             </span>
             <span className="ml-auto shrink-0 font-semibold text-primary">tani</span>
           </div>
