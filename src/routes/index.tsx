@@ -290,8 +290,8 @@ function ProfileLookup() {
 
 function Features() {
   const items = [
-    { icon: Wallet, title: "Wallet EUR", desc: "Mbush balancin me kartë bankare në mënyrë të sigurt." },
-    { icon: ShoppingCart, title: "Porosi të shpejta", desc: "Zgjidh shërbimin dhe porosit menjëherë." },
+    { icon: Wallet, title: "Wallet EUR", desc: "Mbush balancin me kartë bankare — i përshtatshëm për Kosovën." },
+    { icon: ShoppingCart, title: "Porosi të shpejta", desc: "Zgjidh shërbimin dhe porosit menjëherë, kudo në Kosovë." },
     { icon: ShieldCheck, title: "I sigurt", desc: "Të gjitha transaksionet janë të sigurta dhe të mbrojtura." },
   ];
   return (
