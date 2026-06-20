@@ -384,6 +384,8 @@ function OrdersManager() {
   const [loading, setLoading] = useState(true);
   const [savingId, setSavingId] = useState<string | null>(null);
   const [noteDrafts, setNoteDrafts] = useState<Record<string, string>>({});
+  const [beforeDrafts, setBeforeDrafts] = useState<Record<string, string>>({});
+  const [afterDrafts, setAfterDrafts] = useState<Record<string, string>>({});
 
   const load = async () => {
     const { data } = await supabase
