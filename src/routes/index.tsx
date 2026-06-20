@@ -307,35 +307,10 @@ function Features() {
           </div>
         ))}
       </div>
-
-      <h2 className="mt-16 mb-6 text-2xl font-bold tracking-tight">Shërbimet tona</h2>
-      <Link
-        to="/mbyll-profile-fake"
-        className="group flex flex-col gap-4 rounded-3xl border border-primary/30 bg-gradient-to-br from-primary/10 via-card to-card p-6 transition hover:border-primary/50 hover:shadow-[var(--shadow-glow)] sm:flex-row sm:items-center sm:justify-between"
-      >
-        <div className="flex items-start gap-4">
-          <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
-            <Shield className="h-6 w-6" />
-          </div>
-          <div>
-            <div className="flex flex-wrap items-center gap-2">
-              <h3 className="text-lg font-semibold">🛡️ Mbyllja e Profileve dhe Faqeve Fake</h3>
-              <span className="rounded-full bg-primary/15 px-2.5 py-0.5 text-xs font-medium text-primary ring-1 ring-primary/30">
-                Nga 99.99€
-              </span>
-            </div>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Mbyllim profile dhe faqe false në Instagram, Facebook dhe TikTok që përdorin identitetin ose markën tuaj.
-            </p>
-          </div>
-        </div>
-        <span className="shrink-0 rounded-xl bg-primary px-5 py-2.5 text-center text-sm font-semibold text-primary-foreground transition group-hover:opacity-90">
-          Shiko shërbimin
-        </span>
-      </Link>
     </section>
   );
 }
+
 
 function LiveStats() {
   // Numrat rriten gradualisht çdo 12 orë (followers +500, shikime +1000, përdorues +1500)
