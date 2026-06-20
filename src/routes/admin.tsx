@@ -445,7 +445,29 @@ function OrdersManager() {
     load();
   };
 
-  const statusBadge = (s: string) => {
+  const saveFollowers = async (id: string, current: { before: number | null; after: number | null }) => {
+    setSavingId(id);
+    const rawBefore = beforeDrafts[id];
+    const rawAfter = afterDrafts[id];
+    const before = rawBefore === undefined ? current.before : rawBefore === "" ? null : Number(rawBefore);
+    const after = rawAfter === undefined ? current.after : rawAfter === "" ? null : Number(rawAfter);
+    await supabase
+      .from("orders")
+      .update({ followers_before: before, followers_after: after })
+      .eq("id", id);
+    setSavingId(null);
+    setBeforeDrafts((prev) => {
+      const next = { ...prev };
+      delete next[id];
+      return next;
+    });
+    setAfterDrafts((prev) => {
+      const next = { ...prev };
+      delete next[id];
+      return next;
+    });
+    load();
+  };
     const map: Record<string, string> = {
       pending: "bg-yellow-500/15 text-yellow-500 ring-yellow-500/30",
       in_progress: "bg-blue-500/15 text-blue-500 ring-blue-500/30",
