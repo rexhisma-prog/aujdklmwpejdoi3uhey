@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { Wallet, ShoppingCart, Instagram, Music2, Facebook, Heart, Eye, Users, LogOut, Plus, Gift, Copy, Check } from "lucide-react";
+import { Wallet, ShoppingCart, Instagram, Music2, Facebook, Heart, Eye, Users, LogOut, Plus, Gift, Copy, Check, MessageCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
@@ -286,6 +286,28 @@ function ClientDashboard() {
             >
               <Plus className="h-4 w-4" /> Mbush balancin
             </Link>
+          </div>
+        </section>
+
+        {/* Contact / support */}
+        <section className="rounded-3xl border border-border bg-card/50 p-6">
+          <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+            <div>
+              <div className="flex items-center gap-2 text-sm font-semibold">
+                <MessageCircle className="h-4 w-4 text-primary" /> Ke nevojë për ndihmë?
+              </div>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Na kontakto në WhatsApp në <span className="font-semibold text-foreground">+49 163 4371067</span>
+              </p>
+            </div>
+            <a
+              href="https://wa.me/491634371067"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] hover:opacity-90"
+            >
+              <MessageCircle className="h-4 w-4" /> Kontakto në WhatsApp
+            </a>
           </div>
         </section>
 
