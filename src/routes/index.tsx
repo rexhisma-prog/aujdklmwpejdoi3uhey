@@ -184,7 +184,7 @@ function Hero() {
             <span className="h-5 w-5 rounded-full border border-background bg-primary/30" />
           </div>
           <span className="text-[10px] font-semibold uppercase tracking-widest text-primary">
-            2,233+ klientë aktivë
+            2,233+ klientë aktivë në Kosovë
           </span>
         </div>
 
@@ -290,8 +290,8 @@ function ProfileLookup() {
 
 function Features() {
   const items = [
-    { icon: Wallet, title: "Wallet EUR", desc: "Mbush balancin me kartë bankare në mënyrë të sigurt." },
-    { icon: ShoppingCart, title: "Porosi të shpejta", desc: "Zgjidh shërbimin dhe porosit menjëherë." },
+    { icon: Wallet, title: "Wallet EUR", desc: "Mbush balancin me kartë bankare — i përshtatshëm për Kosovën." },
+    { icon: ShoppingCart, title: "Porosi të shpejta", desc: "Zgjidh shërbimin dhe porosit menjëherë, kudo në Kosovë." },
     { icon: ShieldCheck, title: "I sigurt", desc: "Të gjitha transaksionet janë të sigurta dhe të mbrojtura." },
   ];
   return (
@@ -318,9 +318,9 @@ function LiveStats() {
   const periods = Math.max(0, Math.floor((Date.now() - START) / (12 * 60 * 60 * 1000)));
   const fmt = (n: number) => n.toLocaleString("en-US");
   const stats = [
-    { icon: Users, value: fmt(12480 + periods * 500), label: "Followers të dërguar sot" },
+    { icon: Users, value: fmt(12480 + periods * 500), label: "Followers të dërguar sot në Kosovë" },
     { icon: Eye, value: fmt(98210 + periods * 1000), label: "Shikime në rrjete sociale" },
-    { icon: Heart, value: fmt(2233), label: "Përdorues aktivë" },
+    { icon: Heart, value: fmt(2233), label: "Përdorues aktivë në Kosovë" },
   ];
   return (
     <section className="border-y border-border bg-card/50">
@@ -362,7 +362,7 @@ function Testimonials() {
         <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
           <TrendingUp className="h-3.5 w-3.5" /> Çfarë thonë klientët
         </div>
-        <h2 className="mt-4 text-4xl font-bold tracking-tight">Mbi 800 klientë të kënaqur</h2>
+        <h2 className="mt-4 text-4xl font-bold tracking-tight">Mbi 800 klientë të kënaqur në Kosovë</h2>
       </div>
 
       <div className="relative mt-12 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
