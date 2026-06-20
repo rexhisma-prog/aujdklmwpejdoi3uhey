@@ -124,7 +124,7 @@ function MbyllProfileFake() {
           <div className="absolute inset-0 -z-10" style={{ background: "var(--gradient-hero)" }} />
           <div className="mx-auto max-w-4xl px-6 pt-20 pb-16 text-center">
             <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-medium text-primary">
-              <Shield className="h-3.5 w-3.5" /> Nga 99.99€
+              <Shield className="h-3.5 w-3.5" /> Çmim fiks 269.99€
             </div>
             <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-[var(--shadow-glow)]">
               <Shield className="h-8 w-8" />
