@@ -154,12 +154,6 @@ function Header() {
           <Link to="/login" className="rounded-lg px-4 py-2 text-sm font-medium text-muted-foreground transition hover:text-foreground">
             Hyr
           </Link>
-          <Link
-            to="/register"
-            className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:opacity-90"
-          >
-            Regjistrohu
-          </Link>
         </nav>
       </div>
     </header>
