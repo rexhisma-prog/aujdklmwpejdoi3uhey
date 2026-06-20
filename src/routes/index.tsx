@@ -173,36 +173,82 @@ function Hero() {
         className="absolute inset-0 -z-10"
         style={{ background: "var(--gradient-hero)" }}
       />
-      <div className="mx-auto max-w-7xl px-6 pt-24 pb-20 text-center">
-        <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-medium text-primary">
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+      <div className="pointer-events-none absolute left-1/2 top-1/3 -z-10 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/20 blur-[120px]" />
+
+      <div className="mx-auto flex max-w-3xl flex-col items-center gap-8 px-6 pt-20 pb-20 text-center">
+        {/* Social proof badge */}
+        <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1.5 backdrop-blur-md">
+          <div className="flex -space-x-2">
+            <span className="h-5 w-5 rounded-full border border-background bg-primary/90" />
+            <span className="h-5 w-5 rounded-full border border-background bg-primary/60" />
+            <span className="h-5 w-5 rounded-full border border-background bg-primary/30" />
+          </div>
+          <span className="text-[10px] font-semibold uppercase tracking-widest text-primary">
+            2,233+ klientë aktivë
           </span>
-          Live — 800+ klientë të kënaqur
         </div>
-        <h1 className="mx-auto max-w-4xl text-5xl font-bold leading-tight tracking-tight md:text-7xl">
-          Rritu në rrjetet{" "}
-          <span
-            className="bg-clip-text text-transparent"
-            style={{ backgroundImage: "var(--gradient-primary)" }}
+
+        {/* Headline */}
+        <div>
+          <h1 className="text-5xl font-bold leading-[1.1] tracking-tight md:text-7xl">
+            Rritu në rrjetet{" "}
+            <span
+              className="bg-clip-text text-transparent"
+              style={{ backgroundImage: "var(--gradient-primary)" }}
+            >
+              sociale
+            </span>
+          </h1>
+          <p className="mx-auto mt-5 max-w-md text-base leading-relaxed text-muted-foreground">
+            Platforma numër #1 në Shqipëri për rritjen e Instagram, TikTok dhe Facebook në kohë reale.
+          </p>
+        </div>
+
+        {/* Growth visualization card */}
+        <div className="relative w-full max-w-[320px] overflow-hidden rounded-3xl border border-border bg-card/60 p-6 shadow-[var(--shadow-elegant)] backdrop-blur-xl">
+          <svg
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+            className="pointer-events-none absolute inset-0 h-full w-full fill-none stroke-primary stroke-2 opacity-10"
           >
-            sociale
-          </span>
-        </h1>
-        <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-          Shto dhe rriti Followat, Pëlqimet dhe Shikimet në Instagram, TikTok dhe Facebook — shpejt, sigurt dhe me çmime të lira.
-        </p>
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+            <path d="M0,80 Q25,75 40,50 T70,30 T100,10" />
+          </svg>
+          <div className="relative grid grid-cols-2 gap-4">
+            <div className="flex flex-col gap-4">
+              <div className="rounded-2xl border border-border bg-background/40 p-3 text-left">
+                <div className="mb-2 inline-flex h-7 w-7 items-center justify-center rounded-lg bg-primary/15 text-primary">
+                  <Instagram className="h-4 w-4" />
+                </div>
+                <span className="block text-[10px] text-muted-foreground">Instagram</span>
+                <span className="block text-sm font-bold">+12.4k</span>
+              </div>
+              <div className="rounded-2xl bg-primary p-3 text-left text-primary-foreground shadow-[var(--shadow-glow)]">
+                <div className="mb-2 inline-flex h-7 w-7 items-center justify-center rounded-lg bg-background/20">
+                  <Music2 className="h-4 w-4" />
+                </div>
+                <span className="block text-[10px] font-bold opacity-80">TikTok</span>
+                <span className="block text-sm font-black">AKTIV</span>
+              </div>
+            </div>
+            <div className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-border bg-background/40 p-4">
+              <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent [animation-duration:8s]" />
+              <span className="text-[10px] uppercase tracking-tight text-muted-foreground">Përpunim...</span>
+              <span className="text-xs font-bold text-primary">98%</span>
+            </div>
+          </div>
+        </div>
+
+        {/* CTAs */}
+        <div className="flex w-full max-w-[320px] flex-col gap-3">
           <Link
             to="/login"
-            className="rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:opacity-90"
+            className="w-full rounded-2xl bg-primary px-6 py-4 text-center text-sm font-bold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:scale-[1.02] active:scale-95"
           >
             Hyr ne panel
           </Link>
           <Link
             to="/register"
-            className="rounded-xl border border-border bg-card px-6 py-3 text-sm font-semibold transition hover:border-primary/50"
+            className="w-full rounded-2xl border border-border bg-card px-6 py-4 text-center text-sm font-semibold transition hover:border-primary/50"
           >
             Mbush balancin
           </Link>
