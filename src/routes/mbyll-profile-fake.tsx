@@ -5,7 +5,7 @@ import {
   ShieldCheck,
   Shield,
   Instagram,
-  Facebook,
+  Twitter,
   Music2,
   Check,
   ArrowLeft,
@@ -14,6 +14,7 @@ import {
   Eye,
   Headphones,
   Clock,
+  RotateCcw,
   MessageCircle,
 } from "lucide-react";
 
@@ -24,13 +25,13 @@ export const Route = createFileRoute("/mbyll-profile-fake")({
       {
         name: "description",
         content:
-          "Mbyllim profile dhe faqe false në Instagram, Facebook dhe TikTok që përdorin emrin, fotografinë ose markën tuaj. Nga 99.99€.",
+          "Mbyllim profile dhe faqe false në Instagram, Twitter dhe TikTok që përdorin emrin, fotografinë ose markën tuaj. Çmim fiks 269.99€. Nëse mbyllja nuk realizohet, paratë kthehen 100%.",
       },
       { property: "og:title", content: "Mbyllja e Profileve dhe Faqeve Fake — ShtoFollow.com" },
       {
         property: "og:description",
         content:
-          "Ndihmojmë persona dhe biznese të mbyllin profile dhe faqe false në Instagram, Facebook dhe TikTok. Nga 99.99€.",
+          "Ndihmojmë persona dhe biznese të mbyllin profile dhe faqe false në Instagram, Twitter dhe TikTok. Çmim fiks 269.99€ — kthim parash 100% nëse nuk realizohet.",
       },
       { property: "og:url", content: "https://shtofollow.com/mbyll-profile-fake" },
     ],
@@ -43,10 +44,10 @@ export const Route = createFileRoute("/mbyll-profile-fake")({
           "@type": "Service",
           name: "Mbyllja e Profileve dhe Faqeve Fake",
           description:
-            "Mbyllim profile dhe faqe false në Instagram, Facebook dhe TikTok që përdorin emrin, fotografinë ose markën tuaj.",
+            "Mbyllim profile dhe faqe false në Instagram, Twitter dhe TikTok që përdorin emrin, fotografinë ose markën tuaj.",
           provider: { "@type": "Organization", name: "ShtoFollow.com", url: "https://shtofollow.com" },
           areaServed: "AL",
-          offers: { "@type": "Offer", priceCurrency: "EUR", price: "99.99" },
+          offers: { "@type": "Offer", priceCurrency: "EUR", price: "269.99" },
         }),
       },
     ],
@@ -56,40 +57,16 @@ export const Route = createFileRoute("/mbyll-profile-fake")({
 
 const platformIcon: Record<string, typeof Instagram> = {
   Instagram,
-  Facebook,
+  Twitter,
   TikTok: Music2,
 };
 
-const tiers = [
-  {
-    title: "Deri në 2.000 ndjekës",
-    desc: "Për profile dhe faqe të vogla që përdorin identitetin tuaj.",
-    keyword: "pak",
-    prices: [
-      { platform: "Instagram", price: "99.99€" },
-      { platform: "Facebook", price: "99.99€" },
-      { platform: "TikTok", price: "99.99€" },
-    ],
-  },
-  {
-    title: "2.001 – 50.000 ndjekës",
-    desc: "Për profile dhe faqe me ndjekës të shumtë.",
-    highlight: true,
-    keyword: "shumë",
-    prices: [
-      { platform: "Instagram", price: "249.99€" },
-      { platform: "Facebook", price: "199.99€" },
-      { platform: "TikTok", price: "129.99€" },
-    ],
-  },
-  {
-    title: "50.001 – 250.000 ndjekës",
-    desc: "Për profile dhe faqe të mëdha me audiencë të madhe.",
-    keyword: "vip",
-    prices: [
-      { platform: "Instagram", price: "362.49€" },
-    ],
-  },
+const CLOSURE_PRICE = "269.99€";
+
+const platforms = [
+  { platform: "Instagram", price: CLOSURE_PRICE },
+  { platform: "Twitter", price: CLOSURE_PRICE },
+  { platform: "TikTok", price: CLOSURE_PRICE },
 ];
 
 type ClosureService = { id: string; platform: string; name: string };
@@ -119,11 +96,9 @@ function MbyllProfileFake() {
     };
   }, []);
 
-  const findServiceId = (platform: string, keyword: string) => {
+  const findServiceId = (platform: string) => {
     return services.find(
-      (s) =>
-        s.platform.toLowerCase() === platform.toLowerCase() &&
-        s.name.toLowerCase().includes(keyword),
+      (s) => s.platform.toLowerCase() === platform.toLowerCase(),
     )?.id;
   };
 
@@ -149,7 +124,7 @@ function MbyllProfileFake() {
           <div className="absolute inset-0 -z-10" style={{ background: "var(--gradient-hero)" }} />
           <div className="mx-auto max-w-4xl px-6 pt-20 pb-16 text-center">
             <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-medium text-primary">
-              <Shield className="h-3.5 w-3.5" /> Nga 99.99€
+              <Shield className="h-3.5 w-3.5" /> Çmim fiks 269.99€
             </div>
             <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-[var(--shadow-glow)]">
               <Shield className="h-8 w-8" />
@@ -162,11 +137,17 @@ function MbyllProfileFake() {
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
               Ndihmojmë persona dhe biznese të mbyllin profile dhe faqe false që përdorin emrin, fotografinë ose markën
-              e tyre në Instagram, Facebook dhe TikTok.
+              e tyre në Instagram, Twitter dhe TikTok.
             </p>
-            <div className="mx-auto mt-6 inline-flex items-center gap-2 rounded-xl border border-primary/20 bg-primary/5 px-4 py-2 text-sm text-foreground">
-              <Clock className="h-4 w-4 text-primary" />
-              Mbyllja mund të zgjasë nga <span className="font-semibold text-primary">2 deri në 72 orë</span>.
+            <div className="mx-auto mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+              <div className="inline-flex items-center gap-2 rounded-xl border border-primary/20 bg-primary/5 px-4 py-2 text-sm text-foreground">
+                <Clock className="h-4 w-4 text-primary" />
+                Mbyllja zgjat nga <span className="font-semibold text-primary">2 deri në 72 orë</span>.
+              </div>
+              <div className="inline-flex items-center gap-2 rounded-xl border border-primary/20 bg-primary/5 px-4 py-2 text-sm text-foreground">
+                <RotateCcw className="h-4 w-4 text-primary" />
+                Nuk realizohet? <span className="font-semibold text-primary">Kthim parash 100%</span>.
+              </div>
             </div>
             <div className="mt-10">
               <a
@@ -180,64 +161,67 @@ function MbyllProfileFake() {
         </section>
 
         {/* Çmimet */}
-        <section id="cmimet" className="mx-auto max-w-5xl px-6 py-16">
+        <section id="cmimet" className="mx-auto max-w-3xl px-6 py-16">
           <div className="text-center">
-            <h2 className="text-3xl font-bold tracking-tight">Çmimet</h2>
-            <p className="mt-3 text-muted-foreground">Çmime fikse sipas madhësisë së profilit ose faqes.</p>
+            <h2 className="text-3xl font-bold tracking-tight">Çmimi</h2>
+            <p className="mt-3 text-muted-foreground">
+              Një çmim i vetëm fiks për të gjitha platformat.
+            </p>
+            <div className="mx-auto mt-6 inline-flex items-baseline gap-1">
+              <span className="text-5xl font-bold text-primary">269.99€</span>
+              <span className="text-muted-foreground">/ profil</span>
+            </div>
           </div>
 
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {tiers.map((tier) => (
-              <div
-                key={tier.title}
-                className={`rounded-3xl border bg-card p-7 ${
-                  tier.highlight
-                    ? "border-primary/40 shadow-[var(--shadow-glow)]"
-                    : "border-border shadow-[var(--shadow-elegant)]"
-                }`}
-              >
-                <h3 className="text-xl font-bold">{tier.title}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{tier.desc}</p>
-                <ul className="mt-6 space-y-3">
-                  {tier.prices.map((p) => {
-                    const Icon = platformIcon[p.platform] ?? Shield;
-                    const serviceId = findServiceId(p.platform, tier.keyword);
-                    const content = (
-                      <>
-                        <span className="inline-flex items-center gap-2 text-sm font-medium">
-                          <Icon className="h-4 w-4 text-primary" /> {p.platform}
-                        </span>
-                        <span className="inline-flex items-center gap-2">
-                          <span className="text-lg font-bold text-primary">{p.price}</span>
-                          {serviceId && <Shield className="h-4 w-4 text-primary" />}
-                        </span>
-                      </>
-                    );
-                    return serviceId ? (
-                      <li key={p.platform}>
-                        <Link
-                          to="/order/$serviceId"
-                          params={{ serviceId }}
-                          className="flex items-center justify-between rounded-xl border border-border bg-background px-4 py-3 transition hover:border-primary/50 hover:bg-primary/5"
-                        >
-                          {content}
-                        </Link>
-                      </li>
-                    ) : (
-                      <li
-                        key={p.platform}
-                        className="flex items-center justify-between rounded-xl border border-border bg-background px-4 py-3"
-                      >
-                        {content}
-                      </li>
-                    );
-                  })}
-                </ul>
+          <div className="mt-10 grid gap-4 sm:grid-cols-3">
+            {platforms.map((p) => {
+              const Icon = platformIcon[p.platform] ?? Shield;
+              const serviceId = findServiceId(p.platform);
+              const content = (
+                <>
+                  <span className="inline-flex items-center gap-2 text-sm font-medium">
+                    <Icon className="h-4 w-4 text-primary" /> {p.platform}
+                  </span>
+                  <span className="inline-flex items-center gap-2">
+                    <span className="text-lg font-bold text-primary">{p.price}</span>
+                    {serviceId && <Shield className="h-4 w-4 text-primary" />}
+                  </span>
+                </>
+              );
+              return serviceId ? (
+                <Link
+                  key={p.platform}
+                  to="/order/$serviceId"
+                  params={{ serviceId }}
+                  className="flex items-center justify-between rounded-2xl border border-border bg-card px-5 py-4 transition hover:border-primary/50 hover:bg-primary/5"
+                >
+                  {content}
+                </Link>
+              ) : (
+                <div
+                  key={p.platform}
+                  className="flex items-center justify-between rounded-2xl border border-border bg-card px-5 py-4"
+                >
+                  {content}
+                </div>
+              );
+            })}
+          </div>
 
-              </div>
-            ))}
+          {/* Garanci kthimi parash */}
+          <div className="mx-auto mt-10 flex max-w-2xl items-center gap-4 rounded-2xl border border-primary/30 bg-primary/5 px-6 py-5">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary ring-1 ring-primary/30">
+              <RotateCcw className="h-6 w-6" />
+            </div>
+            <div>
+              <p className="font-semibold">Garanci: kthim parash 100%</p>
+              <p className="text-sm text-muted-foreground">
+                Nëse mbyllja nuk realizohet, paratë ju kthehen plotësisht — 100%.
+              </p>
+            </div>
           </div>
         </section>
+
 
         {/* Përfshihen */}
         <section className="border-y border-border bg-card/50">
