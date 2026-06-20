@@ -323,27 +323,6 @@ function ClientDashboard() {
           </div>
         </section>
 
-        {/* Fake profile closure */}
-        <section className="rounded-3xl border border-primary/30 bg-gradient-to-br from-primary/20 via-card to-card p-6 shadow-[var(--shadow-glow)]">
-          <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-primary/15 px-3 py-1 text-xs font-medium text-primary ring-1 ring-primary/30">
-                <ShieldCheck className="h-3.5 w-3.5" /> Mbyllje profilesh fake
-              </div>
-              <h2 className="mt-3 text-xl font-bold">Instagram, TikTok dhe Facebook</h2>
-              <p className="mt-1 max-w-md text-sm text-muted-foreground">
-                Shiko çmimet dhe zgjidh shërbimin për mbyllje profili ose faqeje fake.
-              </p>
-            </div>
-            <Link
-              to="/mbyll-profile-fake"
-              className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] hover:opacity-90"
-            >
-              <ShieldCheck className="h-4 w-4" /> Shiko shërbimet
-            </Link>
-          </div>
-        </section>
-
         {/* Referral promo */}
         <section className="relative overflow-hidden rounded-3xl border border-primary/30 bg-gradient-to-br from-primary/20 via-card to-card p-6 shadow-[var(--shadow-glow)]">
           <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-primary/20 blur-3xl" />
@@ -376,6 +355,26 @@ function ClientDashboard() {
           </div>
         </section>
 
+        {/* Fake profile closure */}
+        <section className="rounded-3xl border border-primary/30 bg-gradient-to-br from-primary/20 via-card to-card p-6 shadow-[var(--shadow-glow)]">
+          <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full bg-primary/15 px-3 py-1 text-xs font-medium text-primary ring-1 ring-primary/30">
+                <ShieldCheck className="h-3.5 w-3.5" /> Mbyllje profilesh fake
+              </div>
+              <h2 className="mt-3 text-xl font-bold">Instagram, TikTok dhe Facebook</h2>
+              <p className="mt-1 max-w-md text-sm text-muted-foreground">
+                Shiko çmimet dhe zgjidh shërbimin për mbyllje profili ose faqeje fake.
+              </p>
+            </div>
+            <Link
+              to="/mbyll-profile-fake"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] hover:opacity-90"
+            >
+              <ShieldCheck className="h-4 w-4" /> Shiko shërbimet
+            </Link>
+          </div>
+        </section>
 
         <section>
           <h2 className="mb-4 text-lg font-semibold">Shërbimet tona</h2>
