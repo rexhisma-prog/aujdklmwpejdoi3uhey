@@ -370,6 +370,8 @@ type Order = {
   total_price_eur: number;
   status: string;
   notes: string | null;
+  followers_before: number | null;
+  followers_after: number | null;
   created_at: string;
   services?: { name: string; platform: string; service_type: string } | null;
 };
