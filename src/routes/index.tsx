@@ -468,13 +468,17 @@ function Testimonials() {
   ];
   // duplicate for seamless loop
   const loop = [...items, ...items];
+  // grows by 30 every 12 hours from a fixed base
+  const baseDate = new Date("2026-06-20T00:00:00Z").getTime();
+  const periods = Math.max(0, Math.floor((Date.now() - baseDate) / (12 * 60 * 60 * 1000)));
+  const clientCount = 800 + periods * 30;
   return (
     <section className="overflow-hidden py-20">
       <div className="mx-auto max-w-7xl px-6 text-center">
         <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
           <TrendingUp className="h-3.5 w-3.5" /> Çfarë thonë klientët
         </div>
-        <h2 className="mt-4 text-4xl font-bold tracking-tight">Mbi 800 klientë të kënaqur në Kosovë</h2>
+        <h2 className="mt-4 text-4xl font-bold tracking-tight">Mbi {clientCount.toLocaleString("en-US")} klientë të kënaqur në Kosovë</h2>
       </div>
 
       <div className="relative mt-12 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
