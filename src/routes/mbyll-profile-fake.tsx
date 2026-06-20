@@ -25,13 +25,13 @@ export const Route = createFileRoute("/mbyll-profile-fake")({
       {
         name: "description",
         content:
-          "Mbyllim profile dhe faqe false në Instagram, Facebook dhe TikTok që përdorin emrin, fotografinë ose markën tuaj. Nga 99.99€.",
+          "Mbyllim profile dhe faqe false në Instagram, Twitter dhe TikTok që përdorin emrin, fotografinë ose markën tuaj. Çmim fiks 269.99€. Nëse mbyllja nuk realizohet, paratë kthehen 100%.",
       },
       { property: "og:title", content: "Mbyllja e Profileve dhe Faqeve Fake — ShtoFollow.com" },
       {
         property: "og:description",
         content:
-          "Ndihmojmë persona dhe biznese të mbyllin profile dhe faqe false në Instagram, Facebook dhe TikTok. Nga 99.99€.",
+          "Ndihmojmë persona dhe biznese të mbyllin profile dhe faqe false në Instagram, Twitter dhe TikTok. Çmim fiks 269.99€ — kthim parash 100% nëse nuk realizohet.",
       },
       { property: "og:url", content: "https://shtofollow.com/mbyll-profile-fake" },
     ],
@@ -44,10 +44,10 @@ export const Route = createFileRoute("/mbyll-profile-fake")({
           "@type": "Service",
           name: "Mbyllja e Profileve dhe Faqeve Fake",
           description:
-            "Mbyllim profile dhe faqe false në Instagram, Facebook dhe TikTok që përdorin emrin, fotografinë ose markën tuaj.",
+            "Mbyllim profile dhe faqe false në Instagram, Twitter dhe TikTok që përdorin emrin, fotografinë ose markën tuaj.",
           provider: { "@type": "Organization", name: "ShtoFollow.com", url: "https://shtofollow.com" },
           areaServed: "AL",
-          offers: { "@type": "Offer", priceCurrency: "EUR", price: "99.99" },
+          offers: { "@type": "Offer", priceCurrency: "EUR", price: "269.99" },
         }),
       },
     ],
