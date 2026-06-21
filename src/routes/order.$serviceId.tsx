@@ -53,6 +53,11 @@ function OrderPage() {
         .select("*")
         .eq("id", serviceId)
         .maybeSingle();
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("balance_eur")
+        .eq("user_id", user.id)
+        .maybeSingle();
       if (!mounted) return;
       if (!data) {
         setError("Shërbimi nuk u gjet.");
@@ -60,6 +65,7 @@ function OrderPage() {
         setService(data as Service);
         setQuantity(Math.max(1000, (data as Service).quantity || 1000));
         setUserId(user.id);
+        setBalance(Number(profile?.balance_eur ?? 0));
       }
       setLoading(false);
     })();
