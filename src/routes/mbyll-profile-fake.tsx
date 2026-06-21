@@ -126,6 +126,13 @@ function MbyllProfileFake() {
             <span className="text-primary">Follow</span>
             <span className="text-muted-foreground">.com</span>
           </Link>
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+          >
+            <LogOut className="h-4 w-4" /> Dilni
+          </button>
         </div>
       </header>
 
