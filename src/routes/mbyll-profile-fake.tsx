@@ -16,6 +16,7 @@ import {
   Clock,
   RotateCcw,
   MessageCircle,
+  LogOut,
 } from "lucide-react";
 
 export const Route = createFileRoute("/mbyll-profile-fake")({
