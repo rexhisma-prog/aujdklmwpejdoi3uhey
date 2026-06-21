@@ -376,23 +376,23 @@ function ClientDashboard() {
           </div>
         </section>
 
-        {/* Report tool */}
+        {/* Report assistance */}
         <section className="rounded-3xl border border-primary/30 bg-gradient-to-br from-primary/20 via-card to-card p-6 shadow-[var(--shadow-glow)]">
           <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
             <div>
               <div className="inline-flex items-center gap-2 rounded-full bg-primary/15 px-3 py-1 text-xs font-medium text-primary ring-1 ring-primary/30">
-                <ShieldCheck className="h-3.5 w-3.5" /> Tool për raportim — 29.99€
+                <ShieldCheck className="h-3.5 w-3.5" /> Asistencë raportimi — 29.99€
               </div>
-              <h2 className="mt-3 text-xl font-bold">Raporto profile fake / që shkelin politikat</h2>
+              <h2 className="mt-3 text-xl font-bold">Përpilim raportimi për mbylljen e profileve</h2>
               <p className="mt-1 max-w-md text-sm text-muted-foreground">
-                Ndihmesë për përpilimin e raporteve në anglisht dhe udhëzime për hapat zyrtarë.
+                Asistencë për përpilimin e raportit në anglisht dhe udhëzime për hapat zyrtarë.
               </p>
             </div>
             <Link
               to="/raporto-profil"
               className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] hover:opacity-90"
             >
-              <ShieldCheck className="h-4 w-4" /> Hap tool-in
+              <ShieldCheck className="h-4 w-4" /> Shiko shërbimin
             </Link>
           </div>
         </section>
