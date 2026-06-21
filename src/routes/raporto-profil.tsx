@@ -195,6 +195,68 @@ function RaportoProfil() {
           </div>
         </section>
 
+        {/* Official links (gated) */}
+        <section className="mx-auto max-w-3xl px-6 py-14">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold tracking-tight">Linqet zyrtare të raportimit</h2>
+            <p className="mt-3 text-muted-foreground">
+              Linqet zyrtare hapen vetëm pas pagesës së asistencës.
+            </p>
+          </div>
+
+          <div className="relative mt-8">
+            <div className={`grid gap-2 sm:grid-cols-2 ${hasAccess ? "" : "pointer-events-none select-none blur-sm"}`}>
+              {officialLinks.map((l) => (
+                <a
+                  key={l.url}
+                  href={hasAccess ? l.url : undefined}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between gap-2 rounded-xl border border-border bg-card px-4 py-3 text-sm font-medium transition hover:border-primary/50 hover:bg-primary/5"
+                >
+                  <span>
+                    <span className="block text-xs text-muted-foreground">{l.platform}</span>
+                    {l.label}
+                  </span>
+                  <ExternalLink className="h-4 w-4 shrink-0 text-primary" />
+                </a>
+              ))}
+            </div>
+
+            {!checking && !hasAccess && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 rounded-2xl bg-background/70 px-6 text-center backdrop-blur-[2px]">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/15 text-primary ring-1 ring-primary/30">
+                  <Lock className="h-6 w-6" />
+                </div>
+                <p className="text-sm font-semibold">Linqet zyrtare hapen pas pagesës — 29.99€</p>
+                <p className="max-w-sm text-xs text-muted-foreground">
+                  Pas pagesës do të kesh akses te linqet zyrtare dhe te raporti i përpiluar.
+                </p>
+                {serviceId ? (
+                  <Link
+                    to="/order/$serviceId"
+                    params={{ serviceId }}
+                    className="mt-1 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:opacity-90"
+                  >
+                    <Shield className="h-4 w-4" /> Paguaj 29.99€ për t'i hapur
+                  </Link>
+                ) : (
+                  <a
+                    href="https://wa.me/491634371067"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-1 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:opacity-90"
+                  >
+                    <MessageCircle className="h-4 w-4" /> Na kontakto
+                  </a>
+                )}
+              </div>
+            )}
+          </div>
+        </section>
+
+
+
         {/* Porosit */}
         <section id="porosit" className="mx-auto max-w-3xl px-6 py-16">
           <div className="rounded-3xl border border-primary/30 bg-gradient-to-br from-primary/15 via-card to-card p-8 text-center shadow-[var(--shadow-glow)]">
