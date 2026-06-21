@@ -14,6 +14,9 @@ import {
   Check,
   MessageCircle,
   AlertTriangle,
+  Lock,
+  ExternalLink,
+  Info,
 } from "lucide-react";
 
 export const Route = createFileRoute("/raporto-profil")({
@@ -23,13 +26,13 @@ export const Route = createFileRoute("/raporto-profil")({
       {
         name: "description",
         content:
-          "Gjenero raportime profesionale në gjuhën angleze për profile fake ose që shkelin politikat e platformave (Instagram, Facebook, Twitter, TikTok). Çmim 49.99€.",
+          "Ndihmesë për përpilimin e raporteve në anglisht dhe udhëzime për hapat zyrtarë të raportimit në Instagram, Facebook, Twitter dhe TikTok. Çmim 29.99€.",
       },
       { property: "og:title", content: "Tool për Raportim Profilesh Fake — ShtoFollow.com" },
       {
         property: "og:description",
         content:
-          "Krijo raportime të gatshme në anglisht për profile që shkelin politikat e Metas dhe platformave të tjera. Çmim 49.99€.",
+          "Ndihmesë për përpilimin e raporteve dhe tregimin e hapave zyrtarë për profile që shkelin politikat e platformave. Çmim 29.99€.",
       },
       { property: "og:url", content: "https://shtofollow.com/raporto-profil" },
     ],
@@ -47,6 +50,25 @@ const platformOptions = [
   { value: "TikTok", icon: Music2 },
 ] as const;
 
+const officialLinks: Record<string, { label: string; url: string }[]> = {
+  Instagram: [
+    { label: "Raporto imitim identiteti (impersonation)", url: "https://help.instagram.com/contact/636276399721841" },
+    { label: "Si të raportosh përmbajtje / llogari", url: "https://help.instagram.com/192435014247952" },
+  ],
+  Facebook: [
+    { label: "Raporto profil që imiton dikë", url: "https://www.facebook.com/help/contact/169486816580953" },
+    { label: "Si të raportosh diçka", url: "https://www.facebook.com/help/1380418588640631" },
+  ],
+  Twitter: [
+    { label: "Raporto imitim identiteti (X)", url: "https://help.twitter.com/forms/impersonation" },
+    { label: "Rregullat dhe politikat e X", url: "https://help.x.com/en/rules-and-policies" },
+  ],
+  TikTok: [
+    { label: "Raporto / dërgo feedback (TikTok)", url: "https://www.tiktok.com/legal/report/feedback" },
+    { label: "Udhëzimet e komunitetit", url: "https://www.tiktok.com/community-guidelines" },
+  ],
+};
+
 const reasonOptions: { id: string; label: string; clause: string }[] = [
   {
     id: "impersonation",
@@ -63,14 +85,12 @@ const reasonOptions: { id: string; label: string; clause: string }[] = [
   {
     id: "illegal",
     label: "Përmbajtje e paligjshme / e ndaluar",
-    clause:
-      "sharing or promoting unlawful, restricted, or otherwise prohibited content",
+    clause: "sharing or promoting unlawful, restricted, or otherwise prohibited content",
   },
   {
     id: "harassment",
     label: "Ngacmim / bullizëm",
-    clause:
-      "engaging in harassment, bullying, or targeted abuse directed at other users",
+    clause: "engaging in harassment, bullying, or targeted abuse directed at other users",
   },
   {
     id: "hate",
@@ -81,14 +101,12 @@ const reasonOptions: { id: string; label: string; clause: string }[] = [
   {
     id: "spam",
     label: "Spam / sjellje e rreme",
-    clause:
-      "spreading spam, fake engagement, or coordinated inauthentic behaviour",
+    clause: "spreading spam, fake engagement, or coordinated inauthentic behaviour",
   },
   {
     id: "privacy",
     label: "Shkelje e privatësisë",
-    clause:
-      "sharing private or personal information of others without their consent",
+    clause: "sharing private or personal information of others without their consent",
   },
 ];
 
@@ -121,6 +139,8 @@ A concerned member of the ${p} community`;
 
 function RaportoProfil() {
   const [serviceId, setServiceId] = useState<string | null>(null);
+  const [checking, setChecking] = useState(true);
+  const [hasAccess, setHasAccess] = useState(false);
   const [platform, setPlatform] = useState<string>("Instagram");
   const [username, setUsername] = useState("");
   const [selected, setSelected] = useState<string[]>(["impersonation"]);
@@ -129,14 +149,27 @@ function RaportoProfil() {
   useEffect(() => {
     let mounted = true;
     (async () => {
-      const { data } = await supabase
+      const { data: svc } = await supabase
         .from("services")
         .select("id, service_type")
         .eq("service_type", "report_tool")
         .eq("active", true)
         .limit(1)
         .maybeSingle();
-      if (mounted && data) setServiceId((data as ReportService).id);
+      const sid = svc ? (svc as ReportService).id : null;
+      if (mounted) setServiceId(sid);
+
+      const { data: sess } = await supabase.auth.getSession();
+      const user = sess.session?.user;
+      if (user && sid) {
+        const { count } = await supabase
+          .from("orders")
+          .select("id", { count: "exact", head: true })
+          .eq("user_id", user.id)
+          .eq("service_id", sid);
+        if (mounted) setHasAccess((count ?? 0) > 0);
+      }
+      if (mounted) setChecking(false);
     })();
     return () => {
       mounted = false;
@@ -144,9 +177,7 @@ function RaportoProfil() {
   }, []);
 
   const toggleReason = (id: string) => {
-    setSelected((prev) =>
-      prev.includes(id) ? prev.filter((r) => r !== id) : [...prev, id],
-    );
+    setSelected((prev) => (prev.includes(id) ? prev.filter((r) => r !== id) : [...prev, id]));
   };
 
   const report = useMemo(() => {
@@ -163,6 +194,8 @@ function RaportoProfil() {
       /* ignore */
     }
   };
+
+  const links = officialLinks[platform] ?? [];
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -185,7 +218,7 @@ function RaportoProfil() {
           <div className="absolute inset-0 -z-10" style={{ background: "var(--gradient-hero)" }} />
           <div className="mx-auto max-w-4xl px-6 pt-20 pb-12 text-center">
             <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-medium text-primary">
-              <Shield className="h-3.5 w-3.5" /> Çmim 49.99€
+              <Shield className="h-3.5 w-3.5" /> Çmim 29.99€
             </div>
             <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-[var(--shadow-glow)]">
               <FileText className="h-8 w-8" />
@@ -197,14 +230,27 @@ function RaportoProfil() {
               </span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-              Gjenero raportime profesionale në gjuhën angleze për profile fake ose që shkelin politikat e platformave.
-              Përdoret vetëm për qëllime të mira — siguri dhe integritet të komunitetit.
+              Ndihmesë për përpilimin e raporteve dhe udhëzime për hapat zyrtarë të raportimit. Përdoret vetëm për qëllime
+              të mira — siguri dhe integritet të komunitetit.
+            </p>
+          </div>
+        </section>
+
+        {/* Disclaimer */}
+        <section className="mx-auto max-w-3xl px-6">
+          <div className="flex items-start gap-3 rounded-2xl border border-primary/20 bg-primary/5 px-5 py-4 text-sm text-muted-foreground">
+            <Info className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
+            <p>
+              <span className="font-semibold text-foreground">E rëndësishme:</span> Ky shërbim është{" "}
+              <span className="font-semibold text-foreground">vetëm ndihmesë</span> për përpilimin e raporteve dhe për të të
+              treguar hapat zyrtarë. Ne nuk garantojmë mbylljen e profilit — vendimi merret nga platforma zyrtare. Raportimi
+              kryhet nga ti përmes linqeve zyrtare të mëposhtme.
             </p>
           </div>
         </section>
 
         {/* Generator */}
-        <section className="mx-auto max-w-3xl px-6 pb-16">
+        <section className="mx-auto max-w-3xl px-6 py-10">
           <div className="rounded-3xl border border-border bg-card p-6 sm:p-8">
             {/* Platform */}
             <label className="mb-2 block text-sm font-medium">Platforma</label>
@@ -234,6 +280,7 @@ function RaportoProfil() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="@username ose URL"
+              maxLength={200}
               className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-primary"
             />
 
@@ -264,25 +311,62 @@ function RaportoProfil() {
               })}
             </div>
 
-            {/* Output */}
+            {/* Output (gated) */}
             <div className="mt-8">
               <div className="mb-2 flex items-center justify-between">
                 <label className="text-sm font-medium">Raporti (English)</label>
-                <button
-                  type="button"
-                  onClick={copyReport}
-                  className="inline-flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary transition hover:bg-primary/15"
-                >
-                  {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
-                  {copied ? "Kopjuar" : "Kopjo"}
-                </button>
+                {hasAccess && (
+                  <button
+                    type="button"
+                    onClick={copyReport}
+                    className="inline-flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary transition hover:bg-primary/15"
+                  >
+                    {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+                    {copied ? "Kopjuar" : "Kopjo"}
+                  </button>
+                )}
               </div>
-              <textarea
-                readOnly
-                value={report}
-                rows={16}
-                className="w-full resize-y rounded-xl border border-border bg-background px-4 py-3 text-sm leading-relaxed outline-none"
-              />
+
+              <div className="relative">
+                <textarea
+                  readOnly
+                  value={report}
+                  rows={16}
+                  className={`w-full resize-y rounded-xl border border-border bg-background px-4 py-3 text-sm leading-relaxed outline-none transition ${
+                    hasAccess ? "" : "pointer-events-none select-none blur-sm"
+                  }`}
+                />
+
+                {!checking && !hasAccess && (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 rounded-xl bg-background/70 px-6 text-center backdrop-blur-[2px]">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/15 text-primary ring-1 ring-primary/30">
+                      <Lock className="h-6 w-6" />
+                    </div>
+                    <p className="text-sm font-semibold">Raporti i plotë hapet pas pagesës — 29.99€</p>
+                    <p className="max-w-sm text-xs text-muted-foreground">
+                      Pas pagesës, raporti gjenerohet automatikisht dhe mund ta kopjosh e ta dërgosh në linqet zyrtare.
+                    </p>
+                    {serviceId ? (
+                      <Link
+                        to="/order/$serviceId"
+                        params={{ serviceId }}
+                        className="mt-1 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:opacity-90"
+                      >
+                        <Shield className="h-4 w-4" /> Paguaj 29.99€ për ta hapur
+                      </Link>
+                    ) : (
+                      <a
+                        href="https://wa.me/491634371067"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-1 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:opacity-90"
+                      >
+                        <MessageCircle className="h-4 w-4" /> Na kontakto
+                      </a>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="mt-4 flex items-start gap-2 rounded-xl border border-amber-500/30 bg-amber-500/5 px-4 py-3 text-xs text-muted-foreground">
@@ -291,32 +375,31 @@ function RaportoProfil() {
             </div>
           </div>
 
-          {/* Order */}
-          <div className="mx-auto mt-8 flex max-w-2xl flex-col items-center gap-4 rounded-2xl border border-primary/30 bg-primary/5 px-6 py-6 text-center">
-            <div className="inline-flex items-baseline gap-1">
-              <span className="text-4xl font-bold text-primary">49.99€</span>
+          {/* Official links / steps */}
+          <div className="mt-8 rounded-3xl border border-border bg-card p-6 sm:p-8">
+            <h2 className="flex items-center gap-2 text-lg font-bold">
+              <ExternalLink className="h-5 w-5 text-primary" /> Hapat & linqet zyrtare — {platform}
+            </h2>
+            <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm text-muted-foreground">
+              <li>Kopjo raportin e gjeneruar më sipër (në anglisht).</li>
+              <li>Hap linkun zyrtar të raportimit për {platform} më poshtë.</li>
+              <li>Zgjidh arsyen përkatëse dhe ngjit tekstin e raportit në fushën e përshkrimit.</li>
+              <li>Bashkëngjit prova (screenshots/linqe) dhe dërgo raportin.</li>
+            </ol>
+            <div className="mt-5 grid gap-2 sm:grid-cols-2">
+              {links.map((l) => (
+                <a
+                  key={l.url}
+                  href={l.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between gap-2 rounded-xl border border-border bg-background px-4 py-3 text-sm font-medium transition hover:border-primary/50 hover:bg-primary/5"
+                >
+                  {l.label}
+                  <ExternalLink className="h-4 w-4 shrink-0 text-primary" />
+                </a>
+              ))}
             </div>
-            <p className="text-sm text-muted-foreground">
-              Shërbim i plotë raportimi me asistencë profesionale deri në shqyrtimin e profilit.
-            </p>
-            {serviceId ? (
-              <Link
-                to="/order/$serviceId"
-                params={{ serviceId }}
-                className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:opacity-90"
-              >
-                <Shield className="h-4 w-4" /> Porosit shërbimin
-              </Link>
-            ) : (
-              <a
-                href="https://wa.me/491634371067"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:opacity-90"
-              >
-                <MessageCircle className="h-4 w-4" /> Na kontakto
-              </a>
-            )}
           </div>
         </section>
 
