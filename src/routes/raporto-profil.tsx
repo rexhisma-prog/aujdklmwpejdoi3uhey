@@ -67,6 +67,8 @@ const officialLinks: { platform: string; label: string; url: string }[] = [
 
 function RaportoProfil() {
   const [serviceId, setServiceId] = useState<string | null>(null);
+  const [checking, setChecking] = useState(true);
+  const [hasAccess, setHasAccess] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -78,7 +80,20 @@ function RaportoProfil() {
         .eq("active", true)
         .limit(1)
         .maybeSingle();
-      if (mounted && data) setServiceId((data as ReportService).id);
+      const sid = data ? (data as ReportService).id : null;
+      if (mounted) setServiceId(sid);
+
+      const { data: sess } = await supabase.auth.getSession();
+      const user = sess.session?.user;
+      if (user && sid) {
+        const { count } = await supabase
+          .from("orders")
+          .select("id", { count: "exact", head: true })
+          .eq("user_id", user.id)
+          .eq("service_id", sid);
+        if (mounted) setHasAccess((count ?? 0) > 0);
+      }
+      if (mounted) setChecking(false);
     })();
     return () => {
       mounted = false;
