@@ -93,7 +93,7 @@ function FakeProfileBanner() {
                 to="/raporto-profil"
                 className="inline-flex items-center gap-2 rounded-xl border border-primary/30 bg-primary/10 px-6 py-3 text-sm font-semibold text-primary transition hover:bg-primary/15"
               >
-                📝 Tool Raportimi — 49.99€
+                📝 Tool Raportimi — 29.99€
               </Link>
             </div>
           </div>
