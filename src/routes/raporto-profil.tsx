@@ -14,6 +14,7 @@ import {
   MessageCircle,
   Info,
   Check,
+  Lock,
 } from "lucide-react";
 
 export const Route = createFileRoute("/raporto-profil")({
