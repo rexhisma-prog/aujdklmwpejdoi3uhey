@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -15,6 +15,7 @@ import {
   Info,
   Check,
   Lock,
+  LogOut,
 } from "lucide-react";
 
 export const Route = createFileRoute("/raporto-profil")({
