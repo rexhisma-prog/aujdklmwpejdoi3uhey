@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { X } from "lucide-react";
+import { X, Cookie } from "lucide-react";
 
 const STORAGE_KEY = "shtofollow_cookie_consent";
 
@@ -46,7 +46,20 @@ export function CookieConsent() {
   const rejectAll = () => save(defaultPrefs);
   const savePrefs = () => save(prefs);
 
-  if (!visible) return null;
+  if (!visible) {
+    return (
+      <button
+        onClick={() => {
+          setShowPrefs(true);
+          setVisible(true);
+        }}
+        aria-label="Cilësimet e Cookies"
+        className="fixed bottom-4 left-4 z-[90] flex h-11 w-11 items-center justify-center rounded-full bg-card text-foreground shadow-lg ring-1 ring-border transition-colors hover:bg-muted"
+      >
+        <Cookie className="h-5 w-5 text-primary" />
+      </button>
+    );
+  }
 
   return (
     <div className="fixed inset-0 z-[100] flex items-end justify-center sm:items-center">
