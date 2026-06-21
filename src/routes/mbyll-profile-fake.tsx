@@ -80,7 +80,13 @@ const included = [
 ];
 
 function MbyllProfileFake() {
+  const navigate = useNavigate();
   const [services, setServices] = useState<ClosureService[]>([]);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate({ to: "/" });
+  };
 
   useEffect(() => {
     let mounted = true;
