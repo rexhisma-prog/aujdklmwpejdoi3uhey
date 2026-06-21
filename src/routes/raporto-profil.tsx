@@ -14,6 +14,7 @@ import {
   MessageCircle,
   Info,
   Check,
+  Lock,
 } from "lucide-react";
 
 export const Route = createFileRoute("/raporto-profil")({
@@ -56,8 +57,18 @@ const steps = [
   "Të asistojmë gjatë dërgimit te platforma zyrtare.",
 ];
 
+const officialLinks: { platform: string; label: string; url: string }[] = [
+  { platform: "Instagram", label: "Raporto imitim identiteti (impersonation)", url: "https://help.instagram.com/contact/636276399721841" },
+  { platform: "Instagram", label: "Si të raportosh përmbajtje / llogari", url: "https://help.instagram.com/192435014247952" },
+  { platform: "Facebook", label: "Raporto profil që imiton dikë", url: "https://www.facebook.com/help/contact/169486816580953" },
+  { platform: "Twitter / X", label: "Raporto imitim identiteti (X)", url: "https://help.twitter.com/forms/impersonation" },
+  { platform: "TikTok", label: "Raporto / dërgo feedback (TikTok)", url: "https://www.tiktok.com/legal/report/feedback" },
+];
+
 function RaportoProfil() {
   const [serviceId, setServiceId] = useState<string | null>(null);
+  const [checking, setChecking] = useState(true);
+  const [hasAccess, setHasAccess] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -69,7 +80,20 @@ function RaportoProfil() {
         .eq("active", true)
         .limit(1)
         .maybeSingle();
-      if (mounted && data) setServiceId((data as ReportService).id);
+      const sid = data ? (data as ReportService).id : null;
+      if (mounted) setServiceId(sid);
+
+      const { data: sess } = await supabase.auth.getSession();
+      const user = sess.session?.user;
+      if (user && sid) {
+        const { count } = await supabase
+          .from("orders")
+          .select("id", { count: "exact", head: true })
+          .eq("user_id", user.id)
+          .eq("service_id", sid);
+        if (mounted) setHasAccess((count ?? 0) > 0);
+      }
+      if (mounted) setChecking(false);
     })();
     return () => {
       mounted = false;
@@ -170,6 +194,68 @@ function RaportoProfil() {
             </ol>
           </div>
         </section>
+
+        {/* Official links (gated) */}
+        <section className="mx-auto max-w-3xl px-6 py-14">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold tracking-tight">Linqet zyrtare të raportimit</h2>
+            <p className="mt-3 text-muted-foreground">
+              Linqet zyrtare hapen vetëm pas pagesës së asistencës.
+            </p>
+          </div>
+
+          <div className="relative mt-8">
+            <div className={`grid gap-2 sm:grid-cols-2 ${hasAccess ? "" : "pointer-events-none select-none blur-sm"}`}>
+              {officialLinks.map((l) => (
+                <a
+                  key={l.url}
+                  href={hasAccess ? l.url : undefined}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between gap-2 rounded-xl border border-border bg-card px-4 py-3 text-sm font-medium transition hover:border-primary/50 hover:bg-primary/5"
+                >
+                  <span>
+                    <span className="block text-xs text-muted-foreground">{l.platform}</span>
+                    {l.label}
+                  </span>
+                  <ExternalLink className="h-4 w-4 shrink-0 text-primary" />
+                </a>
+              ))}
+            </div>
+
+            {!checking && !hasAccess && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 rounded-2xl bg-background/70 px-6 text-center backdrop-blur-[2px]">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/15 text-primary ring-1 ring-primary/30">
+                  <Lock className="h-6 w-6" />
+                </div>
+                <p className="text-sm font-semibold">Linqet zyrtare hapen pas pagesës — 29.99€</p>
+                <p className="max-w-sm text-xs text-muted-foreground">
+                  Pas pagesës do të kesh akses te linqet zyrtare dhe te raporti i përpiluar.
+                </p>
+                {serviceId ? (
+                  <Link
+                    to="/order/$serviceId"
+                    params={{ serviceId }}
+                    className="mt-1 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:opacity-90"
+                  >
+                    <Shield className="h-4 w-4" /> Paguaj 29.99€ për t'i hapur
+                  </Link>
+                ) : (
+                  <a
+                    href="https://wa.me/491634371067"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-1 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:opacity-90"
+                  >
+                    <MessageCircle className="h-4 w-4" /> Na kontakto
+                  </a>
+                )}
+              </div>
+            )}
+          </div>
+        </section>
+
+
 
         {/* Porosit */}
         <section id="porosit" className="mx-auto max-w-3xl px-6 py-16">
