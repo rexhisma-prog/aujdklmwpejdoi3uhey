@@ -206,12 +206,19 @@ function OrderPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="border-b border-border bg-card/50 backdrop-blur">
-        <div className="mx-auto flex max-w-2xl items-center gap-3 px-6 py-4">
+        <div className="mx-auto flex max-w-2xl items-center gap-4 px-6 py-4">
+          <button
+            type="button"
+            onClick={() => window.history.back()}
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+          >
+            <ArrowLeft className="h-4 w-4" /> Kthehu mbrapa
+          </button>
           <Link
             to="/dashboard"
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
           >
-            <ArrowLeft className="h-4 w-4" /> Paneli
+            Paneli
           </Link>
         </div>
       </header>
