@@ -111,14 +111,25 @@ function RaportoProfil() {
     <div className="min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-50 border-b border-border/50 bg-background/70 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-          <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
-            <ArrowLeft className="h-4 w-4" /> Faqja kryesore
-          </Link>
+          <button
+            type="button"
+            onClick={() => window.history.back()}
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+          >
+            <ArrowLeft className="h-4 w-4" /> Kthehu mrapa
+          </button>
           <Link to="/" className="text-xl font-bold tracking-tight">
             <span className="text-foreground">Shto</span>
             <span className="text-primary">Follow</span>
             <span className="text-muted-foreground">.com</span>
           </Link>
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+          >
+            <LogOut className="h-4 w-4" /> Dilni nga llogaria
+          </button>
         </div>
       </header>
 
