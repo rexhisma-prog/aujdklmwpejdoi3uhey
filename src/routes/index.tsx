@@ -650,7 +650,7 @@ function Footer() {
   return (
     <footer className="border-t border-border">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-8 md:flex-row">
-        <p className="text-sm text-muted-foreground">© 2026 shtofollow.com. Të gjitha të drejtat të rezervuara.</p>
+        <p className="text-sm text-muted-foreground">© 2026 shtofollow.com — REA Marketing SH.P.K. Të gjitha të drejtat të rezervuara.</p>
         <div className="flex gap-4 text-sm text-muted-foreground">
           <Link to="/login" className="hover:text-foreground">Hyr</Link>
           
