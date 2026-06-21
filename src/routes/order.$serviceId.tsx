@@ -30,6 +30,7 @@ function OrderPage() {
   const navigate = useNavigate();
   const [service, setService] = useState<Service | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
+  const [balance, setBalance] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(1000);
   const [link, setLink] = useState("");
   const [notes, setNotes] = useState("");
@@ -52,6 +53,11 @@ function OrderPage() {
         .select("*")
         .eq("id", serviceId)
         .maybeSingle();
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("balance_eur")
+        .eq("user_id", user.id)
+        .maybeSingle();
       if (!mounted) return;
       if (!data) {
         setError("Shërbimi nuk u gjet.");
@@ -59,6 +65,7 @@ function OrderPage() {
         setService(data as Service);
         setQuantity(Math.max(1000, (data as Service).quantity || 1000));
         setUserId(user.id);
+        setBalance(Number(profile?.balance_eur ?? 0));
       }
       setLoading(false);
     })();
@@ -217,6 +224,29 @@ function OrderPage() {
             : `${Number(service.price_eur).toFixed(2)} € për 1,000 ${unitLabel}`}
         </p>
 
+        {isReport && balance < total ? (
+          <div className="mt-6 rounded-2xl border border-amber-500/40 bg-amber-500/10 p-6 text-center">
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-amber-500/20">
+              <Clock className="h-7 w-7 text-amber-600 dark:text-amber-400" />
+            </div>
+            <h2 className="text-lg font-bold text-amber-700 dark:text-amber-300">
+              Balanc i pamjaftueshëm
+            </h2>
+            <p className="mt-2 text-sm text-amber-700/90 dark:text-amber-300/90">
+              Për të hapur formularin dhe për të dërguar linkun e profilit dhe arsyet/shënimet,
+              duhet të kesh së paku <span className="font-semibold">{total.toFixed(2)} €</span> në balanc.
+            </p>
+            <p className="mt-1 text-xs text-amber-700/80 dark:text-amber-300/80">
+              Balanci yt aktual: <span className="font-semibold">{balance.toFixed(2)} €</span>
+            </p>
+            <Link
+              to="/dashboard"
+              className="mt-5 inline-flex items-center justify-center rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] hover:opacity-90"
+            >
+              Mbush balancin
+            </Link>
+          </div>
+        ) : (
         <form
           onSubmit={handleSubmit}
           className="mt-6 space-y-5 rounded-2xl border border-border bg-card p-6"
@@ -332,6 +362,7 @@ function OrderPage() {
             Dërgo porosinë
           </button>
         </form>
+        )}
       </main>
     </div>
   );
