@@ -35,7 +35,7 @@ export const Route = createFileRoute("/raporto-profil")({
     ],
     links: [{ rel: "canonical", href: "https://shtofollow.com/raporto-profil" }],
   }),
-  component: RaportoProfil;
+  component: RaportoProfil,
 });
 
 type ReportService = { id: string };
