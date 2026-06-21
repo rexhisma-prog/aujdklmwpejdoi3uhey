@@ -67,9 +67,15 @@ const officialLinks: { platform: string; label: string; url: string }[] = [
 ];
 
 function RaportoProfil() {
+  const navigate = useNavigate();
   const [serviceId, setServiceId] = useState<string | null>(null);
   const [checking, setChecking] = useState(true);
   const [hasAccess, setHasAccess] = useState(false);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate({ to: "/" });
+  };
 
   useEffect(() => {
     let mounted = true;
