@@ -267,9 +267,13 @@ function ClientDashboard() {
       <header className="border-b border-border bg-card/50 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <div>
-            <Link to="/" className="text-xs text-muted-foreground hover:text-foreground">
-              ← Faqja kryesore
-            </Link>
+            <button
+              type="button"
+              onClick={() => window.history.back()}
+              className="text-xs text-muted-foreground hover:text-foreground"
+            >
+              ← Kthehu mbrapa
+            </button>
             <h1 className="mt-1 text-2xl font-bold">Paneli i llogarisë</h1>
             <p className="text-xs text-muted-foreground">{email}</p>
           </div>
