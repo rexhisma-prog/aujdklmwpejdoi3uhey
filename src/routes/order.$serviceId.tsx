@@ -30,6 +30,7 @@ function OrderPage() {
   const navigate = useNavigate();
   const [service, setService] = useState<Service | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
+  const [balance, setBalance] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(1000);
   const [link, setLink] = useState("");
   const [notes, setNotes] = useState("");
