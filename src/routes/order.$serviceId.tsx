@@ -109,7 +109,9 @@ function OrderPage() {
     );
   }
 
-  const isClosure = service.service_type === "profile_closure";
+  const isClosure =
+    service.service_type === "profile_closure" || service.service_type === "report_tool";
+  const isReport = service.service_type === "report_tool";
 
   const unitLabel =
     service.service_type === "followers"
@@ -141,7 +143,9 @@ function OrderPage() {
             <div className="mx-auto mt-6 flex max-w-md items-center justify-center gap-3 rounded-2xl border border-primary/20 bg-primary/5 px-5 py-4">
               <Clock className="h-5 w-5 shrink-0 text-primary" />
               <p className="text-sm text-foreground">
-                {isClosure ? (
+                {isReport ? (
+                  <>Raporti përpilohet dhe të dërgohet brenda <span className="font-semibold text-primary">2 deri në 24 orë</span>.</>
+                ) : isClosure ? (
                   <>Mbyllja mund të zgjasë nga <span className="font-semibold text-primary">2 deri në 72 orë</span>.</>
                 ) : (
                   <>Shërbimi do të kryhet brenda <span className="font-semibold text-primary">2 orësh</span>.</>
@@ -239,7 +243,11 @@ function OrderPage() {
 
           <div>
             <label className="mb-2 block text-sm font-medium">
-              {isClosure ? "Linku i profilit / faqes fake" : "Linku i profilit / fotos / videos"}
+              {isReport
+                ? "Linku / username i profilit që raportohet"
+                : isClosure
+                  ? "Linku i profilit / faqes fake"
+                  : "Linku i profilit / fotos / videos"}
             </label>
             <input
               type="url"
@@ -249,6 +257,7 @@ function OrderPage() {
               placeholder={isClosure ? "https://instagram.com/profili_fake" : linkPlaceholder}
               className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none"
             />
+
             {!isClosure && (
               <p className="mt-2 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-600 dark:text-amber-400">
                 ⚠️ Profili duhet të jetë i hapur (public), jo privat — përndryshe porosia nuk mund të kryhet.
