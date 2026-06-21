@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -16,6 +16,7 @@ import {
   Clock,
   RotateCcw,
   MessageCircle,
+  LogOut,
 } from "lucide-react";
 
 export const Route = createFileRoute("/mbyll-profile-fake")({
@@ -79,7 +80,13 @@ const included = [
 ];
 
 function MbyllProfileFake() {
+  const navigate = useNavigate();
   const [services, setServices] = useState<ClosureService[]>([]);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate({ to: "/" });
+  };
 
   useEffect(() => {
     let mounted = true;
@@ -119,6 +126,13 @@ function MbyllProfileFake() {
             <span className="text-primary">Follow</span>
             <span className="text-muted-foreground">.com</span>
           </Link>
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+          >
+            <LogOut className="h-4 w-4" /> Dilni
+          </button>
         </div>
       </header>
 

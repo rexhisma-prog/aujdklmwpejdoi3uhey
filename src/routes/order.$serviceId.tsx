@@ -214,12 +214,16 @@ function OrderPage() {
           >
             <ArrowLeft className="h-4 w-4" /> Kthehu mbrapa
           </button>
-          <Link
-            to="/dashboard"
+          <button
+            type="button"
+            onClick={async () => {
+              await supabase.auth.signOut();
+              navigate({ to: "/" });
+            }}
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
           >
-            Paneli
-          </Link>
+            Dilni
+          </button>
         </div>
       </header>
 
