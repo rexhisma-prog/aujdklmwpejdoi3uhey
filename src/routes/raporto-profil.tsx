@@ -57,6 +57,14 @@ const steps = [
   "Të asistojmë gjatë dërgimit te platforma zyrtare.",
 ];
 
+const officialLinks: { platform: string; label: string; url: string }[] = [
+  { platform: "Instagram", label: "Raporto imitim identiteti (impersonation)", url: "https://help.instagram.com/contact/636276399721841" },
+  { platform: "Instagram", label: "Si të raportosh përmbajtje / llogari", url: "https://help.instagram.com/192435014247952" },
+  { platform: "Facebook", label: "Raporto profil që imiton dikë", url: "https://www.facebook.com/help/contact/169486816580953" },
+  { platform: "Twitter / X", label: "Raporto imitim identiteti (X)", url: "https://help.twitter.com/forms/impersonation" },
+  { platform: "TikTok", label: "Raporto / dërgo feedback (TikTok)", url: "https://www.tiktok.com/legal/report/feedback" },
+];
+
 function RaportoProfil() {
   const [serviceId, setServiceId] = useState<string | null>(null);
 
