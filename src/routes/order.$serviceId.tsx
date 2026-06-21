@@ -241,7 +241,11 @@ function OrderPage() {
 
           <div>
             <label className="mb-2 block text-sm font-medium">
-              {isClosure ? "Linku i profilit / faqes fake" : "Linku i profilit / fotos / videos"}
+              {isReport
+                ? "Linku / username i profilit që raportohet"
+                : isClosure
+                  ? "Linku i profilit / faqes fake"
+                  : "Linku i profilit / fotos / videos"}
             </label>
             <input
               type="url"
@@ -251,6 +255,7 @@ function OrderPage() {
               placeholder={isClosure ? "https://instagram.com/profili_fake" : linkPlaceholder}
               className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none"
             />
+
             {!isClosure && (
               <p className="mt-2 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-600 dark:text-amber-400">
                 ⚠️ Profili duhet të jetë i hapur (public), jo privat — përndryshe porosia nuk mund të kryhet.
