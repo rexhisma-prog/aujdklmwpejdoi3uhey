@@ -324,7 +324,31 @@ function ClientDashboard() {
           </div>
         </div>
       )}
-      <header className="border-b border-border bg-card/50 backdrop-blur">
+      {topupNotice && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-3xl border border-red-500/40 bg-card p-8 text-center shadow-2xl">
+            <div className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-red-500/15 text-red-500">
+              <Wallet className="h-10 w-10" />
+            </div>
+            <h2 className="text-2xl font-bold">Mbushja u refuzua</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Mbushja prej {topupNotice.amount.toFixed(2)} € nuk u aprovua.
+            </p>
+            {topupNotice.reason ? (
+              <div className="mt-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-left text-sm text-red-500">
+                <span className="font-semibold">Arsyeja: </span>
+                {topupNotice.reason}
+              </div>
+            ) : null}
+            <button
+              onClick={() => setTopupNotice(null)}
+              className="mt-6 w-full rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground hover:opacity-90"
+            >
+              Në rregull
+            </button>
+          </div>
+        </div>
+      )}
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <div>
             <button
