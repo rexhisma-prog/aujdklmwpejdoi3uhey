@@ -1084,13 +1084,7 @@ function TopupsManager() {
                           </button>
                           {rejectingId !== t.id && (
                             <button
-                              onClick={() => {
-                                setRejectingId(t.id);
-                                setRejectionDrafts((prev) => ({
-                                  ...prev,
-                                  [t.id]: prev[t.id] ?? t.rejection_reason ?? "",
-                                }));
-                              }}
+                              onClick={() => openReasonEditor(t)}
                               disabled={savingId === t.id}
                               className="rounded-lg border border-border px-3 py-1 text-xs text-destructive hover:border-destructive disabled:opacity-50"
                             >
@@ -1099,7 +1093,16 @@ function TopupsManager() {
                           )}
                         </div>
                     ) : isFailed(t.status) ? (
-                      <div className="flex flex-col items-end gap-1">
+                      <div className="flex justify-end gap-2">
+                        {t.status === "rejected" && (
+                          <button
+                            onClick={() => openReasonEditor(t)}
+                            disabled={savingId === t.id}
+                            className="rounded-lg border border-border px-3 py-1 text-xs text-muted-foreground hover:border-primary hover:text-primary disabled:opacity-50"
+                          >
+                            Arsyeja
+                          </button>
+                        )}
                         <button
                           onClick={() => removeTopup(t.id)}
                           disabled={savingId === t.id}
@@ -1129,7 +1132,7 @@ function TopupsManager() {
                         />
                         <div className="flex gap-2">
                           <button
-                            onClick={() => reject(t.id)}
+                            onClick={() => saveRejectionReason(t)}
                             disabled={savingId === t.id}
                             className="rounded-lg border border-destructive px-3 py-1.5 text-xs font-medium text-destructive hover:bg-destructive/10 disabled:opacity-50"
                           >
