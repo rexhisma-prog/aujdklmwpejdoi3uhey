@@ -893,6 +893,7 @@ type Topup = {
   status: string;
   created_at: string;
   email: string | null;
+  rejection_reason: string | null;
   profiles?: { email: string | null } | null;
 };
 
@@ -906,6 +907,8 @@ function TopupsManager() {
   const [topups, setTopups] = useState<Topup[]>([]);
   const [loading, setLoading] = useState(true);
   const [savingId, setSavingId] = useState<string | null>(null);
+  const [rejectingId, setRejectingId] = useState<string | null>(null);
+  const [rejectionDrafts, setRejectionDrafts] = useState<Record<string, string>>({});
 
   const load = async () => {
     const { data } = await supabase
@@ -921,7 +924,6 @@ function TopupsManager() {
         .in("user_id", ids);
       const map = new Map((profs ?? []).map((p) => [p.user_id, p.email]));
       rows.forEach((r) => {
-        // Prefer the email captured on the top-up itself; fall back to profile.
         r.profiles = { email: r.email ?? map.get(r.user_id) ?? null };
       });
     }
@@ -953,9 +955,20 @@ function TopupsManager() {
   };
 
   const reject = async (id: string) => {
+    const reason = rejectionDrafts[id]?.trim();
+    if (!reason) {
+      alert("Shkruaj arsyen e refuzimit.");
+      return;
+    }
     setSavingId(id);
-    await supabase.from("topup_requests").update({ status: "rejected" }).eq("id", id);
+    await supabase.from("topup_requests").update({ status: "rejected", rejection_reason: reason }).eq("id", id);
     setSavingId(null);
+    setRejectingId(null);
+    setRejectionDrafts((prev) => {
+      const next = { ...prev };
+      delete next[id];
+      return next;
+    });
     load();
   };
 
@@ -969,8 +982,6 @@ function TopupsManager() {
   };
 
   const isFailed = (s: string) => s === "rejected" || s === "failed";
-
-
 
   const badge = (s: string) => {
     const map: Record<string, string> = {
@@ -1016,6 +1027,7 @@ function TopupsManager() {
                 <th className="px-4 py-3">Mënyra</th>
                 <th className="px-4 py-3">Referenca</th>
                 <th className="px-4 py-3">Statusi</th>
+                <th className="px-4 py-3">Arsyeja</th>
                 <th className="px-4 py-3"></th>
               </tr>
             </thead>
@@ -1040,26 +1052,72 @@ function TopupsManager() {
                       {statusLabel(t.status)}
                     </span>
                   </td>
+                  <td className="px-4 py-3 max-w-[200px] text-xs text-muted-foreground">
+                    {t.rejection_reason ? (
+                      <span className="text-destructive">{t.rejection_reason}</span>
+                    ) : (
+                      "—"
+                    )}
+                  </td>
                   <td className="px-4 py-3 text-right">
                     {isActionable(t.status) ? (
-                      <div className="flex justify-end gap-2">
-                        <button
-                          onClick={() => approve(t.id)}
-                          disabled={savingId === t.id}
-                          className="rounded-lg bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground hover:opacity-90 disabled:opacity-50"
-                        >
-                          {savingId === t.id ? "..." : "Aprovo"}
-                        </button>
-                        <button
-                          onClick={() => reject(t.id)}
-                          disabled={savingId === t.id}
-                          className="rounded-lg border border-border px-3 py-1 text-xs text-destructive hover:border-destructive disabled:opacity-50"
-                        >
-                          Refuzo
-                        </button>
+                      <div className="flex flex-col items-end gap-2">
+                        <div className="flex justify-end gap-2">
+                          <button
+                            onClick={() => approve(t.id)}
+                            disabled={savingId === t.id}
+                            className="rounded-lg bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground hover:opacity-90 disabled:opacity-50"
+                          >
+                            {savingId === t.id ? "..." : "Aprovo"}
+                          </button>
+                          {rejectingId !== t.id && (
+                            <button
+                              onClick={() => setRejectingId(t.id)}
+                              disabled={savingId === t.id}
+                              className="rounded-lg border border-border px-3 py-1 text-xs text-destructive hover:border-destructive disabled:opacity-50"
+                            >
+                              Refuzo
+                            </button>
+                          )}
+                        </div>
+                        {rejectingId === t.id && (
+                          <div className="flex w-full max-w-xs flex-col items-end gap-2">
+                            <textarea
+                              value={rejectionDrafts[t.id] ?? ""}
+                              onChange={(e) =>
+                                setRejectionDrafts((prev) => ({ ...prev, [t.id]: e.target.value }))
+                              }
+                              placeholder="Arsyeja e refuzimit..."
+                              rows={2}
+                              className="w-full resize-y rounded-lg border border-border bg-background px-2 py-1 text-xs"
+                            />
+                            <div className="flex gap-2">
+                              <button
+                                onClick={() => reject(t.id)}
+                                disabled={savingId === t.id}
+                                className="rounded-lg border border-destructive px-3 py-1 text-xs text-destructive hover:bg-destructive/10 disabled:opacity-50"
+                              >
+                                {savingId === t.id ? "..." : "Konfirmo refuzimin"}
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setRejectingId(null);
+                                  setRejectionDrafts((prev) => {
+                                    const next = { ...prev };
+                                    delete next[t.id];
+                                    return next;
+                                  });
+                                }}
+                                className="rounded-lg border border-border px-3 py-1 text-xs text-muted-foreground hover:border-primary/50"
+                              >
+                                Anulo
+                              </button>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     ) : isFailed(t.status) ? (
-                      <div className="flex justify-end">
+                      <div className="flex flex-col items-end gap-1">
                         <button
                           onClick={() => removeTopup(t.id)}
                           disabled={savingId === t.id}
