@@ -954,14 +954,26 @@ function TopupsManager() {
     load();
   };
 
-  const reject = async (id: string) => {
+  const openReasonEditor = (topup: Topup) => {
+    setRejectingId(topup.id);
+    setRejectionDrafts((prev) => ({
+      ...prev,
+      [topup.id]: prev[topup.id] ?? topup.rejection_reason ?? "",
+    }));
+  };
+
+  const saveRejectionReason = async (topup: Topup) => {
+    const id = topup.id;
     const reason = rejectionDrafts[id]?.trim();
     if (!reason) {
       alert("Shkruaj arsyen e refuzimit.");
       return;
     }
     setSavingId(id);
-    await supabase.from("topup_requests").update({ status: "rejected", rejection_reason: reason }).eq("id", id);
+    const updatePayload = isActionable(topup.status)
+      ? { status: "rejected", rejection_reason: reason }
+      : { rejection_reason: reason };
+    await supabase.from("topup_requests").update(updatePayload).eq("id", id);
     setSavingId(null);
     setRejectingId(null);
     setRejectionDrafts((prev) => {
