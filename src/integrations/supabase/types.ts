@@ -328,6 +328,7 @@ export type Database = {
           method: string
           provider_session_id: string | null
           reference: string | null
+          rejection_reason: string | null
           status: string
           updated_at: string
           user_id: string
@@ -340,6 +341,7 @@ export type Database = {
           method?: string
           provider_session_id?: string | null
           reference?: string | null
+          rejection_reason?: string | null
           status?: string
           updated_at?: string
           user_id: string
@@ -352,6 +354,7 @@ export type Database = {
           method?: string
           provider_session_id?: string | null
           reference?: string | null
+          rejection_reason?: string | null
           status?: string
           updated_at?: string
           user_id?: string

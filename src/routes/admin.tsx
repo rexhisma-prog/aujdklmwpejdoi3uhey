@@ -893,6 +893,7 @@ type Topup = {
   status: string;
   created_at: string;
   email: string | null;
+  rejection_reason: string | null;
   profiles?: { email: string | null } | null;
 };
 

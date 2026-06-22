@@ -1,0 +1,1 @@
+ALTER TABLE public.topup_requests ADD COLUMN rejection_reason TEXT;
