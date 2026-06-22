@@ -26,6 +26,30 @@ type Order = {
   services?: { name: string; platform: string } | null;
 };
 
+type Topup = {
+  id: string;
+  amount_eur: number;
+  status: string;
+  rejection_reason: string | null;
+  created_at: string;
+};
+
+const topupStatusLabel: Record<string, string> = {
+  pending: "Në pritje",
+  paid: "Paguar — në verifikim",
+  approved: "Aprovuar",
+  rejected: "Refuzuar",
+  failed: "Dështoi",
+};
+
+const topupBadgeClass: Record<string, string> = {
+  pending: "bg-yellow-500/15 text-yellow-500 ring-yellow-500/30",
+  paid: "bg-blue-500/15 text-blue-500 ring-blue-500/30",
+  approved: "bg-green-500/15 text-green-500 ring-green-500/30",
+  rejected: "bg-red-500/15 text-red-500 ring-red-500/30",
+  failed: "bg-red-500/15 text-red-500 ring-red-500/30",
+};
+
 const statusLabel: Record<string, string> = {
   pending: "Në pritje",
   in_progress: "Duke u procesuar",
@@ -72,7 +96,9 @@ function ClientDashboard() {
   const [referralCode, setReferralCode] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [topups, setTopups] = useState<Topup[]>([]);
   const [notice, setNotice] = useState<{ status: string; serviceName: string } | null>(null);
+  const [topupNotice, setTopupNotice] = useState<{ amount: number; reason: string | null } | null>(null);
   const claimRef = useServerFn(claimReferral);
 
   useEffect(() => {
@@ -155,6 +181,14 @@ function ClientDashboard() {
         .eq("user_id", user.id)
         .order("created_at", { ascending: false });
       if (mounted) setOrders((ord as Order[]) ?? []);
+
+      // Load the user's top-up requests
+      const { data: tp } = await supabase
+        .from("topup_requests")
+        .select("id, amount_eur, status, rejection_reason, created_at")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+      if (mounted) setTopups((tp as Topup[]) ?? []);
     });
     return () => {
       mounted = false;
@@ -191,12 +225,38 @@ function ClientDashboard() {
             }
           },
         )
+        .on(
+          "postgres_changes",
+          { event: "UPDATE", schema: "public", table: "topup_requests", filter: `user_id=eq.${user.id}` },
+          (payload) => {
+            const newRow = payload.new as { id: string; status: string; rejection_reason: string | null };
+            const oldRow = payload.old as { status: string; rejection_reason: string | null };
+            setTopups((prev) =>
+              prev.map((t) =>
+                t.id === newRow.id
+                  ? { ...t, status: newRow.status, rejection_reason: newRow.rejection_reason }
+                  : t,
+              ),
+            );
+            const becameRejected =
+              newRow.status === "rejected" &&
+              (oldRow.status !== "rejected" || oldRow.rejection_reason !== newRow.rejection_reason);
+            if (becameRejected) {
+              setTopups((prev) => {
+                const amount = prev.find((t) => t.id === newRow.id)?.amount_eur ?? 0;
+                setTopupNotice({ amount: Number(amount), reason: newRow.rejection_reason });
+                return prev;
+              });
+            }
+          },
+        )
         .subscribe();
     });
     return () => {
       if (channel) supabase.removeChannel(channel);
     };
   }, []);
+
 
 
   const referralLink = referralCode ? `https://shtofollow.com/ref/${referralCode}` : null;
@@ -264,6 +324,31 @@ function ClientDashboard() {
           </div>
         </div>
       )}
+      {topupNotice && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-3xl border border-red-500/40 bg-card p-8 text-center shadow-2xl">
+            <div className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-red-500/15 text-red-500">
+              <Wallet className="h-10 w-10" />
+            </div>
+            <h2 className="text-2xl font-bold">Mbushja u refuzua</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Mbushja prej {topupNotice.amount.toFixed(2)} € nuk u aprovua.
+            </p>
+            {topupNotice.reason ? (
+              <div className="mt-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-left text-sm text-red-500">
+                <span className="font-semibold">Arsyeja: </span>
+                {topupNotice.reason}
+              </div>
+            ) : null}
+            <button
+              onClick={() => setTopupNotice(null)}
+              className="mt-6 w-full rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground hover:opacity-90"
+            >
+              Në rregull
+            </button>
+          </div>
+        </div>
+      )}
       <header className="border-b border-border bg-card/50 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <div>
@@ -304,6 +389,44 @@ function ClientDashboard() {
             </Link>
           </div>
         </section>
+
+        {/* Top-up history */}
+        {topups.length > 0 && (
+          <section className="rounded-2xl border border-border bg-card">
+            <div className="border-b border-border px-6 py-4">
+              <h2 className="font-semibold">Mbushjet e mia</h2>
+            </div>
+            <div className="divide-y divide-border">
+              {topups.map((t) => (
+                <div key={t.id} className="px-6 py-4">
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="min-w-0">
+                      <div className="font-medium">{Number(t.amount_eur).toFixed(2)} €</div>
+                      <div className="truncate text-xs text-muted-foreground">
+                        {new Date(t.created_at).toLocaleDateString("sq-AL")}
+                      </div>
+                    </div>
+                    <span
+                      className={`rounded-full px-2.5 py-1 text-xs font-medium ring-1 ${
+                        topupBadgeClass[t.status] ?? "bg-muted text-muted-foreground ring-border"
+                      }`}
+                    >
+                      {topupStatusLabel[t.status] ?? t.status}
+                    </span>
+                  </div>
+                  {t.status === "rejected" && t.rejection_reason ? (
+                    <div className="mt-3 rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-500">
+                      <span className="font-semibold">Arsyeja e refuzimit: </span>
+                      {t.rejection_reason}
+                    </div>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+
 
         {/* Contact / support */}
         <section className="rounded-3xl border border-border bg-card/50 p-6">
