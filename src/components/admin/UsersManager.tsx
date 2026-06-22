@@ -7,6 +7,7 @@ type ProfileRow = {
   user_id: string;
   email: string | null;
   balance_eur: number;
+  created_at: string;
 };
 
 export function UsersManager() {
@@ -21,8 +22,8 @@ export function UsersManager() {
   const load = () => {
     supabase
       .from("profiles")
-      .select("user_id, email, balance_eur")
-      .order("balance_eur", { ascending: false })
+      .select("user_id, email, balance_eur, created_at")
+      .order("created_at", { ascending: false })
       .then(({ data }) => {
         setRows((data as ProfileRow[]) ?? []);
         setLoading(false);
