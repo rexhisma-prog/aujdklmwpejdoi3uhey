@@ -181,6 +181,14 @@ function ClientDashboard() {
         .eq("user_id", user.id)
         .order("created_at", { ascending: false });
       if (mounted) setOrders((ord as Order[]) ?? []);
+
+      // Load the user's top-up requests
+      const { data: tp } = await supabase
+        .from("topup_requests")
+        .select("id, amount_eur, status, rejection_reason, created_at")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+      if (mounted) setTopups((tp as Topup[]) ?? []);
     });
     return () => {
       mounted = false;
