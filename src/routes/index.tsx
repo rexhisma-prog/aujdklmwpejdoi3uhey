@@ -58,8 +58,6 @@ function Index() {
         <ReferralPromo />
         <Features />
         <LiveStats />
-        <SocialMockups />
-        <Testimonials />
       </main>
       <Footer />
     </div>
