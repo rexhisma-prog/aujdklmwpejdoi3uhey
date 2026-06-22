@@ -549,7 +549,7 @@ function OrdersManager() {
                   }
                   placeholder="Arsyeja e refuzimit / shënim..."
                   rows={2}
-                  className="mt-1 w-full resize-y rounded-lg border border-border bg-background px-2 py-1 text-xs"
+                  className="mt-1 w-full resize-y rounded-lg border border-border bg-background px-2 py-1 text-xs text-foreground placeholder:text-muted-foreground"
                 />
                 <button
                   onClick={() => saveNote(o.id)}
@@ -693,7 +693,7 @@ function OrdersManager() {
                         }
                         placeholder="Arsyeja e refuzimit / shënim..."
                         rows={2}
-                        className="w-full resize-y rounded-lg border border-border bg-background px-2 py-1 text-xs"
+                        className="w-full resize-y rounded-lg border border-border bg-background px-2 py-1 text-xs text-foreground placeholder:text-muted-foreground"
                       />
                       <button
                         onClick={() => saveNote(o.id)}
@@ -1089,7 +1089,7 @@ function TopupsManager() {
                               }
                               placeholder="Arsyeja e refuzimit..."
                               rows={2}
-                              className="w-full resize-y rounded-lg border border-border bg-background px-2 py-1 text-xs"
+                              className="w-full resize-y rounded-lg border border-border bg-background px-2 py-1 text-xs text-foreground placeholder:text-muted-foreground"
                             />
                             <div className="flex gap-2">
                               <button
