@@ -390,6 +390,44 @@ function ClientDashboard() {
           </div>
         </section>
 
+        {/* Top-up history */}
+        {topups.length > 0 && (
+          <section className="rounded-2xl border border-border bg-card">
+            <div className="border-b border-border px-6 py-4">
+              <h2 className="font-semibold">Mbushjet e mia</h2>
+            </div>
+            <div className="divide-y divide-border">
+              {topups.map((t) => (
+                <div key={t.id} className="px-6 py-4">
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="min-w-0">
+                      <div className="font-medium">{Number(t.amount_eur).toFixed(2)} €</div>
+                      <div className="truncate text-xs text-muted-foreground">
+                        {new Date(t.created_at).toLocaleDateString("sq-AL")}
+                      </div>
+                    </div>
+                    <span
+                      className={`rounded-full px-2.5 py-1 text-xs font-medium ring-1 ${
+                        topupBadgeClass[t.status] ?? "bg-muted text-muted-foreground ring-border"
+                      }`}
+                    >
+                      {topupStatusLabel[t.status] ?? t.status}
+                    </span>
+                  </div>
+                  {t.status === "rejected" && t.rejection_reason ? (
+                    <div className="mt-3 rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-500">
+                      <span className="font-semibold">Arsyeja e refuzimit: </span>
+                      {t.rejection_reason}
+                    </div>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+
+
         {/* Contact / support */}
         <section className="rounded-3xl border border-border bg-card/50 p-6">
           <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
