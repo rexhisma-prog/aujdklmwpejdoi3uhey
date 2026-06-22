@@ -95,17 +95,25 @@ function AdminLayout() {
             </span>
           </div>
           <nav className="mt-4 flex flex-wrap gap-2">
-            {NAV.map((item) => (
-              <Link
-                key={item.to}
-                to={item.to}
-                activeOptions={{ exact: item.exact }}
-                className="rounded-lg border border-border px-3 py-1.5 text-sm text-muted-foreground hover:border-primary hover:text-foreground"
-                activeProps={{ className: "rounded-lg border border-primary bg-primary/10 px-3 py-1.5 text-sm font-medium text-primary" }}
-              >
-                {item.label}
-              </Link>
-            ))}
+            {NAV.map((item) => {
+              const badge = item.key ? counts[item.key] : 0;
+              return (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  activeOptions={{ exact: item.exact }}
+                  className="relative flex items-center gap-2 rounded-lg border border-border px-3 py-1.5 text-sm text-muted-foreground hover:border-primary hover:text-foreground"
+                  activeProps={{ className: "relative flex items-center gap-2 rounded-lg border border-primary bg-primary/10 px-3 py-1.5 text-sm font-medium text-primary" }}
+                >
+                  {item.label}
+                  {badge > 0 && (
+                    <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-destructive px-1.5 text-xs font-bold text-destructive-foreground">
+                      {badge}
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
           </nav>
         </div>
       </header>
