@@ -9,10 +9,10 @@ export const Route = createFileRoute("/admin")({
 
 const NAV = [
   { to: "/admin", label: "Përmbledhje", exact: true },
-  { to: "/admin/regjistrimet", label: "Regjistrimet" },
-  { to: "/admin/pagesat", label: "Pagesat" },
-  { to: "/admin/kerkesat", label: "Kërkesat" },
-  { to: "/admin/sherbimet", label: "Shërbimet" },
+  { to: "/admin/regjistrimet", label: "Regjistrimet", exact: false },
+  { to: "/admin/pagesat", label: "Pagesat", exact: false },
+  { to: "/admin/kerkesat", label: "Kërkesat", exact: false },
+  { to: "/admin/sherbimet", label: "Shërbimet", exact: false },
 ] as const;
 
 function AdminLayout() {
