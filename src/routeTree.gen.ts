@@ -20,8 +20,13 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as RefCodeRouteImport } from './routes/ref.$code'
 import { Route as OrderServiceIdRouteImport } from './routes/order.$serviceId'
+import { Route as AdminSherbimetRouteImport } from './routes/admin.sherbimet'
+import { Route as AdminRegjistrimetRouteImport } from './routes/admin.regjistrimet'
+import { Route as AdminPagesatRouteImport } from './routes/admin.pagesat'
+import { Route as AdminKerkesatRouteImport } from './routes/admin.kerkesat'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as ApiPublicOneforWebhookRouteImport } from './routes/api/public/onefor/webhook'
 import { Route as ApiPublicPaymentOneforCompleteRouteImport } from './routes/api/public/payment/onefor/complete'
@@ -81,6 +86,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const RefCodeRoute = RefCodeRouteImport.update({
   id: '/ref/$code',
   path: '/ref/$code',
@@ -90,6 +100,26 @@ const OrderServiceIdRoute = OrderServiceIdRouteImport.update({
   id: '/order/$serviceId',
   path: '/order/$serviceId',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminSherbimetRoute = AdminSherbimetRouteImport.update({
+  id: '/sherbimet',
+  path: '/sherbimet',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminRegjistrimetRoute = AdminRegjistrimetRouteImport.update({
+  id: '/regjistrimet',
+  path: '/regjistrimet',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPagesatRoute = AdminPagesatRouteImport.update({
+  id: '/pagesat',
+  path: '/pagesat',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminKerkesatRoute = AdminKerkesatRouteImport.update({
+  id: '/kerkesat',
+  path: '/kerkesat',
+  getParentRoute: () => AdminRoute,
 } as any)
 const LovableEmailQueueProcessRoute =
   LovableEmailQueueProcessRouteImport.update({
@@ -111,7 +141,7 @@ const ApiPublicPaymentOneforCompleteRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/mbyll-profile-fake': typeof MbyllProfileFakeRoute
@@ -121,15 +151,19 @@ export interface FileRoutesByFullPath {
   '/siguria': typeof SiguriaRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/topup': typeof TopupRoute
+  '/admin/kerkesat': typeof AdminKerkesatRoute
+  '/admin/pagesat': typeof AdminPagesatRoute
+  '/admin/regjistrimet': typeof AdminRegjistrimetRoute
+  '/admin/sherbimet': typeof AdminSherbimetRoute
   '/order/$serviceId': typeof OrderServiceIdRoute
   '/ref/$code': typeof RefCodeRoute
+  '/admin/': typeof AdminIndexRoute
   '/api/public/onefor/webhook': typeof ApiPublicOneforWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/api/public/payment/onefor/complete': typeof ApiPublicPaymentOneforCompleteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/mbyll-profile-fake': typeof MbyllProfileFakeRoute
@@ -139,8 +173,13 @@ export interface FileRoutesByTo {
   '/siguria': typeof SiguriaRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/topup': typeof TopupRoute
+  '/admin/kerkesat': typeof AdminKerkesatRoute
+  '/admin/pagesat': typeof AdminPagesatRoute
+  '/admin/regjistrimet': typeof AdminRegjistrimetRoute
+  '/admin/sherbimet': typeof AdminSherbimetRoute
   '/order/$serviceId': typeof OrderServiceIdRoute
   '/ref/$code': typeof RefCodeRoute
+  '/admin': typeof AdminIndexRoute
   '/api/public/onefor/webhook': typeof ApiPublicOneforWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/api/public/payment/onefor/complete': typeof ApiPublicPaymentOneforCompleteRoute
@@ -148,7 +187,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/mbyll-profile-fake': typeof MbyllProfileFakeRoute
@@ -158,8 +197,13 @@ export interface FileRoutesById {
   '/siguria': typeof SiguriaRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/topup': typeof TopupRoute
+  '/admin/kerkesat': typeof AdminKerkesatRoute
+  '/admin/pagesat': typeof AdminPagesatRoute
+  '/admin/regjistrimet': typeof AdminRegjistrimetRoute
+  '/admin/sherbimet': typeof AdminSherbimetRoute
   '/order/$serviceId': typeof OrderServiceIdRoute
   '/ref/$code': typeof RefCodeRoute
+  '/admin/': typeof AdminIndexRoute
   '/api/public/onefor/webhook': typeof ApiPublicOneforWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/api/public/payment/onefor/complete': typeof ApiPublicPaymentOneforCompleteRoute
@@ -178,15 +222,19 @@ export interface FileRouteTypes {
     | '/siguria'
     | '/sitemap.xml'
     | '/topup'
+    | '/admin/kerkesat'
+    | '/admin/pagesat'
+    | '/admin/regjistrimet'
+    | '/admin/sherbimet'
     | '/order/$serviceId'
     | '/ref/$code'
+    | '/admin/'
     | '/api/public/onefor/webhook'
     | '/lovable/email/queue/process'
     | '/api/public/payment/onefor/complete'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/admin'
     | '/dashboard'
     | '/login'
     | '/mbyll-profile-fake'
@@ -196,8 +244,13 @@ export interface FileRouteTypes {
     | '/siguria'
     | '/sitemap.xml'
     | '/topup'
+    | '/admin/kerkesat'
+    | '/admin/pagesat'
+    | '/admin/regjistrimet'
+    | '/admin/sherbimet'
     | '/order/$serviceId'
     | '/ref/$code'
+    | '/admin'
     | '/api/public/onefor/webhook'
     | '/lovable/email/queue/process'
     | '/api/public/payment/onefor/complete'
@@ -214,8 +267,13 @@ export interface FileRouteTypes {
     | '/siguria'
     | '/sitemap.xml'
     | '/topup'
+    | '/admin/kerkesat'
+    | '/admin/pagesat'
+    | '/admin/regjistrimet'
+    | '/admin/sherbimet'
     | '/order/$serviceId'
     | '/ref/$code'
+    | '/admin/'
     | '/api/public/onefor/webhook'
     | '/lovable/email/queue/process'
     | '/api/public/payment/onefor/complete'
@@ -223,7 +281,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRoute
+  AdminRoute: typeof AdminRouteWithChildren
   DashboardRoute: typeof DashboardRoute
   LoginRoute: typeof LoginRoute
   MbyllProfileFakeRoute: typeof MbyllProfileFakeRoute
@@ -319,6 +377,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/ref/$code': {
       id: '/ref/$code'
       path: '/ref/$code'
@@ -332,6 +397,34 @@ declare module '@tanstack/react-router' {
       fullPath: '/order/$serviceId'
       preLoaderRoute: typeof OrderServiceIdRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/sherbimet': {
+      id: '/admin/sherbimet'
+      path: '/sherbimet'
+      fullPath: '/admin/sherbimet'
+      preLoaderRoute: typeof AdminSherbimetRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/regjistrimet': {
+      id: '/admin/regjistrimet'
+      path: '/regjistrimet'
+      fullPath: '/admin/regjistrimet'
+      preLoaderRoute: typeof AdminRegjistrimetRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/pagesat': {
+      id: '/admin/pagesat'
+      path: '/pagesat'
+      fullPath: '/admin/pagesat'
+      preLoaderRoute: typeof AdminPagesatRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/kerkesat': {
+      id: '/admin/kerkesat'
+      path: '/kerkesat'
+      fullPath: '/admin/kerkesat'
+      preLoaderRoute: typeof AdminKerkesatRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/lovable/email/queue/process': {
       id: '/lovable/email/queue/process'
@@ -357,9 +450,27 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdminRouteChildren {
+  AdminKerkesatRoute: typeof AdminKerkesatRoute
+  AdminPagesatRoute: typeof AdminPagesatRoute
+  AdminRegjistrimetRoute: typeof AdminRegjistrimetRoute
+  AdminSherbimetRoute: typeof AdminSherbimetRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminKerkesatRoute: AdminKerkesatRoute,
+  AdminPagesatRoute: AdminPagesatRoute,
+  AdminRegjistrimetRoute: AdminRegjistrimetRoute,
+  AdminSherbimetRoute: AdminSherbimetRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRoute: AdminRoute,
+  AdminRoute: AdminRouteWithChildren,
   DashboardRoute: DashboardRoute,
   LoginRoute: LoginRoute,
   MbyllProfileFakeRoute: MbyllProfileFakeRoute,
