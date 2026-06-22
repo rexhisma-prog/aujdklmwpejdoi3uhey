@@ -86,12 +86,9 @@ export function ServicesManager() {
                       className="w-full rounded border border-border bg-background px-2 py-1" />
                   </td>
                   <td className="px-4 py-3">
-                    <select value={s.platform} onChange={(e) => updateField(s.id, "platform", e.target.value)}
-                      className="rounded border border-border bg-background px-2 py-1">
-                      <option value="instagram">Instagram</option>
-                      <option value="tiktok">TikTok</option>
-                      <option value="facebook">Facebook</option>
-                    </select>
+                    <input value={s.platform} list="platform-options"
+                      onChange={(e) => updateField(s.id, "platform", e.target.value)}
+                      className="w-32 rounded border border-border bg-background px-2 py-1" />
                   </td>
                   <td className="px-4 py-3">
                     <select value={s.service_type} onChange={(e) => updateField(s.id, "service_type", e.target.value)}
@@ -139,13 +136,15 @@ export function ServicesManager() {
           <input placeholder="Emri" value={newSvc.name}
             onChange={(e) => setNewSvc({ ...newSvc, name: e.target.value })}
             className="rounded border border-border bg-background px-2 py-1 text-sm" />
-          <select value={newSvc.platform}
+          <input placeholder="Platforma" value={newSvc.platform} list="platform-options"
             onChange={(e) => setNewSvc({ ...newSvc, platform: e.target.value })}
-            className="rounded border border-border bg-background px-2 py-1 text-sm">
+            className="w-32 rounded border border-border bg-background px-2 py-1 text-sm" />
+          <datalist id="platform-options">
             <option value="instagram">Instagram</option>
             <option value="tiktok">TikTok</option>
             <option value="facebook">Facebook</option>
-          </select>
+            <option value="youtube">YouTube</option>
+          </datalist>
           <select value={newSvc.service_type}
             onChange={(e) => setNewSvc({ ...newSvc, service_type: e.target.value })}
             className="rounded border border-border bg-background px-2 py-1 text-sm">
