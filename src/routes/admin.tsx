@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Users, Wallet, TrendingUp, ShoppingCart } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { deleteUserAccount } from "@/lib/admin.functions";
@@ -1033,7 +1033,8 @@ function TopupsManager() {
             </thead>
             <tbody>
               {topups.map((t) => (
-                <tr key={t.id} className="border-b border-border last:border-0 hover:bg-secondary/30">
+                <Fragment key={t.id}>
+                <tr className="border-b border-border last:border-0 hover:bg-secondary/30">
                   <td className="px-4 py-3 text-xs text-muted-foreground">
                     {new Date(t.created_at).toLocaleString("sq-AL")}
                   </td>
@@ -1061,8 +1062,7 @@ function TopupsManager() {
                   </td>
                   <td className="px-4 py-3 text-right">
                     {isActionable(t.status) ? (
-                      <div className="flex flex-col items-end gap-2">
-                        <div className="flex justify-end gap-2">
+                      <div className="flex justify-end gap-2">
                           <button
                             onClick={() => approve(t.id)}
                             disabled={savingId === t.id}
@@ -1072,7 +1072,13 @@ function TopupsManager() {
                           </button>
                           {rejectingId !== t.id && (
                             <button
-                              onClick={() => setRejectingId(t.id)}
+                              onClick={() => {
+                                setRejectingId(t.id);
+                                setRejectionDrafts((prev) => ({
+                                  ...prev,
+                                  [t.id]: prev[t.id] ?? t.rejection_reason ?? "",
+                                }));
+                              }}
                               disabled={savingId === t.id}
                               className="rounded-lg border border-border px-3 py-1 text-xs text-destructive hover:border-destructive disabled:opacity-50"
                             >
@@ -1080,42 +1086,6 @@ function TopupsManager() {
                             </button>
                           )}
                         </div>
-                        {rejectingId === t.id && (
-                          <div className="flex w-full max-w-xs flex-col items-end gap-2">
-                            <textarea
-                              value={rejectionDrafts[t.id] ?? ""}
-                              onChange={(e) =>
-                                setRejectionDrafts((prev) => ({ ...prev, [t.id]: e.target.value }))
-                              }
-                              placeholder="Arsyeja e refuzimit..."
-                              rows={2}
-                              className="w-full resize-y rounded-lg border border-border bg-background px-2 py-1 text-xs text-foreground placeholder:text-muted-foreground"
-                            />
-                            <div className="flex gap-2">
-                              <button
-                                onClick={() => reject(t.id)}
-                                disabled={savingId === t.id}
-                                className="rounded-lg border border-destructive px-3 py-1 text-xs text-destructive hover:bg-destructive/10 disabled:opacity-50"
-                              >
-                                {savingId === t.id ? "..." : "Konfirmo refuzimin"}
-                              </button>
-                              <button
-                                onClick={() => {
-                                  setRejectingId(null);
-                                  setRejectionDrafts((prev) => {
-                                    const next = { ...prev };
-                                    delete next[t.id];
-                                    return next;
-                                  });
-                                }}
-                                className="rounded-lg border border-border px-3 py-1 text-xs text-muted-foreground hover:border-primary/50"
-                              >
-                                Anulo
-                              </button>
-                            </div>
-                          </div>
-                        )}
-                      </div>
                     ) : isFailed(t.status) ? (
                       <div className="flex flex-col items-end gap-1">
                         <button
