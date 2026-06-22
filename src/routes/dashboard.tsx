@@ -26,6 +26,30 @@ type Order = {
   services?: { name: string; platform: string } | null;
 };
 
+type Topup = {
+  id: string;
+  amount_eur: number;
+  status: string;
+  rejection_reason: string | null;
+  created_at: string;
+};
+
+const topupStatusLabel: Record<string, string> = {
+  pending: "Në pritje",
+  paid: "Paguar — në verifikim",
+  approved: "Aprovuar",
+  rejected: "Refuzuar",
+  failed: "Dështoi",
+};
+
+const topupBadgeClass: Record<string, string> = {
+  pending: "bg-yellow-500/15 text-yellow-500 ring-yellow-500/30",
+  paid: "bg-blue-500/15 text-blue-500 ring-blue-500/30",
+  approved: "bg-green-500/15 text-green-500 ring-green-500/30",
+  rejected: "bg-red-500/15 text-red-500 ring-red-500/30",
+  failed: "bg-red-500/15 text-red-500 ring-red-500/30",
+};
+
 const statusLabel: Record<string, string> = {
   pending: "Në pritje",
   in_progress: "Duke u procesuar",
