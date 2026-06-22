@@ -244,8 +244,8 @@ function OrderPage() {
               Balanc i pamjaftueshëm
             </h2>
             <p className="mt-2 text-sm text-amber-700/90 dark:text-amber-300/90">
-              Për të hapur formularin dhe për të dërguar linkun e profilit dhe arsyet/shënimet,
-              duhet të kesh së paku <span className="font-semibold">{total.toFixed(2)} €</span> në balanc.
+              Për të bërë këtë porosi duhet të kryesh pagesën më parë. Të nevojiten së paku{" "}
+              <span className="font-semibold">{total.toFixed(2)} €</span> në balanc.
             </p>
             <p className="mt-1 text-xs text-amber-700/80 dark:text-amber-300/80">
               Balanci yt aktual: <span className="font-semibold">{balance.toFixed(2)} €</span>
