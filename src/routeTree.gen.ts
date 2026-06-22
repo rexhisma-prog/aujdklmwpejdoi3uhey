@@ -23,6 +23,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as RefCodeRouteImport } from './routes/ref.$code'
 import { Route as OrderServiceIdRouteImport } from './routes/order.$serviceId'
+import { Route as AdminSherbimetRouteImport } from './routes/admin.sherbimet'
 import { Route as AdminRegjistrimetRouteImport } from './routes/admin.regjistrimet'
 import { Route as AdminPagesatRouteImport } from './routes/admin.pagesat'
 import { Route as AdminKerkesatRouteImport } from './routes/admin.kerkesat'
@@ -100,6 +101,11 @@ const OrderServiceIdRoute = OrderServiceIdRouteImport.update({
   path: '/order/$serviceId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminSherbimetRoute = AdminSherbimetRouteImport.update({
+  id: '/sherbimet',
+  path: '/sherbimet',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminRegjistrimetRoute = AdminRegjistrimetRouteImport.update({
   id: '/regjistrimet',
   path: '/regjistrimet',
@@ -148,6 +154,7 @@ export interface FileRoutesByFullPath {
   '/admin/kerkesat': typeof AdminKerkesatRoute
   '/admin/pagesat': typeof AdminPagesatRoute
   '/admin/regjistrimet': typeof AdminRegjistrimetRoute
+  '/admin/sherbimet': typeof AdminSherbimetRoute
   '/order/$serviceId': typeof OrderServiceIdRoute
   '/ref/$code': typeof RefCodeRoute
   '/admin/': typeof AdminIndexRoute
@@ -169,6 +176,7 @@ export interface FileRoutesByTo {
   '/admin/kerkesat': typeof AdminKerkesatRoute
   '/admin/pagesat': typeof AdminPagesatRoute
   '/admin/regjistrimet': typeof AdminRegjistrimetRoute
+  '/admin/sherbimet': typeof AdminSherbimetRoute
   '/order/$serviceId': typeof OrderServiceIdRoute
   '/ref/$code': typeof RefCodeRoute
   '/admin': typeof AdminIndexRoute
@@ -192,6 +200,7 @@ export interface FileRoutesById {
   '/admin/kerkesat': typeof AdminKerkesatRoute
   '/admin/pagesat': typeof AdminPagesatRoute
   '/admin/regjistrimet': typeof AdminRegjistrimetRoute
+  '/admin/sherbimet': typeof AdminSherbimetRoute
   '/order/$serviceId': typeof OrderServiceIdRoute
   '/ref/$code': typeof RefCodeRoute
   '/admin/': typeof AdminIndexRoute
@@ -216,6 +225,7 @@ export interface FileRouteTypes {
     | '/admin/kerkesat'
     | '/admin/pagesat'
     | '/admin/regjistrimet'
+    | '/admin/sherbimet'
     | '/order/$serviceId'
     | '/ref/$code'
     | '/admin/'
@@ -237,6 +247,7 @@ export interface FileRouteTypes {
     | '/admin/kerkesat'
     | '/admin/pagesat'
     | '/admin/regjistrimet'
+    | '/admin/sherbimet'
     | '/order/$serviceId'
     | '/ref/$code'
     | '/admin'
@@ -259,6 +270,7 @@ export interface FileRouteTypes {
     | '/admin/kerkesat'
     | '/admin/pagesat'
     | '/admin/regjistrimet'
+    | '/admin/sherbimet'
     | '/order/$serviceId'
     | '/ref/$code'
     | '/admin/'
@@ -386,6 +398,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OrderServiceIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/sherbimet': {
+      id: '/admin/sherbimet'
+      path: '/sherbimet'
+      fullPath: '/admin/sherbimet'
+      preLoaderRoute: typeof AdminSherbimetRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/regjistrimet': {
       id: '/admin/regjistrimet'
       path: '/regjistrimet'
@@ -435,6 +454,7 @@ interface AdminRouteChildren {
   AdminKerkesatRoute: typeof AdminKerkesatRoute
   AdminPagesatRoute: typeof AdminPagesatRoute
   AdminRegjistrimetRoute: typeof AdminRegjistrimetRoute
+  AdminSherbimetRoute: typeof AdminSherbimetRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
@@ -442,6 +462,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminKerkesatRoute: AdminKerkesatRoute,
   AdminPagesatRoute: AdminPagesatRoute,
   AdminRegjistrimetRoute: AdminRegjistrimetRoute,
+  AdminSherbimetRoute: AdminSherbimetRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
