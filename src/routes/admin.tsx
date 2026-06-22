@@ -18,6 +18,10 @@ const NAV = [
 function AdminLayout() {
   const navigate = useNavigate();
   const [allowed, setAllowed] = useState(false);
+  const [counts, setCounts] = useState<{ pagesat: number; kerkesat: number }>({
+    pagesat: 0,
+    kerkesat: 0,
+  });
 
   useEffect(() => {
     let mounted = true;
@@ -42,6 +46,32 @@ function AdminLayout() {
       mounted = false;
     };
   }, [navigate]);
+
+  useEffect(() => {
+    if (!allowed) return;
+
+    const loadCounts = async () => {
+      const { count: pagesat } = await supabase
+        .from("topup_requests")
+        .select("id", { count: "exact", head: true })
+        .in("status", ["pending", "paid"]);
+      const { count: kerkesat } = await supabase
+        .from("orders")
+        .select("id", { count: "exact", head: true })
+        .eq("status", "pending");
+      setCounts({ pagesat: pagesat ?? 0, kerkesat: kerkesat ?? 0 });
+    };
+
+    loadCounts();
+    const channel = supabase
+      .channel("admin-nav-counts")
+      .on("postgres_changes", { event: "*", schema: "public", table: "topup_requests" }, () => loadCounts())
+      .on("postgres_changes", { event: "*", schema: "public", table: "orders" }, () => loadCounts())
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [allowed]);
 
   if (!allowed) {
     return (
