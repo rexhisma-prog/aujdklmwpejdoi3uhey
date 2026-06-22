@@ -20,6 +20,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as RefCodeRouteImport } from './routes/ref.$code'
 import { Route as OrderServiceIdRouteImport } from './routes/order.$serviceId'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
@@ -81,6 +82,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const RefCodeRoute = RefCodeRouteImport.update({
   id: '/ref/$code',
   path: '/ref/$code',
@@ -111,7 +117,7 @@ const ApiPublicPaymentOneforCompleteRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/mbyll-profile-fake': typeof MbyllProfileFakeRoute
@@ -123,13 +129,13 @@ export interface FileRoutesByFullPath {
   '/topup': typeof TopupRoute
   '/order/$serviceId': typeof OrderServiceIdRoute
   '/ref/$code': typeof RefCodeRoute
+  '/admin/': typeof AdminIndexRoute
   '/api/public/onefor/webhook': typeof ApiPublicOneforWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/api/public/payment/onefor/complete': typeof ApiPublicPaymentOneforCompleteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/mbyll-profile-fake': typeof MbyllProfileFakeRoute
@@ -141,6 +147,7 @@ export interface FileRoutesByTo {
   '/topup': typeof TopupRoute
   '/order/$serviceId': typeof OrderServiceIdRoute
   '/ref/$code': typeof RefCodeRoute
+  '/admin': typeof AdminIndexRoute
   '/api/public/onefor/webhook': typeof ApiPublicOneforWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/api/public/payment/onefor/complete': typeof ApiPublicPaymentOneforCompleteRoute
@@ -148,7 +155,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/mbyll-profile-fake': typeof MbyllProfileFakeRoute
@@ -160,6 +167,7 @@ export interface FileRoutesById {
   '/topup': typeof TopupRoute
   '/order/$serviceId': typeof OrderServiceIdRoute
   '/ref/$code': typeof RefCodeRoute
+  '/admin/': typeof AdminIndexRoute
   '/api/public/onefor/webhook': typeof ApiPublicOneforWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/api/public/payment/onefor/complete': typeof ApiPublicPaymentOneforCompleteRoute
@@ -180,13 +188,13 @@ export interface FileRouteTypes {
     | '/topup'
     | '/order/$serviceId'
     | '/ref/$code'
+    | '/admin/'
     | '/api/public/onefor/webhook'
     | '/lovable/email/queue/process'
     | '/api/public/payment/onefor/complete'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/admin'
     | '/dashboard'
     | '/login'
     | '/mbyll-profile-fake'
@@ -198,6 +206,7 @@ export interface FileRouteTypes {
     | '/topup'
     | '/order/$serviceId'
     | '/ref/$code'
+    | '/admin'
     | '/api/public/onefor/webhook'
     | '/lovable/email/queue/process'
     | '/api/public/payment/onefor/complete'
@@ -216,6 +225,7 @@ export interface FileRouteTypes {
     | '/topup'
     | '/order/$serviceId'
     | '/ref/$code'
+    | '/admin/'
     | '/api/public/onefor/webhook'
     | '/lovable/email/queue/process'
     | '/api/public/payment/onefor/complete'
@@ -223,7 +233,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRoute
+  AdminRoute: typeof AdminRouteWithChildren
   DashboardRoute: typeof DashboardRoute
   LoginRoute: typeof LoginRoute
   MbyllProfileFakeRoute: typeof MbyllProfileFakeRoute
@@ -319,6 +329,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/ref/$code': {
       id: '/ref/$code'
       path: '/ref/$code'
@@ -357,9 +374,19 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdminRouteChildren {
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRoute: AdminRoute,
+  AdminRoute: AdminRouteWithChildren,
   DashboardRoute: DashboardRoute,
   LoginRoute: LoginRoute,
   MbyllProfileFakeRoute: MbyllProfileFakeRoute,
