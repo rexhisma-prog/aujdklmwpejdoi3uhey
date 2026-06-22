@@ -235,7 +235,7 @@ function OrderPage() {
             : `${Number(service.price_eur).toFixed(2)} € për 1,000 ${unitLabel}`}
         </p>
 
-        {isReport && balance < total ? (
+        {balance < total ? (
           <div className="mt-6 rounded-2xl border border-amber-500/40 bg-amber-500/10 p-6 text-center">
             <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-amber-500/20">
               <Clock className="h-7 w-7 text-amber-600 dark:text-amber-400" />
@@ -244,8 +244,8 @@ function OrderPage() {
               Balanc i pamjaftueshëm
             </h2>
             <p className="mt-2 text-sm text-amber-700/90 dark:text-amber-300/90">
-              Për të hapur formularin dhe për të dërguar linkun e profilit dhe arsyet/shënimet,
-              duhet të kesh së paku <span className="font-semibold">{total.toFixed(2)} €</span> në balanc.
+              Për të bërë këtë porosi duhet të kryesh pagesën më parë. Të nevojiten së paku{" "}
+              <span className="font-semibold">{total.toFixed(2)} €</span> në balanc.
             </p>
             <p className="mt-1 text-xs text-amber-700/80 dark:text-amber-300/80">
               Balanci yt aktual: <span className="font-semibold">{balance.toFixed(2)} €</span>
