@@ -23,6 +23,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as RefCodeRouteImport } from './routes/ref.$code'
 import { Route as OrderServiceIdRouteImport } from './routes/order.$serviceId'
+import { Route as AdminRegjistrimetRouteImport } from './routes/admin.regjistrimet'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as ApiPublicOneforWebhookRouteImport } from './routes/api/public/onefor/webhook'
 import { Route as ApiPublicPaymentOneforCompleteRouteImport } from './routes/api/public/payment/onefor/complete'
@@ -97,6 +98,11 @@ const OrderServiceIdRoute = OrderServiceIdRouteImport.update({
   path: '/order/$serviceId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRegjistrimetRoute = AdminRegjistrimetRouteImport.update({
+  id: '/regjistrimet',
+  path: '/regjistrimet',
+  getParentRoute: () => AdminRoute,
+} as any)
 const LovableEmailQueueProcessRoute =
   LovableEmailQueueProcessRouteImport.update({
     id: '/lovable/email/queue/process',
@@ -127,6 +133,7 @@ export interface FileRoutesByFullPath {
   '/siguria': typeof SiguriaRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/topup': typeof TopupRoute
+  '/admin/regjistrimet': typeof AdminRegjistrimetRoute
   '/order/$serviceId': typeof OrderServiceIdRoute
   '/ref/$code': typeof RefCodeRoute
   '/admin/': typeof AdminIndexRoute
@@ -145,6 +152,7 @@ export interface FileRoutesByTo {
   '/siguria': typeof SiguriaRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/topup': typeof TopupRoute
+  '/admin/regjistrimet': typeof AdminRegjistrimetRoute
   '/order/$serviceId': typeof OrderServiceIdRoute
   '/ref/$code': typeof RefCodeRoute
   '/admin': typeof AdminIndexRoute
@@ -165,6 +173,7 @@ export interface FileRoutesById {
   '/siguria': typeof SiguriaRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/topup': typeof TopupRoute
+  '/admin/regjistrimet': typeof AdminRegjistrimetRoute
   '/order/$serviceId': typeof OrderServiceIdRoute
   '/ref/$code': typeof RefCodeRoute
   '/admin/': typeof AdminIndexRoute
@@ -186,6 +195,7 @@ export interface FileRouteTypes {
     | '/siguria'
     | '/sitemap.xml'
     | '/topup'
+    | '/admin/regjistrimet'
     | '/order/$serviceId'
     | '/ref/$code'
     | '/admin/'
@@ -204,6 +214,7 @@ export interface FileRouteTypes {
     | '/siguria'
     | '/sitemap.xml'
     | '/topup'
+    | '/admin/regjistrimet'
     | '/order/$serviceId'
     | '/ref/$code'
     | '/admin'
@@ -223,6 +234,7 @@ export interface FileRouteTypes {
     | '/siguria'
     | '/sitemap.xml'
     | '/topup'
+    | '/admin/regjistrimet'
     | '/order/$serviceId'
     | '/ref/$code'
     | '/admin/'
@@ -350,6 +362,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OrderServiceIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/regjistrimet': {
+      id: '/admin/regjistrimet'
+      path: '/regjistrimet'
+      fullPath: '/admin/regjistrimet'
+      preLoaderRoute: typeof AdminRegjistrimetRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/lovable/email/queue/process': {
       id: '/lovable/email/queue/process'
       path: '/lovable/email/queue/process'
@@ -375,10 +394,12 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteChildren {
+  AdminRegjistrimetRoute: typeof AdminRegjistrimetRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminRegjistrimetRoute: AdminRegjistrimetRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
