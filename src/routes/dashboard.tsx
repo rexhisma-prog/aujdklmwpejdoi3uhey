@@ -225,12 +225,38 @@ function ClientDashboard() {
             }
           },
         )
+        .on(
+          "postgres_changes",
+          { event: "UPDATE", schema: "public", table: "topup_requests", filter: `user_id=eq.${user.id}` },
+          (payload) => {
+            const newRow = payload.new as { id: string; status: string; rejection_reason: string | null };
+            const oldRow = payload.old as { status: string; rejection_reason: string | null };
+            setTopups((prev) =>
+              prev.map((t) =>
+                t.id === newRow.id
+                  ? { ...t, status: newRow.status, rejection_reason: newRow.rejection_reason }
+                  : t,
+              ),
+            );
+            const becameRejected =
+              newRow.status === "rejected" &&
+              (oldRow.status !== "rejected" || oldRow.rejection_reason !== newRow.rejection_reason);
+            if (becameRejected) {
+              setTopups((prev) => {
+                const amount = prev.find((t) => t.id === newRow.id)?.amount_eur ?? 0;
+                setTopupNotice({ amount: Number(amount), reason: newRow.rejection_reason });
+                return prev;
+              });
+            }
+          },
+        )
         .subscribe();
     });
     return () => {
       if (channel) supabase.removeChannel(channel);
     };
   }, []);
+
 
 
   const referralLink = referralCode ? `https://shtofollow.com/ref/${referralCode}` : null;
