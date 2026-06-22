@@ -8,16 +8,20 @@ export const Route = createFileRoute("/admin")({
 });
 
 const NAV = [
-  { to: "/admin", label: "Përmbledhje", exact: true },
-  { to: "/admin/regjistrimet", label: "Regjistrimet", exact: false },
-  { to: "/admin/pagesat", label: "Pagesat", exact: false },
-  { to: "/admin/kerkesat", label: "Kërkesat", exact: false },
-  { to: "/admin/sherbimet", label: "Shërbimet", exact: false },
+  { to: "/admin", label: "Përmbledhje", exact: true, key: null },
+  { to: "/admin/regjistrimet", label: "Regjistrimet", exact: false, key: null },
+  { to: "/admin/pagesat", label: "Pagesat", exact: false, key: "pagesat" },
+  { to: "/admin/kerkesat", label: "Kërkesat", exact: false, key: "kerkesat" },
+  { to: "/admin/sherbimet", label: "Shërbimet", exact: false, key: null },
 ] as const;
 
 function AdminLayout() {
   const navigate = useNavigate();
   const [allowed, setAllowed] = useState(false);
+  const [counts, setCounts] = useState<{ pagesat: number; kerkesat: number }>({
+    pagesat: 0,
+    kerkesat: 0,
+  });
 
   useEffect(() => {
     let mounted = true;
@@ -43,6 +47,32 @@ function AdminLayout() {
     };
   }, [navigate]);
 
+  useEffect(() => {
+    if (!allowed) return;
+
+    const loadCounts = async () => {
+      const { count: pagesat } = await supabase
+        .from("topup_requests")
+        .select("id", { count: "exact", head: true })
+        .in("status", ["pending", "paid"]);
+      const { count: kerkesat } = await supabase
+        .from("orders")
+        .select("id", { count: "exact", head: true })
+        .eq("status", "pending");
+      setCounts({ pagesat: pagesat ?? 0, kerkesat: kerkesat ?? 0 });
+    };
+
+    loadCounts();
+    const channel = supabase
+      .channel("admin-nav-counts")
+      .on("postgres_changes", { event: "*", schema: "public", table: "topup_requests" }, () => loadCounts())
+      .on("postgres_changes", { event: "*", schema: "public", table: "orders" }, () => loadCounts())
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [allowed]);
+
   if (!allowed) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background text-muted-foreground">
@@ -65,17 +95,25 @@ function AdminLayout() {
             </span>
           </div>
           <nav className="mt-4 flex flex-wrap gap-2">
-            {NAV.map((item) => (
-              <Link
-                key={item.to}
-                to={item.to}
-                activeOptions={{ exact: item.exact }}
-                className="rounded-lg border border-border px-3 py-1.5 text-sm text-muted-foreground hover:border-primary hover:text-foreground"
-                activeProps={{ className: "rounded-lg border border-primary bg-primary/10 px-3 py-1.5 text-sm font-medium text-primary" }}
-              >
-                {item.label}
-              </Link>
-            ))}
+            {NAV.map((item) => {
+              const badge = item.key ? counts[item.key] : 0;
+              return (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  activeOptions={{ exact: item.exact }}
+                  className="relative flex items-center gap-2 rounded-lg border border-border px-3 py-1.5 text-sm text-muted-foreground hover:border-primary hover:text-foreground"
+                  activeProps={{ className: "relative flex items-center gap-2 rounded-lg border border-primary bg-primary/10 px-3 py-1.5 text-sm font-medium text-primary" }}
+                >
+                  {item.label}
+                  {badge > 0 && (
+                    <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-destructive px-1.5 text-xs font-bold text-destructive-foreground">
+                      {badge}
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
           </nav>
         </div>
       </header>
