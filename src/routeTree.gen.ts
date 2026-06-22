@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TopupRouteImport } from './routes/topup'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SiguriaRouteImport } from './routes/siguria'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ReferralsRouteImport } from './routes/referrals'
 import { Route as RaportoProfilRouteImport } from './routes/raporto-profil'
@@ -33,6 +34,11 @@ const TopupRoute = TopupRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SiguriaRoute = SiguriaRouteImport.update({
+  id: '/siguria',
+  path: '/siguria',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RegisterRoute = RegisterRouteImport.update({
@@ -112,6 +118,7 @@ export interface FileRoutesByFullPath {
   '/raporto-profil': typeof RaportoProfilRoute
   '/referrals': typeof ReferralsRoute
   '/register': typeof RegisterRoute
+  '/siguria': typeof SiguriaRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/topup': typeof TopupRoute
   '/order/$serviceId': typeof OrderServiceIdRoute
@@ -129,6 +136,7 @@ export interface FileRoutesByTo {
   '/raporto-profil': typeof RaportoProfilRoute
   '/referrals': typeof ReferralsRoute
   '/register': typeof RegisterRoute
+  '/siguria': typeof SiguriaRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/topup': typeof TopupRoute
   '/order/$serviceId': typeof OrderServiceIdRoute
@@ -147,6 +155,7 @@ export interface FileRoutesById {
   '/raporto-profil': typeof RaportoProfilRoute
   '/referrals': typeof ReferralsRoute
   '/register': typeof RegisterRoute
+  '/siguria': typeof SiguriaRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/topup': typeof TopupRoute
   '/order/$serviceId': typeof OrderServiceIdRoute
@@ -166,6 +175,7 @@ export interface FileRouteTypes {
     | '/raporto-profil'
     | '/referrals'
     | '/register'
+    | '/siguria'
     | '/sitemap.xml'
     | '/topup'
     | '/order/$serviceId'
@@ -183,6 +193,7 @@ export interface FileRouteTypes {
     | '/raporto-profil'
     | '/referrals'
     | '/register'
+    | '/siguria'
     | '/sitemap.xml'
     | '/topup'
     | '/order/$serviceId'
@@ -200,6 +211,7 @@ export interface FileRouteTypes {
     | '/raporto-profil'
     | '/referrals'
     | '/register'
+    | '/siguria'
     | '/sitemap.xml'
     | '/topup'
     | '/order/$serviceId'
@@ -218,6 +230,7 @@ export interface RootRouteChildren {
   RaportoProfilRoute: typeof RaportoProfilRoute
   ReferralsRoute: typeof ReferralsRoute
   RegisterRoute: typeof RegisterRoute
+  SiguriaRoute: typeof SiguriaRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TopupRoute: typeof TopupRoute
   OrderServiceIdRoute: typeof OrderServiceIdRoute
@@ -241,6 +254,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/siguria': {
+      id: '/siguria'
+      path: '/siguria'
+      fullPath: '/siguria'
+      preLoaderRoute: typeof SiguriaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/register': {
@@ -346,6 +366,7 @@ const rootRouteChildren: RootRouteChildren = {
   RaportoProfilRoute: RaportoProfilRoute,
   ReferralsRoute: ReferralsRoute,
   RegisterRoute: RegisterRoute,
+  SiguriaRoute: SiguriaRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TopupRoute: TopupRoute,
   OrderServiceIdRoute: OrderServiceIdRoute,
