@@ -69,7 +69,7 @@ function AdminLayout() {
               <Link
                 key={item.to}
                 to={item.to}
-                activeOptions={{ exact: item.exact ?? false }}
+                activeOptions={{ exact: item.exact }}
                 className="rounded-lg border border-border px-3 py-1.5 text-sm text-muted-foreground hover:border-primary hover:text-foreground"
                 activeProps={{ className: "rounded-lg border border-primary bg-primary/10 px-3 py-1.5 text-sm font-medium text-primary" }}
               >
