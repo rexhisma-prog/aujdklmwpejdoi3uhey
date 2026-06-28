@@ -27,7 +27,7 @@ export const Route = createFileRoute("/rikthim-instagram")({
       {
         property: "og:description",
         content:
-          "Rikthejmë llogaritë e Instagramit të mbyllura, suspenduara ose çaktivizuara. Procesi zgjat deri në 1 javë; nëse nuk rikthehet brenda javës, paratë kthehen brenda 24 orëve. Pagesat: OneFor, Visa dhe Mastercard.",
+          "Rikthejmë llogaritë e Instagramit të mbyllura, suspenduara ose çaktivizuara. Procesi zgjat deri në 1 javë; nëse nuk rikthehet brenda javës, mbahen vetëm 50€ për shpenzime dhe pjesa tjetër kthehet e plotë brenda 24 orëve. Pagesat: OneFor, Visa dhe Mastercard.",
       },
       { property: "og:url", content: "https://shtofollow.com/rikthim-instagram" },
     ],
