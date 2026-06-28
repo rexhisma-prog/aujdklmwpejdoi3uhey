@@ -55,6 +55,7 @@ function Index() {
       <main>
         <Hero />
         <FakeProfileBanner />
+        <InstagramRecoveryBanner />
         <ReferralPromo />
         <Features />
         <LiveStats />
@@ -105,6 +106,44 @@ function FakeProfileBanner() {
     </section>
   );
 }
+
+function InstagramRecoveryBanner() {
+  return (
+    <section className="mx-auto max-w-5xl px-6 py-12">
+      <div className="relative overflow-hidden rounded-3xl border border-primary/30 bg-gradient-to-br from-primary/20 via-card to-card p-8 shadow-[var(--shadow-glow)] md:p-10">
+        <div className="absolute -right-16 -bottom-16 h-56 w-56 rounded-full bg-primary/20 blur-3xl" />
+        <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+          <div className="md:max-w-xl">
+            <div className="inline-flex items-center gap-2 rounded-full bg-primary/15 px-3 py-1 text-xs font-medium text-primary ring-1 ring-primary/30">
+              <Shield className="h-3.5 w-3.5" /> Nga 199.99€
+            </div>
+            <h2 className="mt-4 text-3xl font-bold tracking-tight md:text-4xl">
+              🔓 Rikthimi i Instagramit të mbyllur ose të suspenduar
+            </h2>
+            <p className="mt-3 text-muted-foreground">
+              Ndihmojmë në rikthimin e llogarive të Instagramit që janë mbyllur, suspenduar ose çaktivizuar. Nëse nuk
+              rikthehet, paratë kthehen brenda 24 orëve.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link
+                to="/rikthim-instagram"
+                className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:opacity-90"
+              >
+                <Instagram className="h-4 w-4" /> Nis rikthimin e Instagramit
+              </Link>
+            </div>
+          </div>
+          <div className="hidden shrink-0 md:block">
+            <div className="flex h-28 w-28 items-center justify-center rounded-3xl bg-primary/15 text-primary ring-1 ring-primary/30">
+              <Instagram className="h-14 w-14" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 
 function ReferralPromo() {
   return (

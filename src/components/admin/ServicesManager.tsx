@@ -97,6 +97,8 @@ export function ServicesManager() {
                       <option value="likes">Likes</option>
                       <option value="views">Views</option>
                       <option value="profile_closure">Mbyllje Fake</option>
+                      <option value="account_recovery">Rikthim Instagrami</option>
+                      <option value="report_tool">Asistencë Raportimi</option>
                     </select>
                   </td>
                   <td className="px-4 py-3">
@@ -152,6 +154,8 @@ export function ServicesManager() {
             <option value="likes">Likes</option>
             <option value="views">Views</option>
             <option value="profile_closure">Mbyllje Fake</option>
+            <option value="account_recovery">Rikthim Instagrami</option>
+            <option value="report_tool">Asistencë Raportimi</option>
           </select>
           <input type="number" step="0.01" placeholder="Çmimi € / 1000" value={newSvc.price_eur}
             onChange={(e) => setNewSvc({ ...newSvc, price_eur: Number(e.target.value) })}

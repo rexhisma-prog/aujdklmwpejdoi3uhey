@@ -116,8 +116,11 @@ function OrderPage() {
     );
   }
 
+  const isRecovery = service.service_type === "account_recovery";
   const isClosure =
-    service.service_type === "profile_closure" || service.service_type === "report_tool";
+    service.service_type === "profile_closure" ||
+    service.service_type === "report_tool" ||
+    isRecovery;
   const isReport = service.service_type === "report_tool";
 
   const unitLabel =
@@ -152,6 +155,8 @@ function OrderPage() {
               <p className="text-sm text-foreground">
                 {isReport ? (
                   <>Raporti përpilohet dhe të dërgohet brenda <span className="font-semibold text-primary">2 deri në 24 orë</span>.</>
+                ) : isRecovery ? (
+                  <>Nëse Instagrami nuk rikthehet, paratë kthehen brenda <span className="font-semibold text-primary">24 orëve</span>.</>
                 ) : isClosure ? (
                   <>Mbyllja mund të zgjasë nga <span className="font-semibold text-primary">2 deri në 72 orë</span>.</>
                 ) : (
@@ -286,9 +291,11 @@ function OrderPage() {
             <label className="mb-2 block text-sm font-medium">
               {isReport
                 ? "Linku / username i profilit që raportohet"
-                : isClosure
-                  ? "Linku i profilit / faqes fake"
-                  : "Linku i profilit / fotos / videos"}
+                : isRecovery
+                  ? "Linku / username i profilit të Instagramit që rikthehet"
+                  : isClosure
+                    ? "Linku i profilit / faqes fake"
+                    : "Linku i profilit / fotos / videos"}
             </label>
             <input
               type="url"
