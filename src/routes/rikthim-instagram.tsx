@@ -131,8 +131,12 @@ function RikthimInstagram() {
             </p>
             <div className="mx-auto mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
               <div className="inline-flex items-center gap-2 rounded-xl border border-primary/20 bg-primary/5 px-4 py-2 text-sm text-foreground">
+                <Clock className="h-4 w-4 text-primary" />
+                Procesi zgjat deri në <span className="font-semibold text-primary">1 javë</span>.
+              </div>
+              <div className="inline-flex items-center gap-2 rounded-xl border border-primary/20 bg-primary/5 px-4 py-2 text-sm text-foreground">
                 <RotateCcw className="h-4 w-4 text-primary" />
-                Nuk rikthehet? <span className="font-semibold text-primary">Paratë kthehen brenda 24 orëve</span>.
+                Nuk rikthehet brenda javës? <span className="font-semibold text-primary">Paratë kthehen brenda 24 orëve</span>.
               </div>
               <div className="inline-flex items-center gap-2 rounded-xl border border-primary/20 bg-primary/5 px-4 py-2 text-sm text-foreground">
                 <CreditCard className="h-4 w-4 text-primary" />
