@@ -218,8 +218,8 @@ function RikthimInstagram() {
             <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {[
                 { icon: ShieldCheck, text: "Proces i sigurt dhe profesional" },
-                { icon: Clock, text: "Asistencë deri në rikthim" },
-                { icon: RotateCcw, text: "Kthim parash brenda 24 orëve" },
+                { icon: Clock, text: "Rikthimi deri në 1 javë" },
+                { icon: RotateCcw, text: "Nuk rikthehet? Kthim parash brenda 24 orëve" },
                 { icon: CreditCard, text: "OneFor, Visa dhe Mastercard" },
               ].map(({ icon: Icon, text }) => (
                 <div key={text} className="rounded-2xl border border-border bg-card p-6 text-center">
