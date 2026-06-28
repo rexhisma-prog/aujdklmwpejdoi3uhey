@@ -291,9 +291,11 @@ function OrderPage() {
             <label className="mb-2 block text-sm font-medium">
               {isReport
                 ? "Linku / username i profilit që raportohet"
-                : isClosure
-                  ? "Linku i profilit / faqes fake"
-                  : "Linku i profilit / fotos / videos"}
+                : isRecovery
+                  ? "Linku / username i profilit të Instagramit që rikthehet"
+                  : isClosure
+                    ? "Linku i profilit / faqes fake"
+                    : "Linku i profilit / fotos / videos"}
             </label>
             <input
               type="url"
