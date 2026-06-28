@@ -156,7 +156,7 @@ function OrderPage() {
                 {isReport ? (
                   <>Raporti përpilohet dhe të dërgohet brenda <span className="font-semibold text-primary">2 deri në 24 orë</span>.</>
                 ) : isRecovery ? (
-                  <>Procesi zgjat deri në <span className="font-semibold text-primary">1 javë</span>. Nëse nuk rikthehet brenda javës, paratë kthehen brenda <span className="font-semibold text-primary">24 orëve</span>.</>
+                  <>Procesi zgjat deri në <span className="font-semibold text-primary">1 javë</span>. Nëse nuk rikthehet brenda javës, mbahen vetëm <span className="font-semibold text-primary">50€</span> për shpenzime dhe pjesa tjetër kthehet e plotë brenda <span className="font-semibold text-primary">24 orëve</span>.</>
 
                 ) : isClosure ? (
                   <>Mbyllja mund të zgjasë nga <span className="font-semibold text-primary">2 deri në 72 orë</span>.</>
