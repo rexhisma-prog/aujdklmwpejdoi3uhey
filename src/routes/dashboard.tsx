@@ -512,7 +512,7 @@ function ClientDashboard() {
               </div>
               <h2 className="mt-3 text-xl font-bold">Rikthimi i Instagramit të mbyllur ose të suspenduar</h2>
               <p className="mt-1 max-w-md text-sm text-muted-foreground">
-                Rikthejmë llogaritë e Instagramit të mbyllura, suspenduara ose çaktivizuara. Nuk rikthehet? Paratë kthehen brenda 24 orëve.
+                Rikthejmë llogaritë e Instagramit të mbyllura, suspenduara ose çaktivizuara. Procesi zgjat deri në 1 javë; nëse nuk rikthehet brenda javës, paratë kthehen brenda 24 orëve.
               </p>
             </div>
             <Link
