@@ -203,7 +203,7 @@ function RikthimInstagram() {
             <div>
               <p className="font-semibold">Garanci kthimi parash</p>
               <p className="text-sm text-muted-foreground">
-                Nëse Instagrami nuk rikthehet, paratë kthehen brenda 24 orëve.
+                Procesi zgjat deri në 1 javë. Nëse Instagrami nuk rikthehet brenda javës, paratë kthehen brenda 24 orëve.
               </p>
             </div>
           </div>
