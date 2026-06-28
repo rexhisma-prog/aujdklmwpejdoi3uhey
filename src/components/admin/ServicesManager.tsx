@@ -97,6 +97,8 @@ export function ServicesManager() {
                       <option value="likes">Likes</option>
                       <option value="views">Views</option>
                       <option value="profile_closure">Mbyllje Fake</option>
+                      <option value="account_recovery">Rikthim Instagrami</option>
+                      <option value="report_tool">Asistencë Raportimi</option>
                     </select>
                   </td>
                   <td className="px-4 py-3">
