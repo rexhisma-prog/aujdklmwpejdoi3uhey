@@ -21,13 +21,13 @@ export const Route = createFileRoute("/rikthim-instagram")({
       {
         name: "description",
         content:
-          "Ndihmojmë në rikthimin e llogarive të Instagramit që janë mbyllur, suspenduar ose çaktivizuar. Çmime sipas numrit të ndjekësve. Nëse Instagrami nuk rikthehet, paratë kthehen brenda 24 orëve.",
+          "Ndihmojmë në rikthimin e llogarive të Instagramit që janë mbyllur, suspenduar ose çaktivizuar. Çmime sipas numrit të ndjekësve. Procesi zgjat deri në 1 javë; nëse nuk rikthehet brenda javës, paratë kthehen brenda 24 orëve.",
       },
       { property: "og:title", content: "Rikthimi i Instagramit të Mbyllur ose të Suspenduar — ShtoFollow.com" },
       {
         property: "og:description",
         content:
-          "Rikthejmë llogaritë e Instagramit të mbyllura, suspenduara ose çaktivizuara. Nëse nuk rikthehet, paratë kthehen brenda 24 orëve. Pagesat: OneFor, Visa dhe Mastercard.",
+          "Rikthejmë llogaritë e Instagramit të mbyllura, suspenduara ose çaktivizuara. Procesi zgjat deri në 1 javë; nëse nuk rikthehet brenda javës, paratë kthehen brenda 24 orëve. Pagesat: OneFor, Visa dhe Mastercard.",
       },
       { property: "og:url", content: "https://shtofollow.com/rikthim-instagram" },
     ],
@@ -131,8 +131,12 @@ function RikthimInstagram() {
             </p>
             <div className="mx-auto mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
               <div className="inline-flex items-center gap-2 rounded-xl border border-primary/20 bg-primary/5 px-4 py-2 text-sm text-foreground">
+                <Clock className="h-4 w-4 text-primary" />
+                Procesi zgjat deri në <span className="font-semibold text-primary">1 javë</span>.
+              </div>
+              <div className="inline-flex items-center gap-2 rounded-xl border border-primary/20 bg-primary/5 px-4 py-2 text-sm text-foreground">
                 <RotateCcw className="h-4 w-4 text-primary" />
-                Nuk rikthehet? <span className="font-semibold text-primary">Paratë kthehen brenda 24 orëve</span>.
+                Nuk rikthehet brenda javës? <span className="font-semibold text-primary">Paratë kthehen brenda 24 orëve</span>.
               </div>
               <div className="inline-flex items-center gap-2 rounded-xl border border-primary/20 bg-primary/5 px-4 py-2 text-sm text-foreground">
                 <CreditCard className="h-4 w-4 text-primary" />
@@ -199,7 +203,7 @@ function RikthimInstagram() {
             <div>
               <p className="font-semibold">Garanci kthimi parash</p>
               <p className="text-sm text-muted-foreground">
-                Nëse Instagrami nuk rikthehet, paratë kthehen brenda 24 orëve.
+                Procesi zgjat deri në 1 javë. Nëse Instagrami nuk rikthehet brenda javës, paratë kthehen brenda 24 orëve.
               </p>
             </div>
           </div>
@@ -214,8 +218,8 @@ function RikthimInstagram() {
             <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {[
                 { icon: ShieldCheck, text: "Proces i sigurt dhe profesional" },
-                { icon: Clock, text: "Asistencë deri në rikthim" },
-                { icon: RotateCcw, text: "Kthim parash brenda 24 orëve" },
+                { icon: Clock, text: "Rikthimi deri në 1 javë" },
+                { icon: RotateCcw, text: "Nuk rikthehet? Kthim parash brenda 24 orëve" },
                 { icon: CreditCard, text: "OneFor, Visa dhe Mastercard" },
               ].map(({ icon: Icon, text }) => (
                 <div key={text} className="rounded-2xl border border-border bg-card p-6 text-center">
