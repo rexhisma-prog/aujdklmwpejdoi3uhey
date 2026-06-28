@@ -55,6 +55,7 @@ function Index() {
       <main>
         <Hero />
         <FakeProfileBanner />
+        <InstagramRecoveryBanner />
         <ReferralPromo />
         <Features />
         <LiveStats />
