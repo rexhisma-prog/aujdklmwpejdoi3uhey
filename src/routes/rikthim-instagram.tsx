@@ -219,7 +219,7 @@ function RikthimInstagram() {
               {[
                 { icon: ShieldCheck, text: "Proces i sigurt dhe profesional" },
                 { icon: Clock, text: "Rikthimi deri në 1 javë" },
-                { icon: RotateCcw, text: "Nuk rikthehet? Kthim parash brenda 24 orëve" },
+                { icon: RotateCcw, text: "Nuk rikthehet? Mbahen vetëm 50€, pjesa tjetër kthehet" },
                 { icon: CreditCard, text: "OneFor, Visa dhe Mastercard" },
               ].map(({ icon: Icon, text }) => (
                 <div key={text} className="rounded-2xl border border-border bg-card p-6 text-center">
