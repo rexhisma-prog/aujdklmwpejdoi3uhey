@@ -121,8 +121,8 @@ function InstagramRecoveryBanner() {
               🔓 Rikthimi i Instagramit të mbyllur ose të suspenduar
             </h2>
             <p className="mt-3 text-muted-foreground">
-              Ndihmojmë në rikthimin e llogarive të Instagramit që janë mbyllur, suspenduar ose çaktivizuar. Nëse nuk
-              rikthehet, paratë kthehen brenda 24 orëve.
+              Ndihmojmë në rikthimin e llogarive të Instagramit që janë mbyllur, suspenduar ose çaktivizuar. Procesi
+              zgjat deri në 1 javë; nëse nuk rikthehet brenda javës, paratë kthehen brenda 24 orëve.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
