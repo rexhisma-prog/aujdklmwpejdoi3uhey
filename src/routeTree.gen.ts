@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TopupRouteImport } from './routes/topup'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SiguriaRouteImport } from './routes/siguria'
+import { Route as RikthimInstagramRouteImport } from './routes/rikthim-instagram'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ReferralsRouteImport } from './routes/referrals'
 import { Route as RaportoProfilRouteImport } from './routes/raporto-profil'
@@ -44,6 +45,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const SiguriaRoute = SiguriaRouteImport.update({
   id: '/siguria',
   path: '/siguria',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RikthimInstagramRoute = RikthimInstagramRouteImport.update({
+  id: '/rikthim-instagram',
+  path: '/rikthim-instagram',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RegisterRoute = RegisterRouteImport.update({
@@ -148,6 +154,7 @@ export interface FileRoutesByFullPath {
   '/raporto-profil': typeof RaportoProfilRoute
   '/referrals': typeof ReferralsRoute
   '/register': typeof RegisterRoute
+  '/rikthim-instagram': typeof RikthimInstagramRoute
   '/siguria': typeof SiguriaRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/topup': typeof TopupRoute
@@ -170,6 +177,7 @@ export interface FileRoutesByTo {
   '/raporto-profil': typeof RaportoProfilRoute
   '/referrals': typeof ReferralsRoute
   '/register': typeof RegisterRoute
+  '/rikthim-instagram': typeof RikthimInstagramRoute
   '/siguria': typeof SiguriaRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/topup': typeof TopupRoute
@@ -194,6 +202,7 @@ export interface FileRoutesById {
   '/raporto-profil': typeof RaportoProfilRoute
   '/referrals': typeof ReferralsRoute
   '/register': typeof RegisterRoute
+  '/rikthim-instagram': typeof RikthimInstagramRoute
   '/siguria': typeof SiguriaRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/topup': typeof TopupRoute
@@ -219,6 +228,7 @@ export interface FileRouteTypes {
     | '/raporto-profil'
     | '/referrals'
     | '/register'
+    | '/rikthim-instagram'
     | '/siguria'
     | '/sitemap.xml'
     | '/topup'
@@ -241,6 +251,7 @@ export interface FileRouteTypes {
     | '/raporto-profil'
     | '/referrals'
     | '/register'
+    | '/rikthim-instagram'
     | '/siguria'
     | '/sitemap.xml'
     | '/topup'
@@ -264,6 +275,7 @@ export interface FileRouteTypes {
     | '/raporto-profil'
     | '/referrals'
     | '/register'
+    | '/rikthim-instagram'
     | '/siguria'
     | '/sitemap.xml'
     | '/topup'
@@ -288,6 +300,7 @@ export interface RootRouteChildren {
   RaportoProfilRoute: typeof RaportoProfilRoute
   ReferralsRoute: typeof ReferralsRoute
   RegisterRoute: typeof RegisterRoute
+  RikthimInstagramRoute: typeof RikthimInstagramRoute
   SiguriaRoute: typeof SiguriaRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TopupRoute: typeof TopupRoute
@@ -319,6 +332,13 @@ declare module '@tanstack/react-router' {
       path: '/siguria'
       fullPath: '/siguria'
       preLoaderRoute: typeof SiguriaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rikthim-instagram': {
+      id: '/rikthim-instagram'
+      path: '/rikthim-instagram'
+      fullPath: '/rikthim-instagram'
+      preLoaderRoute: typeof RikthimInstagramRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/register': {
@@ -477,6 +497,7 @@ const rootRouteChildren: RootRouteChildren = {
   RaportoProfilRoute: RaportoProfilRoute,
   ReferralsRoute: ReferralsRoute,
   RegisterRoute: RegisterRoute,
+  RikthimInstagramRoute: RikthimInstagramRoute,
   SiguriaRoute: SiguriaRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TopupRoute: TopupRoute,
