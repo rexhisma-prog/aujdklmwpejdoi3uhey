@@ -161,7 +161,7 @@ function ClientDashboard() {
         const platformRank: Record<string, number> = { instagram: 0, tiktok: 1, facebook: 2 };
         const typeRank: Record<string, number> = { followers: 0, likes: 1, views: 2 };
         const list = ((svc as Service[]) ?? [])
-          .filter((s) => s.service_type !== "profile_closure" && s.service_type !== "report_tool")
+          .filter((s) => s.service_type !== "profile_closure" && s.service_type !== "report_tool" && s.service_type !== "account_recovery")
           .sort((a, b) => {
             const pa = platformRank[a.platform] ?? 99;
             const pb = platformRank[b.platform] ?? 99;
