@@ -21,7 +21,7 @@ export const Route = createFileRoute("/rikthim-instagram")({
       {
         name: "description",
         content:
-          "Ndihmojmë në rikthimin e llogarive të Instagramit që janë mbyllur, suspenduar ose çaktivizuar. Çmime sipas numrit të ndjekësve. Procesi zgjat deri në 1 javë; nëse nuk rikthehet brenda javës, paratë kthehen brenda 24 orëve.",
+          "Ndihmojmë në rikthimin e llogarive të Instagramit që janë mbyllur, suspenduar ose çaktivizuar. Çmime sipas numrit të ndjekësve. Procesi zgjat deri në 1 javë; nëse nuk rikthehet brenda javës, mbahen vetëm 50€ për shpenzime dhe pjesa tjetër kthehet e plotë brenda 24 orëve.",
       },
       { property: "og:title", content: "Rikthimi i Instagramit të Mbyllur ose të Suspenduar — ShtoFollow.com" },
       {
