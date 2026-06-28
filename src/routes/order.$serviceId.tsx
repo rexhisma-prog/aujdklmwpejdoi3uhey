@@ -116,8 +116,11 @@ function OrderPage() {
     );
   }
 
+  const isRecovery = service.service_type === "account_recovery";
   const isClosure =
-    service.service_type === "profile_closure" || service.service_type === "report_tool";
+    service.service_type === "profile_closure" ||
+    service.service_type === "report_tool" ||
+    isRecovery;
   const isReport = service.service_type === "report_tool";
 
   const unitLabel =
