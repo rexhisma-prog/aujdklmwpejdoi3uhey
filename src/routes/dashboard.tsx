@@ -512,7 +512,7 @@ function ClientDashboard() {
               </div>
               <h2 className="mt-3 text-xl font-bold">Rikthimi i Instagramit të mbyllur ose të suspenduar</h2>
               <p className="mt-1 max-w-md text-sm text-muted-foreground">
-                Rikthejmë llogaritë e Instagramit të mbyllura, suspenduara ose çaktivizuara. Procesi zgjat deri në 1 javë; nëse nuk rikthehet brenda javës, mbahen vetëm 50€ për shpenzime dhe pjesa tjetër kthehet e plotë brenda 24 orëve.
+                Rikthejmë llogaritë e Instagramit të mbyllura, suspenduara ose çaktivizuara. Procesi zgjat deri në 1 javë; nëse nuk rikthehet brenda javës, mbahen 10–50€ për shpenzime (varësisht nga numri i ndjekësve) dhe pjesa tjetër kthehet e plotë brenda 24 orëve.
               </p>
             </div>
             <Link
