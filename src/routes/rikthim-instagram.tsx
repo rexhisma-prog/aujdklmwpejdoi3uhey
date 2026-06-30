@@ -43,7 +43,7 @@ export const Route = createFileRoute("/rikthim-instagram")({
             "Ndihmojmë në rikthimin e llogarive të Instagramit që janë mbyllur, suspenduar ose çaktivizuar.",
           provider: { "@type": "Organization", name: "ShtoFollow.com", url: "https://shtofollow.com" },
           areaServed: "AL",
-          offers: { "@type": "Offer", priceCurrency: "EUR", price: "199.99" },
+          offers: { "@type": "Offer", priceCurrency: "EUR", price: "799.99" },
         }),
       },
     ],
@@ -115,7 +115,7 @@ function RikthimInstagram() {
           <div className="absolute inset-0 -z-10" style={{ background: "var(--gradient-hero)" }} />
           <div className="mx-auto max-w-4xl px-6 pt-20 pb-16 text-center">
             <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-medium text-primary">
-              <Shield className="h-3.5 w-3.5" /> Nga 199.99€
+              <Shield className="h-3.5 w-3.5" /> 799.99€ për të gjitha
             </div>
             <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-[var(--shadow-glow)]">
               <Instagram className="h-8 w-8" />
