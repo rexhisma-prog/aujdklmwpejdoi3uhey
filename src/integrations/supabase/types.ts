@@ -407,6 +407,10 @@ export type Database = {
         Args: { _paid: boolean; _session_id: string }
         Returns: boolean
       }
+      credit_topup_by_session: {
+        Args: { _paid: boolean; _session_id: string }
+        Returns: boolean
+      }
       delete_email: {
         Args: { message_id: number; queue_name: string }
         Returns: boolean
