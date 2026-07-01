@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { createOneforTopup } from "@/lib/onefor.functions";
+import { createCryptoTopup } from "@/lib/nowpayments.functions";
 import { QRCodeSVG } from "qrcode.react";
 import {
   ArrowLeft,
@@ -10,6 +11,7 @@ import {
   Wallet,
   Landmark,
   HandCoins,
+  Bitcoin,
   Loader2,
   CheckCircle2,
   Clock,
