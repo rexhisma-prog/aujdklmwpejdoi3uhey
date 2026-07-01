@@ -437,7 +437,9 @@ function TopupPage() {
               ? "Vazhdo te pagesa me kartelë"
               : method === "onefor"
                 ? "Gjenero QR code për OneFor"
-                : "Dërgo kërkesën"}
+                : method === "crypto"
+                  ? "Vazhdo te pagesa me kripto"
+                  : "Dërgo kërkesën"}
           </button>
         </form>
       </main>
