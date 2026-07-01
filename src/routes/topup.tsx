@@ -28,7 +28,7 @@ export const Route = createFileRoute("/topup")({
   component: TopupPage,
 });
 
-type Method = "card" | "onefor" | "bank" | "manual";
+type Method = "card" | "onefor" | "crypto" | "bank" | "manual";
 
 const METHODS: {
   id: Method;
@@ -47,6 +47,12 @@ const METHODS: {
     label: "OneFor",
     desc: "Paguaj me llogarinë tënde OneFor. Balanca shtohet automatikisht.",
     icon: Wallet,
+  },
+  {
+    id: "crypto",
+    label: "Kripto (USDT)",
+    desc: "Paguaj me USDT (TRC-20). Balanca shtohet automatikisht pas konfirmimit.",
+    icon: Bitcoin,
   },
   {
     id: "bank",
