@@ -30,6 +30,7 @@ import { Route as AdminPagesatRouteImport } from './routes/admin.pagesat'
 import { Route as AdminKerkesatRouteImport } from './routes/admin.kerkesat'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as ApiPublicOneforWebhookRouteImport } from './routes/api/public/onefor/webhook'
+import { Route as ApiPublicNowpaymentsWebhookRouteImport } from './routes/api/public/nowpayments/webhook'
 import { Route as ApiPublicPaymentOneforCompleteRouteImport } from './routes/api/public/payment/onefor/complete'
 
 const TopupRoute = TopupRouteImport.update({
@@ -138,6 +139,12 @@ const ApiPublicOneforWebhookRoute = ApiPublicOneforWebhookRouteImport.update({
   path: '/api/public/onefor/webhook',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicNowpaymentsWebhookRoute =
+  ApiPublicNowpaymentsWebhookRouteImport.update({
+    id: '/api/public/nowpayments/webhook',
+    path: '/api/public/nowpayments/webhook',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicPaymentOneforCompleteRoute =
   ApiPublicPaymentOneforCompleteRouteImport.update({
     id: '/api/public/payment/onefor/complete',
@@ -165,6 +172,7 @@ export interface FileRoutesByFullPath {
   '/order/$serviceId': typeof OrderServiceIdRoute
   '/ref/$code': typeof RefCodeRoute
   '/admin/': typeof AdminIndexRoute
+  '/api/public/nowpayments/webhook': typeof ApiPublicNowpaymentsWebhookRoute
   '/api/public/onefor/webhook': typeof ApiPublicOneforWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/api/public/payment/onefor/complete': typeof ApiPublicPaymentOneforCompleteRoute
@@ -188,6 +196,7 @@ export interface FileRoutesByTo {
   '/order/$serviceId': typeof OrderServiceIdRoute
   '/ref/$code': typeof RefCodeRoute
   '/admin': typeof AdminIndexRoute
+  '/api/public/nowpayments/webhook': typeof ApiPublicNowpaymentsWebhookRoute
   '/api/public/onefor/webhook': typeof ApiPublicOneforWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/api/public/payment/onefor/complete': typeof ApiPublicPaymentOneforCompleteRoute
@@ -213,6 +222,7 @@ export interface FileRoutesById {
   '/order/$serviceId': typeof OrderServiceIdRoute
   '/ref/$code': typeof RefCodeRoute
   '/admin/': typeof AdminIndexRoute
+  '/api/public/nowpayments/webhook': typeof ApiPublicNowpaymentsWebhookRoute
   '/api/public/onefor/webhook': typeof ApiPublicOneforWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/api/public/payment/onefor/complete': typeof ApiPublicPaymentOneforCompleteRoute
@@ -239,6 +249,7 @@ export interface FileRouteTypes {
     | '/order/$serviceId'
     | '/ref/$code'
     | '/admin/'
+    | '/api/public/nowpayments/webhook'
     | '/api/public/onefor/webhook'
     | '/lovable/email/queue/process'
     | '/api/public/payment/onefor/complete'
@@ -262,6 +273,7 @@ export interface FileRouteTypes {
     | '/order/$serviceId'
     | '/ref/$code'
     | '/admin'
+    | '/api/public/nowpayments/webhook'
     | '/api/public/onefor/webhook'
     | '/lovable/email/queue/process'
     | '/api/public/payment/onefor/complete'
@@ -286,6 +298,7 @@ export interface FileRouteTypes {
     | '/order/$serviceId'
     | '/ref/$code'
     | '/admin/'
+    | '/api/public/nowpayments/webhook'
     | '/api/public/onefor/webhook'
     | '/lovable/email/queue/process'
     | '/api/public/payment/onefor/complete'
@@ -306,6 +319,7 @@ export interface RootRouteChildren {
   TopupRoute: typeof TopupRoute
   OrderServiceIdRoute: typeof OrderServiceIdRoute
   RefCodeRoute: typeof RefCodeRoute
+  ApiPublicNowpaymentsWebhookRoute: typeof ApiPublicNowpaymentsWebhookRoute
   ApiPublicOneforWebhookRoute: typeof ApiPublicOneforWebhookRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
   ApiPublicPaymentOneforCompleteRoute: typeof ApiPublicPaymentOneforCompleteRoute
@@ -460,6 +474,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicOneforWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/nowpayments/webhook': {
+      id: '/api/public/nowpayments/webhook'
+      path: '/api/public/nowpayments/webhook'
+      fullPath: '/api/public/nowpayments/webhook'
+      preLoaderRoute: typeof ApiPublicNowpaymentsWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/payment/onefor/complete': {
       id: '/api/public/payment/onefor/complete'
       path: '/api/public/payment/onefor/complete'
@@ -503,6 +524,7 @@ const rootRouteChildren: RootRouteChildren = {
   TopupRoute: TopupRoute,
   OrderServiceIdRoute: OrderServiceIdRoute,
   RefCodeRoute: RefCodeRoute,
+  ApiPublicNowpaymentsWebhookRoute: ApiPublicNowpaymentsWebhookRoute,
   ApiPublicOneforWebhookRoute: ApiPublicOneforWebhookRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
   ApiPublicPaymentOneforCompleteRoute: ApiPublicPaymentOneforCompleteRoute,

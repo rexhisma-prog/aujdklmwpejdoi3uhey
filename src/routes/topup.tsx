@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { createOneforTopup } from "@/lib/onefor.functions";
+import { createCryptoTopup } from "@/lib/nowpayments.functions";
 import { QRCodeSVG } from "qrcode.react";
 import {
   ArrowLeft,
@@ -10,6 +11,7 @@ import {
   Wallet,
   Landmark,
   HandCoins,
+  Bitcoin,
   Loader2,
   CheckCircle2,
   Clock,
@@ -26,7 +28,7 @@ export const Route = createFileRoute("/topup")({
   component: TopupPage,
 });
 
-type Method = "card" | "onefor" | "bank" | "manual";
+type Method = "card" | "onefor" | "crypto" | "bank" | "manual";
 
 const METHODS: {
   id: Method;
@@ -45,6 +47,12 @@ const METHODS: {
     label: "OneFor",
     desc: "Paguaj me llogarinë tënde OneFor. Balanca shtohet automatikisht.",
     icon: Wallet,
+  },
+  {
+    id: "crypto",
+    label: "Kripto (USDT)",
+    desc: "Paguaj me USDT (TRC-20). Balanca shtohet automatikisht pas konfirmimit.",
+    icon: Bitcoin,
   },
   {
     id: "bank",
@@ -120,6 +128,7 @@ function TopupPage() {
 
 
   const startCardPayment = useServerFn(createOneforTopup);
+  const startCryptoPayment = useServerFn(createCryptoTopup);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -149,6 +158,19 @@ function TopupPage() {
       } catch (err) {
         setSubmitting(false);
         setError(err instanceof Error ? err.message : "Pagesa dështoi.");
+        return;
+      }
+    }
+
+    // Crypto payments go through NOWPayments: create an invoice and redirect.
+    if (method === "crypto") {
+      try {
+        const { redirectUrl } = await startCryptoPayment({ data: { amount } });
+        window.location.href = redirectUrl;
+        return;
+      } catch (err) {
+        setSubmitting(false);
+        setError(err instanceof Error ? err.message : "Pagesa me kripto dështoi.");
         return;
       }
     }
@@ -415,7 +437,9 @@ function TopupPage() {
               ? "Vazhdo te pagesa me kartelë"
               : method === "onefor"
                 ? "Gjenero QR code për OneFor"
-                : "Dërgo kërkesën"}
+                : method === "crypto"
+                  ? "Vazhdo te pagesa me kripto"
+                  : "Dërgo kërkesën"}
           </button>
         </form>
       </main>
