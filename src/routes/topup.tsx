@@ -128,6 +128,7 @@ function TopupPage() {
 
 
   const startCardPayment = useServerFn(createOneforTopup);
+  const startCryptoPayment = useServerFn(createCryptoTopup);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
