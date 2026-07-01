@@ -162,6 +162,19 @@ function TopupPage() {
       }
     }
 
+    // Crypto payments go through NOWPayments: create an invoice and redirect.
+    if (method === "crypto") {
+      try {
+        const { redirectUrl } = await startCryptoPayment({ data: { amount } });
+        window.location.href = redirectUrl;
+        return;
+      } catch (err) {
+        setSubmitting(false);
+        setError(err instanceof Error ? err.message : "Pagesa me kripto dështoi.");
+        return;
+      }
+    }
+
     // Bank transfer / manual requests are recorded for admin approval.
     const { error: err } = await supabase.from("topup_requests").insert({
       user_id: userId,
