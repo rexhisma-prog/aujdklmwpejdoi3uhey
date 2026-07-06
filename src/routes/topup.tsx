@@ -389,6 +389,13 @@ function TopupPage() {
             </div>
           </div>
 
+          {method === "card" && (
+            <div className="rounded-xl border border-primary/30 bg-primary/10 px-4 py-3 text-sm text-foreground">
+              Pagesa me kartelë funksionon vetëm përmes web (Kompjuter, Laptop).
+            </div>
+          )}
+
+
           {method === "bank" && (
             <div className="rounded-xl border border-border bg-background/50 px-4 py-3 text-sm">
               <p className="mb-1 font-semibold">Dërgo pagesën në:</p>
