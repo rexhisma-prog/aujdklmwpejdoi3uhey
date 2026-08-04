@@ -12,6 +12,11 @@ export const Route = createFileRoute("/")({
     links: [{ rel: "canonical", href: "https://shtofollow.com/" }],
     scripts: [
       {
+        src: "https://794b046f-9935-4b4a-8062-71579632862f.lovableproject.com/widget.js",
+        "data-rea-key": "rea_pk_a72664426d4e4cacaf0ca32ae67400e7",
+        async: true,
+      },
+      {
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
@@ -225,16 +230,19 @@ function LiveGrowthCard() {
   const [followers, setFollowers] = useState(12480);
   const [progress, setProgress] = useState(72);
   const [platformIdx, setPlatformIdx] = useState(0);
-  const [feed, setFeed] = useState<{ id: number; email: string; qty: number; platform: string }[]>(() =>
-    [0, 1, 2].map((i) => ({
-      id: i,
-      email: emails[i % emails.length],
-      qty: (Math.floor(Math.random() * 9) + 1) * 100,
-      platform: platforms[i % platforms.length].name,
-    }))
-  );
+  const [feed, setFeed] = useState<{ id: number; email: string; qty: number; platform: string }[]>([]);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+    setFeed(
+      [0, 1, 2].map((i) => ({
+        id: i,
+        email: emails[i % emails.length],
+        qty: (Math.floor(Math.random() * 9) + 1) * 100,
+        platform: platforms[i % platforms.length].name,
+      }))
+    );
     const t1 = setInterval(() => {
       setFollowers((f) => f + Math.floor(Math.random() * 9) + 1);
     }, 1500);
@@ -463,14 +471,24 @@ function Features() {
 }
 
 
+function useClientGrowth(base: number, increment: number, startMs: number) {
+  const [value, setValue] = useState(base);
+  useEffect(() => {
+    const periods = Math.max(0, Math.floor((Date.now() - startMs) / (12 * 60 * 60 * 1000)));
+    setValue(base + periods * increment);
+  }, [base, increment, startMs]);
+  return value;
+}
+
 function LiveStats() {
   // Numrat rriten gradualisht çdo 12 orë (followers +500, shikime +1000, përdorues +1500)
   const START = Date.UTC(2026, 5, 1); // 1 qershor 2026
-  const periods = Math.max(0, Math.floor((Date.now() - START) / (12 * 60 * 60 * 1000)));
+  const followers = useClientGrowth(12480, 500, START);
+  const views = useClientGrowth(98210, 1000, START);
   const fmt = (n: number) => n.toLocaleString("en-US");
   const stats = [
-    { icon: Users, value: fmt(12480 + periods * 500), label: "Followers të dërguar sot në Kosovë" },
-    { icon: Eye, value: fmt(98210 + periods * 1000), label: "Shikime në rrjete sociale" },
+    { icon: Users, value: fmt(followers), label: "Followers të dërguar sot në Kosovë" },
+    { icon: Eye, value: fmt(views), label: "Shikime në rrjete sociale" },
     { icon: Heart, value: fmt(2233), label: "Përdorues aktivë në Kosovë" },
   ];
   return (
@@ -509,8 +527,7 @@ function Testimonials() {
   const loop = [...items, ...items];
   // grows by 30 every 12 hours from a fixed base
   const baseDate = new Date("2026-06-20T00:00:00Z").getTime();
-  const periods = Math.max(0, Math.floor((Date.now() - baseDate) / (12 * 60 * 60 * 1000)));
-  const clientCount = 800 + periods * 30;
+  const clientCount = useClientGrowth(800, 30, baseDate);
   return (
     <section className="overflow-hidden py-20">
       <div className="mx-auto max-w-7xl px-6 text-center">
