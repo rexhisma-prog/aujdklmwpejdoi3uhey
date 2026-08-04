@@ -471,14 +471,24 @@ function Features() {
 }
 
 
+function useClientGrowth(base: number, increment: number, startMs: number) {
+  const [value, setValue] = useState(base);
+  useEffect(() => {
+    const periods = Math.max(0, Math.floor((Date.now() - startMs) / (12 * 60 * 60 * 1000)));
+    setValue(base + periods * increment);
+  }, [base, increment, startMs]);
+  return value;
+}
+
 function LiveStats() {
   // Numrat rriten gradualisht çdo 12 orë (followers +500, shikime +1000, përdorues +1500)
   const START = Date.UTC(2026, 5, 1); // 1 qershor 2026
-  const periods = Math.max(0, Math.floor((Date.now() - START) / (12 * 60 * 60 * 1000)));
+  const followers = useClientGrowth(12480, 500, START);
+  const views = useClientGrowth(98210, 1000, START);
   const fmt = (n: number) => n.toLocaleString("en-US");
   const stats = [
-    { icon: Users, value: fmt(12480 + periods * 500), label: "Followers të dërguar sot në Kosovë" },
-    { icon: Eye, value: fmt(98210 + periods * 1000), label: "Shikime në rrjete sociale" },
+    { icon: Users, value: fmt(followers), label: "Followers të dërguar sot në Kosovë" },
+    { icon: Eye, value: fmt(views), label: "Shikime në rrjete sociale" },
     { icon: Heart, value: fmt(2233), label: "Përdorues aktivë në Kosovë" },
   ];
   return (
