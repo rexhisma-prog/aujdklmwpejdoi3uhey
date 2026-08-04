@@ -12,6 +12,11 @@ export const Route = createFileRoute("/")({
     links: [{ rel: "canonical", href: "https://shtofollow.com/" }],
     scripts: [
       {
+        src: "https://794b046f-9935-4b4a-8062-71579632862f.lovableproject.com/widget.js",
+        "data-rea-key": "rea_pk_a72664426d4e4cacaf0ca32ae67400e7",
+        async: true,
+      },
+      {
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
