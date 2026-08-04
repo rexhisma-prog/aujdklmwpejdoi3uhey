@@ -230,16 +230,19 @@ function LiveGrowthCard() {
   const [followers, setFollowers] = useState(12480);
   const [progress, setProgress] = useState(72);
   const [platformIdx, setPlatformIdx] = useState(0);
-  const [feed, setFeed] = useState<{ id: number; email: string; qty: number; platform: string }[]>(() =>
-    [0, 1, 2].map((i) => ({
-      id: i,
-      email: emails[i % emails.length],
-      qty: (Math.floor(Math.random() * 9) + 1) * 100,
-      platform: platforms[i % platforms.length].name,
-    }))
-  );
+  const [feed, setFeed] = useState<{ id: number; email: string; qty: number; platform: string }[]>([]);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+    setFeed(
+      [0, 1, 2].map((i) => ({
+        id: i,
+        email: emails[i % emails.length],
+        qty: (Math.floor(Math.random() * 9) + 1) * 100,
+        platform: platforms[i % platforms.length].name,
+      }))
+    );
     const t1 = setInterval(() => {
       setFollowers((f) => f + Math.floor(Math.random() * 9) + 1);
     }, 1500);
