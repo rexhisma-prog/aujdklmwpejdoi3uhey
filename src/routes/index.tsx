@@ -527,8 +527,7 @@ function Testimonials() {
   const loop = [...items, ...items];
   // grows by 30 every 12 hours from a fixed base
   const baseDate = new Date("2026-06-20T00:00:00Z").getTime();
-  const periods = Math.max(0, Math.floor((Date.now() - baseDate) / (12 * 60 * 60 * 1000)));
-  const clientCount = 800 + periods * 30;
+  const clientCount = useClientGrowth(800, 30, baseDate);
   return (
     <section className="overflow-hidden py-20">
       <div className="mx-auto max-w-7xl px-6 text-center">
