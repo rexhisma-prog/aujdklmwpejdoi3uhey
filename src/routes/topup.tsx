@@ -345,7 +345,7 @@ function TopupPage() {
             <input
               type="number"
               min={MIN_AMOUNT}
-              step="0.5"
+              step="0.01"
               value={amount}
               onChange={(e) => setAmount(Number(e.target.value))}
               required
