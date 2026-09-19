@@ -68,9 +68,9 @@ const METHODS: {
   },
 ];
 
-const DEFAULT_MIN = 10;
+const DEFAULT_MIN = 5;
 const REFERRED_MIN = 20;
-const PRESETS = [10, 20, 50, 100, 200];
+const PRESETS = [5, 10, 20, 50, 100, 200];
 
 const BANK_DETAILS = {
   bank: "Teb Bank",
