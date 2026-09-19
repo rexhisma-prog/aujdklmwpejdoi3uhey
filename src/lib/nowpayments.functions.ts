@@ -24,8 +24,8 @@ export const createCryptoTopup = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: { amount: number }) => {
     const amount = Number(input?.amount);
-    if (!Number.isFinite(amount) || amount < 5 || amount > 100000) {
-      throw new Error("Shuma minimale për mbushje me kripto është 5 €.");
+    if (!Number.isFinite(amount) || amount < 1 || amount > 100000) {
+      throw new Error("Shuma minimale për mbushje me kripto është 1 €.");
     }
     return { amount: Math.round(amount * 100) / 100 };
   })
