@@ -52,7 +52,12 @@ export async function startRtc(opts: {
     opts.audioEl.srcObject = e.streams[0] ?? new MediaStream([e.track]);
     opts.audioEl.muted = false;
     opts.audioEl.volume = 1;
-    opts.audioEl.play().catch(() => {});
+    const tryPlay = () => opts.audioEl.play().catch(() => {
+      // Autoplay blocked: play on the next tap anywhere.
+      const once = () => { opts.audioEl.play().catch(() => {}); document.removeEventListener("pointerdown", once); };
+      document.addEventListener("pointerdown", once);
+    });
+    void tryPlay();
   };
   pc.onconnectionstatechange = () => opts.onState?.(pc.connectionState);
 
@@ -182,6 +187,13 @@ function pitchShift(input: MediaStream, ratio: number) {
   };
   src.connect(proc);
   proc.connect(dest);
+  // Chrome only runs ScriptProcessor when it reaches the destination; route through a silent gain.
+  const silent = ctx.createGain();
+  silent.gain.value = 0;
+  proc.connect(silent).connect(ctx.destination);
+  const resume = () => { if (ctx.state === "suspended") void ctx.resume(); };
+  resume();
+  setTimeout(resume, 500);
   return { ctx, stream: dest.stream };
 }
 

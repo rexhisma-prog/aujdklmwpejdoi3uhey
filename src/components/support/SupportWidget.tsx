@@ -379,6 +379,8 @@ function CallPanel({ userId, email, online }: { userId: string; email: string | 
     if (!form.first_name.trim() || !form.last_name.trim()) return setErr("Emri dhe mbiemri janë të detyrueshëm.");
     if (!form.phone.trim() && !form.email.trim()) return setErr("Shëno telefonin ose email-in.");
     if (!consent) return setErr("Prano njoftimin e privatësisë.");
+    // Unlock audio playback while we still have the user's tap (mobile autoplay rules).
+    if (audio.current) { audio.current.muted = false; audio.current.play().catch(() => {}); }
     try {
       const s = await navigator.mediaDevices.getUserMedia({ audio: true });
       s.getTracks().forEach((t) => t.stop());
