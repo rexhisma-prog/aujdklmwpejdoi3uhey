@@ -1,3 +1,4 @@
+import { uniqueChannel } from "@/lib/rt";
 import { supabase } from "@/integrations/supabase/client";
 
 const ICE: RTCIceServer[] = [
@@ -106,8 +107,7 @@ export async function startRtc(opts: {
     while (pending.length && pc.remoteDescription) await pc.addIceCandidate(pending.shift()!).catch(() => {});
   };
 
-  const channel = supabase
-    .channel(`sig-${opts.callId}-${opts.selfId}`)
+  const channel = uniqueChannel(`sig-${opts.callId}`)
     .on(
       "postgres_changes",
       { event: "INSERT", schema: "public", table: "support_call_signaling", filter: `call_id=eq.${opts.callId}` },

@@ -1,3 +1,4 @@
+import { uniqueChannel, sharedChannel } from "@/lib/rt";
 import { useEffect, useRef, useState } from "react";
 import { MessageCircle, X, Minus, Send, Phone, PhoneOff, Mic, MicOff, ArrowLeft, Check, CheckCheck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -60,8 +61,7 @@ function Widget({ userId, email }: { userId: string; email: string | null }) {
 
   useEffect(() => {
     loadConvs();
-    const ch = supabase
-      .channel(`sup-user-${userId}`)
+    const ch = uniqueChannel(`sup-user-${userId}`)
       .on("postgres_changes", { event: "*", schema: "public", table: "support_conversations", filter: `user_id=eq.${userId}` }, () => loadConvs())
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "support_messages" }, (p) => {
         const m = p.new as Msg;
@@ -71,11 +71,21 @@ function Widget({ userId, email }: { userId: string; email: string | null }) {
         }
       })
       .subscribe();
-    const pres = supabase.channel("support-presence");
-    pres.on("presence", { event: "sync" }, () => setOnline(Object.keys(pres.presenceState()).length > 0)).subscribe();
+    // Admins already hold the shared presence channel (AdminCallManager); just read it.
+    const existing = supabase.getChannels().find((c) => c.topic === "realtime:support-presence");
+    let pres: ReturnType<typeof supabase.channel> | null = null;
+    let iv: ReturnType<typeof setInterval> | null = null;
+    if (existing) {
+      setOnline(true);
+    } else {
+      const p = supabase.channel("support-presence");
+      pres = p;
+      p.on("presence", { event: "sync" }, () => setOnline(Object.keys(p.presenceState()).length > 0)).subscribe();
+    }
     return () => {
+      if (iv) clearInterval(iv);
       supabase.removeChannel(ch);
-      supabase.removeChannel(pres);
+      if (pres) supabase.removeChannel(pres);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
@@ -190,7 +200,7 @@ export function useTyping(convId: string, selfIsAdmin: boolean) {
   const chRef = useRef<ReturnType<typeof supabase.channel> | null>(null);
   const last = useRef(0);
   useEffect(() => {
-    const ch = supabase.channel(`typing-${convId}`);
+    const ch = sharedChannel(`typing-${convId}`);
     let t: ReturnType<typeof setTimeout>;
     ch.on("broadcast", { event: "typing" }, (p) => {
       if (p.payload.admin === selfIsAdmin) return;
@@ -242,8 +252,7 @@ export function useMessages(convId: string, selfIsAdmin: boolean, visible: boole
   };
   useEffect(() => {
     supabase.from("support_messages").select("*").eq("conversation_id", convId).order("created_at").then(({ data }) => setMsgs((data as Msg[]) ?? []));
-    const ch = supabase
-      .channel(`msgs-${convId}-${selfIsAdmin}`)
+    const ch = uniqueChannel(`msgs-${convId}-${selfIsAdmin}`)
       .on("postgres_changes", { event: "*", schema: "public", table: "support_messages", filter: `conversation_id=eq.${convId}` }, (p) => {
         const m = p.new as Msg;
         setMsgs((prev) => (prev.some((x) => x.id === m.id) ? prev.map((x) => (x.id === m.id ? m : x)) : [...prev, m]));
@@ -331,8 +340,7 @@ function CallPanel({ userId, email, online }: { userId: string; email: string | 
 
   useEffect(() => {
     if (!callId) return;
-    const ch = supabase
-      .channel(`call-${callId}`)
+    const ch = uniqueChannel(`call-${callId}`)
       .on("postgres_changes", { event: "UPDATE", schema: "public", table: "support_calls", filter: `id=eq.${callId}` }, async (p) => {
         const s = (p.new as { status: string }).status;
         setStatus(s);
