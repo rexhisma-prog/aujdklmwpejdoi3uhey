@@ -34,11 +34,17 @@ export async function startRtc(opts: {
   onState?: (s: RTCPeerConnectionState) => void;
   /** Voice pitch ratio: 1 = normal, <1 deeper, >1 higher. */
   pitch?: number;
+  /** Pre-opened microphone stream (captured during a user tap). */
+  stream?: MediaStream;
 }): Promise<RtcSession> {
-  const stream = await navigator.mediaDevices.getUserMedia({
-    audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
-    video: false,
-  });
+  const live = opts.stream?.getAudioTracks().some((t) => t.readyState === "live");
+  const stream = live
+    ? opts.stream!
+    : await navigator.mediaDevices.getUserMedia({
+        audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
+        video: false,
+      });
+  stream.getAudioTracks().forEach((t) => (t.enabled = true));
   const pc = new RTCPeerConnection({ iceServers: ICE });
   let voiceCtx: AudioContext | null = null;
   if (opts.pitch && opts.pitch !== 1) {
