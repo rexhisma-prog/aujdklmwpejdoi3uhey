@@ -327,8 +327,15 @@ function CallPanel({ userId, email, online }: { userId: string; email: string | 
   const [secs, setSecs] = useState(0);
   const audio = useRef<HTMLAudioElement>(null);
   const rtc = useRef<RtcSession | null>(null);
+  const mic = useRef<MediaStream | null>(null);
 
-  const cleanup = () => { stopRing(); rtc.current?.close(); rtc.current = null; };
+  const cleanup = () => {
+    stopRing();
+    rtc.current?.close();
+    rtc.current = null;
+    mic.current?.getTracks().forEach((t) => t.stop());
+    mic.current = null;
+  };
   const live = useRef({ callId: null as string | null, status: "idle" });
   live.current = { callId, status };
   useEffect(() => () => {
@@ -347,7 +354,7 @@ function CallPanel({ userId, email, online }: { userId: string; email: string | 
         if (s === "accepted" && !rtc.current && audio.current) {
           stopRing();
           try {
-            rtc.current = await startRtc({ callId, selfId: userId, isCaller: true, audioEl: audio.current, onState: (st) => { if (st === "failed" || st === "disconnected") hangup(); } });
+            rtc.current = await startRtc({ callId, selfId: userId, isCaller: true, stream: mic.current ?? undefined, audioEl: audio.current, onState: (st) => { if (st === "failed" || st === "disconnected") hangup(); } });
           } catch { setErr("Mikrofoni nuk u lejua."); hangup(); }
         }
         if (s === "rejected" || s === "ended" || s === "missed") cleanup();
@@ -382,8 +389,12 @@ function CallPanel({ userId, email, online }: { userId: string; email: string | 
     // Unlock audio playback while we still have the user's tap (mobile autoplay rules).
     if (audio.current) { audio.current.muted = false; audio.current.play().catch(() => {}); }
     try {
-      const s = await navigator.mediaDevices.getUserMedia({ audio: true });
-      s.getTracks().forEach((t) => t.stop());
+      // Keep the mic stream opened during the tap; phones may give a silent track if requested later without a gesture.
+      mic.current?.getTracks().forEach((t) => t.stop());
+      mic.current = await navigator.mediaDevices.getUserMedia({
+        audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
+        video: false,
+      });
     } catch { return setErr("Duhet të lejosh mikrofonin për thirrje."); }
     const { data, error } = await supabase.from("support_calls").insert({ user_id: userId, ...form, phone: form.phone || null, email: form.email || null }).select("id").single();
     if (error || !data) return setErr(error?.message ?? "Gabim");

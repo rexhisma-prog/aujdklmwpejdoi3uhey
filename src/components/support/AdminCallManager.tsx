@@ -12,6 +12,7 @@ export function AdminCallManager({ adminId }: { adminId: string }) {
   const [active, setActive] = useState<Call | null>(null);
   const [muted, setMuted] = useState(false);
   const [secs, setSecs] = useState(0);
+  const [hearing, setHearing] = useState<boolean | null>(null);
   const [voice, setVoice] = useState("1");
   useEffect(() => { const v = localStorage.getItem("admin-voice"); if (v) setVoice(v); }, []);
   const pickVoice = (v: string) => { setVoice(v); localStorage.setItem("admin-voice", v); };
@@ -55,7 +56,17 @@ export function AdminCallManager({ adminId }: { adminId: string }) {
   useEffect(() => {
     if (!active) return;
     setSecs(0);
-    const t = setInterval(() => setSecs((s) => s + 1), 1000);
+    setHearing(null);
+    let last = 0;
+    const t = setInterval(async () => {
+      setSecs((s) => s + 1);
+      const r = rtc.current;
+      if (!r) return;
+      const b = await r.inboundBytes().catch(() => 0);
+      setHearing(b > last + 500);
+      last = b;
+      if (audio.current?.paused && audio.current.srcObject) audio.current.play().catch(() => {});
+    }, 1000);
     return () => clearInterval(t);
   }, [active]);
 
@@ -116,6 +127,9 @@ export function AdminCallManager({ adminId }: { adminId: string }) {
               <p className="text-xs uppercase text-primary">Në thirrje</p>
               <p className="mt-1 text-lg font-bold">{active.first_name} {active.last_name}</p>
               <p className="font-mono text-2xl">{fmtDur(secs)}</p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Zëri i klientit: {hearing === null ? "duke u lidhur..." : hearing ? "✅ po vjen" : "⚠️ nuk po vjen"}
+              </p>
               <div className="mt-4 flex gap-2">
                 <button onClick={() => { rtc.current?.setMuted(!muted); setMuted(!muted); }} className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-secondary py-2 text-sm">{muted ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />} {muted ? "Unmute" : "Mute"}</button>
                 <button onClick={hangup} className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-destructive py-2 text-sm font-semibold text-destructive-foreground"><PhoneOff className="h-4 w-4" /> Mbyll</button>

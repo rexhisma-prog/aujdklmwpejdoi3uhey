@@ -20,6 +20,8 @@ export type RtcSession = {
   stream: MediaStream;
   setMuted: (m: boolean) => void;
   close: () => void;
+  /** Total audio bytes received from the other side so far. */
+  inboundBytes: () => Promise<number>;
 };
 
 /**
@@ -34,11 +36,17 @@ export async function startRtc(opts: {
   onState?: (s: RTCPeerConnectionState) => void;
   /** Voice pitch ratio: 1 = normal, <1 deeper, >1 higher. */
   pitch?: number;
+  /** Pre-opened microphone stream (captured during a user tap). */
+  stream?: MediaStream;
 }): Promise<RtcSession> {
-  const stream = await navigator.mediaDevices.getUserMedia({
-    audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
-    video: false,
-  });
+  const live = opts.stream?.getAudioTracks().some((t) => t.readyState === "live");
+  const stream = live
+    ? opts.stream!
+    : await navigator.mediaDevices.getUserMedia({
+        audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
+        video: false,
+      });
+  stream.getAudioTracks().forEach((t) => (t.enabled = true));
   const pc = new RTCPeerConnection({ iceServers: ICE });
   let voiceCtx: AudioContext | null = null;
   if (opts.pitch && opts.pitch !== 1) {
@@ -140,6 +148,13 @@ export async function startRtc(opts: {
     pc,
     stream,
     setMuted: (m) => stream.getAudioTracks().forEach((t) => (t.enabled = !m)),
+    inboundBytes: async () => {
+      let n = 0;
+      (await pc.getStats()).forEach((r: any) => {
+        if (r.type === "inbound-rtp" && (r.kind === "audio" || r.mediaType === "audio")) n += r.bytesReceived ?? 0;
+      });
+      return n;
+    },
     close: () => {
       stream.getTracks().forEach((t) => t.stop());
       pc.close();
