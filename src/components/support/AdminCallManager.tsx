@@ -1,3 +1,4 @@
+import { uniqueChannel, sharedChannel } from "@/lib/rt";
 import { useEffect, useRef, useState } from "react";
 import { Phone, PhoneOff, Mic, MicOff } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -21,11 +22,10 @@ export function AdminCallManager({ adminId }: { adminId: string }) {
 
   useEffect(() => {
     if (typeof Notification !== "undefined" && Notification.permission === "default") Notification.requestPermission();
-    const pres = supabase.channel("support-presence", { config: { presence: { key: adminId } } });
+    const pres = sharedChannel("support-presence", { config: { presence: { key: adminId } } });
     pres.subscribe((s) => { if (s === "SUBSCRIBED") pres.track({ online_at: new Date().toISOString() }); });
 
-    const ch = supabase
-      .channel("admin-calls")
+    const ch = uniqueChannel("admin-calls")
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "support_calls" }, (p) => {
         const c = p.new as Call;
         if (activeRef.current) return;

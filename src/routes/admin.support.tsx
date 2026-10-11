@@ -1,3 +1,4 @@
+import { uniqueChannel } from "@/lib/rt";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -30,8 +31,7 @@ function AdminSupport() {
   };
   useEffect(() => {
     load();
-    const ch = supabase
-      .channel("admin-support-page")
+    const ch = uniqueChannel("admin-support-page")
       .on("postgres_changes", { event: "*", schema: "public", table: "support_conversations" }, load)
       .on("postgres_changes", { event: "*", schema: "public", table: "support_calls" }, load)
       .subscribe();

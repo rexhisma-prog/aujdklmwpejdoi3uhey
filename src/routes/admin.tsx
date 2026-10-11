@@ -1,3 +1,4 @@
+import { uniqueChannel } from "@/lib/rt";
 import { createFileRoute, Link, Outlet, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -69,8 +70,7 @@ function AdminLayout() {
     };
 
     loadCounts();
-    const channel = supabase
-      .channel("admin-nav-counts")
+    const channel = uniqueChannel("admin-nav-counts")
       .on("postgres_changes", { event: "*", schema: "public", table: "topup_requests" }, () => loadCounts())
       .on("postgres_changes", { event: "*", schema: "public", table: "orders" }, () => loadCounts())
       .on("postgres_changes", { event: "*", schema: "public", table: "support_conversations" }, () => loadCounts())
