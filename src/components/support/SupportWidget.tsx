@@ -221,7 +221,7 @@ export function useTyping(convId: string, selfIsAdmin: boolean) {
 
 export function MessageList({ msgs, selfIsAdmin, typing }: { msgs: Msg[]; selfIsAdmin: boolean; typing: boolean }) {
   const end = useRef<HTMLDivElement>(null);
-  useEffect(() => end.current?.scrollIntoView({ behavior: "smooth" }), [msgs.length, typing]);
+  useEffect(() => { try { end.current?.scrollIntoView({ block: "end" }); } catch { /* ignore */ } }, [msgs.length, typing]);
   return (
     <div className="flex-1 space-y-2 overflow-y-auto p-4">
       {msgs.map((m) => {

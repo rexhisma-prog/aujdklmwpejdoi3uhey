@@ -174,12 +174,14 @@ function CustomerPanel({ conv }: { conv: Conv }) {
 
 class ChatBoundary extends Component<{ children: ReactNode }, { err: string | null }> {
   state = { err: null as string | null };
+  stack = "";
   static getDerivedStateFromError(e: unknown) { return { err: e instanceof Error ? e.message : String(e) }; }
-  componentDidCatch(e: unknown) { console.error("support chat error", e); }
+  componentDidCatch(e: unknown, info: { componentStack?: string | null }) { console.error("support chat error", e); this.stack = `${e instanceof Error ? e.stack ?? "" : ""}\n${info.componentStack ?? ""}`.slice(0, 1200); this.forceUpdate(); }
   render() {
     if (this.state.err) return (
       <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-border bg-card p-4 text-center text-sm">
         <p className="text-destructive">Gabim: {this.state.err}</p>
+        {this.stack && <pre className="max-h-48 w-full overflow-auto whitespace-pre-wrap text-left text-[10px] text-muted-foreground">{this.stack}</pre>}
         <button onClick={() => this.setState({ err: null })} className="rounded-lg bg-primary px-3 py-1.5 text-primary-foreground">Provo përsëri</button>
       </div>
     );
