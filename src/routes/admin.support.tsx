@@ -35,9 +35,13 @@ function AdminSupport() {
       .on("postgres_changes", { event: "*", schema: "public", table: "support_conversations" }, load)
       .on("postgres_changes", { event: "*", schema: "public", table: "support_calls" }, load)
       .subscribe();
-    const pres = supabase.channel("support-presence");
-    pres.on("presence", { event: "sync" }, () => setOnline(Object.keys(pres.presenceState()).length)).subscribe();
-    return () => { supabase.removeChannel(ch); supabase.removeChannel(pres); };
+    const tick = () => {
+      const pres = supabase.getChannels().find((c) => c.topic === "realtime:support-presence");
+      setOnline(pres ? Math.max(1, Object.keys(pres.presenceState()).length) : 1);
+    };
+    tick();
+    const iv = setInterval(tick, 5000);
+    return () => { clearInterval(iv); supabase.removeChannel(ch); };
   }, []);
 
   const list = useMemo(() => convs.filter((c) =>
