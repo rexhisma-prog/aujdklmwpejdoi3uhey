@@ -1,6 +1,18 @@
 import { supabase } from "@/integrations/supabase/client";
 
-const ICE = [{ urls: ["stun:stun.l.google.com:19302", "stun:stun1.l.google.com:19302"] }];
+const ICE: RTCIceServer[] = [
+  { urls: ["stun:stun.l.google.com:19302", "stun:stun.relay.metered.ca:80"] },
+  {
+    urls: [
+      "turn:openrelay.metered.ca:80",
+      "turn:openrelay.metered.ca:443",
+      "turn:openrelay.metered.ca:443?transport=tcp",
+      "turns:openrelay.metered.ca:443?transport=tcp",
+    ],
+    username: "openrelayproject",
+    credential: "openrelayproject",
+  },
+];
 
 export type RtcSession = {
   pc: RTCPeerConnection;
@@ -24,7 +36,9 @@ export async function startRtc(opts: {
   const pc = new RTCPeerConnection({ iceServers: ICE });
   stream.getTracks().forEach((t) => pc.addTrack(t, stream));
   pc.ontrack = (e) => {
-    opts.audioEl.srcObject = e.streams[0];
+    opts.audioEl.srcObject = e.streams[0] ?? new MediaStream([e.track]);
+    opts.audioEl.muted = false;
+    opts.audioEl.volume = 1;
     opts.audioEl.play().catch(() => {});
   };
   pc.onconnectionstatechange = () => opts.onState?.(pc.connectionState);
@@ -42,8 +56,15 @@ export async function startRtc(opts: {
   };
 
   const pending: RTCIceCandidateInit[] = [];
-  const handle = async (row: { sender_id: string; kind: string; payload: any }) => {
-    if (row.sender_id === opts.selfId) return;
+  const seen = new Set<string>();
+  let chain = Promise.resolve();
+  const handle = (row: { id: string; sender_id: string; kind: string; payload: any }) => {
+    chain = chain.then(() => processRow(row)).catch((e) => console.warn("rtc", e));
+    return chain;
+  };
+  const processRow = async (row: { id: string; sender_id: string; kind: string; payload: any }) => {
+    if (row.sender_id === opts.selfId || seen.has(row.id)) return;
+    seen.add(row.id);
     if (row.kind === "offer" && !opts.isCaller) {
       await pc.setRemoteDescription(row.payload);
       const ans = await pc.createAnswer();
@@ -71,7 +92,7 @@ export async function startRtc(opts: {
   // Catch up on anything sent before subscription.
   const { data: existing } = await supabase
     .from("support_call_signaling")
-    .select("sender_id, kind, payload")
+    .select("id, sender_id, kind, payload")
     .eq("call_id", opts.callId)
     .order("created_at");
   for (const r of existing ?? []) await handle(r);
