@@ -295,6 +295,171 @@ export type Database = {
         }
         Relationships: []
       }
+      support_call_signaling: {
+        Row: {
+          call_id: string
+          created_at: string
+          id: string
+          kind: string
+          payload: Json
+          sender_id: string
+        }
+        Insert: {
+          call_id: string
+          created_at?: string
+          id?: string
+          kind: string
+          payload: Json
+          sender_id: string
+        }
+        Update: {
+          call_id?: string
+          created_at?: string
+          id?: string
+          kind?: string
+          payload?: Json
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_call_signaling_call_id_fkey"
+            columns: ["call_id"]
+            isOneToOne: false
+            referencedRelation: "support_calls"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      support_calls: {
+        Row: {
+          answered_at: string | null
+          conversation_id: string | null
+          created_at: string
+          email: string | null
+          ended_at: string | null
+          first_name: string
+          id: string
+          last_name: string
+          phone: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          answered_at?: string | null
+          conversation_id?: string | null
+          created_at?: string
+          email?: string | null
+          ended_at?: string | null
+          first_name: string
+          id?: string
+          last_name: string
+          phone?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          answered_at?: string | null
+          conversation_id?: string | null
+          created_at?: string
+          email?: string | null
+          ended_at?: string | null
+          first_name?: string
+          id?: string
+          last_name?: string
+          phone?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_calls_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "support_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      support_conversations: {
+        Row: {
+          admin_unread: number
+          category: string
+          created_at: string
+          id: string
+          last_message: string | null
+          last_message_at: string
+          order_id: string | null
+          status: string
+          user_email: string | null
+          user_id: string
+          user_unread: number
+        }
+        Insert: {
+          admin_unread?: number
+          category?: string
+          created_at?: string
+          id?: string
+          last_message?: string | null
+          last_message_at?: string
+          order_id?: string | null
+          status?: string
+          user_email?: string | null
+          user_id: string
+          user_unread?: number
+        }
+        Update: {
+          admin_unread?: number
+          category?: string
+          created_at?: string
+          id?: string
+          last_message?: string | null
+          last_message_at?: string
+          order_id?: string | null
+          status?: string
+          user_email?: string | null
+          user_id?: string
+          user_unread?: number
+        }
+        Relationships: []
+      }
+      support_messages: {
+        Row: {
+          body: string
+          conversation_id: string
+          created_at: string
+          id: string
+          is_admin: boolean
+          read_at: string | null
+          sender_id: string
+        }
+        Insert: {
+          body: string
+          conversation_id: string
+          created_at?: string
+          id?: string
+          is_admin?: boolean
+          read_at?: string | null
+          sender_id: string
+        }
+        Update: {
+          body?: string
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          is_admin?: boolean
+          read_at?: string | null
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "support_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       suppressed_emails: {
         Row: {
           created_at: string
