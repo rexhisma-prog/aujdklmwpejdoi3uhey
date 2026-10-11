@@ -79,15 +79,8 @@ export async function startRtc(opts: {
     });
     if (error) console.warn("rtc send", kind, error.message);
   };
-  // Wait (max 4s) for ICE gathering so the SDP itself carries the network candidates.
-  const gathered = () =>
-    new Promise<void>((res) => {
-      if (pc.iceGatheringState === "complete") return res();
-      const t = setTimeout(res, 4000);
-      pc.addEventListener("icegatheringstatechange", () => {
-        if (pc.iceGatheringState === "complete") { clearTimeout(t); res(); }
-      });
-    });
+  // No waiting for ICE gathering: candidates trickle via "ice" rows, so the
+  // offer/answer is sent immediately and the call connects without delay.
 
   pc.onicecandidate = (e) => {
     if (e.candidate) void send("ice", e.candidate.toJSON());
@@ -107,7 +100,6 @@ export async function startRtc(opts: {
       await pc.setRemoteDescription(row.payload);
       const ans = await pc.createAnswer();
       await pc.setLocalDescription(ans);
-      await gathered();
       const ld = pc.localDescription!;
       await send("answer", { type: ld.type, sdp: ld.sdp });
     } else if (row.kind === "answer" && opts.isCaller) {
@@ -139,7 +131,6 @@ export async function startRtc(opts: {
   if (opts.isCaller) {
     const offer = await pc.createOffer();
     await pc.setLocalDescription(offer);
-    await gathered();
     const ld = pc.localDescription!;
     await send("offer", { type: ld.type, sdp: ld.sdp });
   }
