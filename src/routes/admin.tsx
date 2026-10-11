@@ -1,6 +1,7 @@
 import { createFileRoute, Link, Outlet, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { AdminCallManager } from "@/components/support/AdminCallManager";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({ meta: [{ title: "Super Admin — shtofollow.com" }, { name: "robots", content: "noindex, nofollow" }] }),
@@ -13,14 +14,17 @@ const NAV = [
   { to: "/admin/pagesat", label: "Pagesat", exact: false, key: "pagesat" },
   { to: "/admin/kerkesat", label: "Kërkesat", exact: false, key: "kerkesat" },
   { to: "/admin/sherbimet", label: "Shërbimet", exact: false, key: null },
+  { to: "/admin/support", label: "Live Support", exact: false, key: "support" },
 ] as const;
 
 function AdminLayout() {
   const navigate = useNavigate();
   const [allowed, setAllowed] = useState(false);
-  const [counts, setCounts] = useState<{ pagesat: number; kerkesat: number }>({
+  const [adminId, setAdminId] = useState<string | null>(null);
+  const [counts, setCounts] = useState<{ pagesat: number; kerkesat: number; support: number }>({
     pagesat: 0,
     kerkesat: 0,
+    support: 0,
   });
 
   useEffect(() => {
@@ -38,6 +42,7 @@ function AdminLayout() {
         .eq("user_id", user.id);
       if (roles?.some((r) => r.role === "super_admin")) {
         setAllowed(true);
+        setAdminId(user.id);
       } else {
         navigate({ to: "/dashboard" });
       }
@@ -59,7 +64,8 @@ function AdminLayout() {
         .from("orders")
         .select("id", { count: "exact", head: true })
         .eq("status", "pending");
-      setCounts({ pagesat: pagesat ?? 0, kerkesat: kerkesat ?? 0 });
+      const { data: sup } = await supabase.from("support_conversations").select("admin_unread").gt("admin_unread", 0);
+      setCounts({ pagesat: pagesat ?? 0, kerkesat: kerkesat ?? 0, support: (sup ?? []).reduce((a, r) => a + r.admin_unread, 0) });
     };
 
     loadCounts();
@@ -67,6 +73,7 @@ function AdminLayout() {
       .channel("admin-nav-counts")
       .on("postgres_changes", { event: "*", schema: "public", table: "topup_requests" }, () => loadCounts())
       .on("postgres_changes", { event: "*", schema: "public", table: "orders" }, () => loadCounts())
+      .on("postgres_changes", { event: "*", schema: "public", table: "support_conversations" }, () => loadCounts())
       .subscribe();
     return () => {
       supabase.removeChannel(channel);
@@ -121,6 +128,7 @@ function AdminLayout() {
       <main className="mx-auto max-w-7xl space-y-8 px-6 py-8">
         <Outlet />
       </main>
+      {adminId && <AdminCallManager adminId={adminId} />}
     </div>
   );
 }

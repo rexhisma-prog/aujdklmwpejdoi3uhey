@@ -2,6 +2,7 @@ import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/r
 
 import appCss from "../styles.css?url";
 import { CookieConsent } from "../components/CookieConsent";
+import { SupportWidget } from "../components/support/SupportWidget";
 
 function NotFoundComponent() {
   return (
@@ -85,6 +86,7 @@ function RootComponent() {
     <>
       <Outlet />
       <CookieConsent />
+      <SupportWidget />
     </>
   );
 }
