@@ -320,11 +320,14 @@ function CallPanel({ userId, email, online }: { userId: string; email: string | 
   const rtc = useRef<RtcSession | null>(null);
 
   const cleanup = () => { stopRing(); rtc.current?.close(); rtc.current = null; };
+  const live = useRef({ callId: null as string | null, status: "idle" });
+  live.current = { callId, status };
   useEffect(() => () => {
     cleanup();
-    if (callId && (status === "ringing" || status === "accepted")) supabase.from("support_calls").update({ status: status === "ringing" ? "missed" : "ended", ended_at: new Date().toISOString() }).eq("id", callId);
+    const { callId: id, status: st } = live.current;
+    if (id && (st === "ringing" || st === "accepted")) supabase.from("support_calls").update({ status: st === "ringing" ? "missed" : "ended", ended_at: new Date().toISOString() }).eq("id", id).then(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [callId, status]);
+  }, []);
 
   useEffect(() => {
     if (!callId) return;
