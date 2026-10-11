@@ -1,6 +1,6 @@
 import { uniqueChannel } from "@/lib/rt";
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { Component, useEffect, useMemo, useState, type ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { categoryLabel, Composer, MessageList, useMessages, useTyping } from "@/components/support/SupportWidget";
 
@@ -109,8 +109,8 @@ function AdminSupport() {
               {list.length === 0 && <p className="p-4 text-sm text-muted-foreground">Asnjë bisedë.</p>}
             </div>
           </div>
-          {current ? <AdminChat key={current.id} conv={current} onBack={() => setSel(null)} /> : <div className="hidden items-center justify-center rounded-2xl border border-border bg-card text-sm text-muted-foreground lg:flex">Zgjidh një bisedë</div>}
-          {current && <CustomerPanel conv={current} />}
+          {current ? <ChatBoundary key={current.id}><AdminChat conv={current} onBack={() => setSel(null)} /></ChatBoundary> : <div className="hidden items-center justify-center rounded-2xl border border-border bg-card text-sm text-muted-foreground lg:flex">Zgjidh një bisedë</div>}
+          {current && <ChatBoundary key={"p" + current.id}><CustomerPanel conv={current} /></ChatBoundary>}
         </div>
       )}
     </div>
@@ -170,4 +170,19 @@ function CustomerPanel({ conv }: { conv: Conv }) {
       {orders.length === 0 && <p className="text-xs text-muted-foreground">Asnjë porosi.</p>}
     </div>
   );
+}
+
+class ChatBoundary extends Component<{ children: ReactNode }, { err: string | null }> {
+  state = { err: null as string | null };
+  static getDerivedStateFromError(e: unknown) { return { err: e instanceof Error ? e.message : String(e) }; }
+  componentDidCatch(e: unknown) { console.error("support chat error", e); }
+  render() {
+    if (this.state.err) return (
+      <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-border bg-card p-4 text-center text-sm">
+        <p className="text-destructive">Gabim: {this.state.err}</p>
+        <button onClick={() => this.setState({ err: null })} className="rounded-lg bg-primary px-3 py-1.5 text-primary-foreground">Provo përsëri</button>
+      </div>
+    );
+    return this.props.children;
+  }
 }
