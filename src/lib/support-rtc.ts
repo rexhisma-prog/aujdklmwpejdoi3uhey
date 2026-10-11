@@ -31,10 +31,22 @@ export async function startRtc(opts: {
   isCaller: boolean;
   audioEl: HTMLAudioElement;
   onState?: (s: RTCPeerConnectionState) => void;
+  /** Voice pitch ratio: 1 = normal, <1 deeper, >1 higher. */
+  pitch?: number;
 }): Promise<RtcSession> {
-  const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+  const stream = await navigator.mediaDevices.getUserMedia({
+    audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
+    video: false,
+  });
   const pc = new RTCPeerConnection({ iceServers: ICE });
-  stream.getTracks().forEach((t) => pc.addTrack(t, stream));
+  let voiceCtx: AudioContext | null = null;
+  if (opts.pitch && opts.pitch !== 1) {
+    const out = pitchShift(stream, opts.pitch);
+    voiceCtx = out.ctx;
+    out.stream.getTracks().forEach((t) => pc.addTrack(t, out.stream));
+  } else {
+    stream.getTracks().forEach((t) => pc.addTrack(t, stream));
+  }
   pc.ontrack = (e) => {
     opts.audioEl.srcObject = e.streams[0] ?? new MediaStream([e.track]);
     opts.audioEl.muted = false;
@@ -43,16 +55,28 @@ export async function startRtc(opts: {
   };
   pc.onconnectionstatechange = () => opts.onState?.(pc.connectionState);
 
-  const send = (kind: string, payload: unknown) =>
-    supabase.from("support_call_signaling").insert({
+  // Supabase query builders are lazy: awaiting/then() is what actually sends the request.
+  const send = async (kind: string, payload: unknown) => {
+    const { error } = await supabase.from("support_call_signaling").insert({
       call_id: opts.callId,
       sender_id: opts.selfId,
       kind,
       payload: payload as never,
     });
+    if (error) console.warn("rtc send", kind, error.message);
+  };
+  // Wait (max 4s) for ICE gathering so the SDP itself carries the network candidates.
+  const gathered = () =>
+    new Promise<void>((res) => {
+      if (pc.iceGatheringState === "complete") return res();
+      const t = setTimeout(res, 4000);
+      pc.addEventListener("icegatheringstatechange", () => {
+        if (pc.iceGatheringState === "complete") { clearTimeout(t); res(); }
+      });
+    });
 
   pc.onicecandidate = (e) => {
-    if (e.candidate) send("ice", e.candidate.toJSON());
+    if (e.candidate) void send("ice", e.candidate.toJSON());
   };
 
   const pending: RTCIceCandidateInit[] = [];
@@ -69,7 +93,9 @@ export async function startRtc(opts: {
       await pc.setRemoteDescription(row.payload);
       const ans = await pc.createAnswer();
       await pc.setLocalDescription(ans);
-      await send("answer", { type: ans.type, sdp: ans.sdp });
+      await gathered();
+      const ld = pc.localDescription!;
+      await send("answer", { type: ld.type, sdp: ld.sdp });
     } else if (row.kind === "answer" && opts.isCaller) {
       await pc.setRemoteDescription(row.payload);
     } else if (row.kind === "ice") {
@@ -100,7 +126,9 @@ export async function startRtc(opts: {
   if (opts.isCaller) {
     const offer = await pc.createOffer();
     await pc.setLocalDescription(offer);
-    await send("offer", { type: offer.type, sdp: offer.sdp });
+    await gathered();
+    const ld = pc.localDescription!;
+    await send("offer", { type: ld.type, sdp: ld.sdp });
   }
 
   return {
@@ -110,10 +138,51 @@ export async function startRtc(opts: {
     close: () => {
       stream.getTracks().forEach((t) => t.stop());
       pc.close();
+      voiceCtx?.close().catch(() => {});
       supabase.removeChannel(channel);
       opts.audioEl.srcObject = null;
     },
   };
+}
+
+/** Real-time granular pitch shifter (two crossfaded delay taps). Returns the processed stream. */
+function pitchShift(input: MediaStream, ratio: number) {
+  const ctx = new AudioContext();
+  void ctx.resume();
+  const src = ctx.createMediaStreamSource(input);
+  const proc = ctx.createScriptProcessor(1024, 1, 1);
+  const dest = ctx.createMediaStreamDestination();
+  const W = Math.round(ctx.sampleRate * 0.05); // 50ms grain
+  const N = 16384;
+  const buf = new Float32Array(N);
+  let w = 0;
+  let phase = 0;
+  const step = (1 - ratio) / W;
+  const read = (delay: number) => {
+    let pos = w - delay;
+    while (pos < 0) pos += N;
+    const i = Math.floor(pos);
+    const f = pos - i;
+    return buf[i % N] * (1 - f) + buf[(i + 1) % N] * f;
+  };
+  proc.onaudioprocess = (e) => {
+    const inp = e.inputBuffer.getChannelData(0);
+    const out = e.outputBuffer.getChannelData(0);
+    for (let n = 0; n < inp.length; n++) {
+      buf[w] = inp[n];
+      phase += step;
+      if (phase >= 1) phase -= 1;
+      if (phase < 0) phase += 1;
+      const p2 = (phase + 0.5) % 1;
+      const g1 = Math.sin(Math.PI * phase) ** 2;
+      const g2 = Math.sin(Math.PI * p2) ** 2;
+      out[n] = read(phase * W + 1) * g1 + read(p2 * W + 1) * g2;
+      w = (w + 1) % N;
+    }
+  };
+  src.connect(proc);
+  proc.connect(dest);
+  return { ctx, stream: dest.stream };
 }
 
 let ringCtx: AudioContext | null = null;

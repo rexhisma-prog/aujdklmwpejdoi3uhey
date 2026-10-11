@@ -11,6 +11,9 @@ export function AdminCallManager({ adminId }: { adminId: string }) {
   const [active, setActive] = useState<Call | null>(null);
   const [muted, setMuted] = useState(false);
   const [secs, setSecs] = useState(0);
+  const [voice, setVoice] = useState("1");
+  useEffect(() => { const v = localStorage.getItem("admin-voice"); if (v) setVoice(v); }, []);
+  const pickVoice = (v: string) => { setVoice(v); localStorage.setItem("admin-voice", v); };
   const audio = useRef<HTMLAudioElement>(null);
   const rtc = useRef<RtcSession | null>(null);
   const activeRef = useRef<Call | null>(null);
@@ -66,7 +69,7 @@ export function AdminCallManager({ adminId }: { adminId: string }) {
     if (error) return;
     setActive(c);
     try {
-      rtc.current = await startRtc({ callId: c.id, selfId: adminId, isCaller: false, audioEl: audio.current!, onState: (s) => { if (s === "failed") hangup(); } });
+      rtc.current = await startRtc({ callId: c.id, selfId: adminId, isCaller: false, pitch: Number(voice), audioEl: audio.current!, onState: (s) => { if (s === "failed") hangup(); } });
     } catch { hangup(); }
   };
   const reject = async () => {
@@ -91,6 +94,15 @@ export function AdminCallManager({ adminId }: { adminId: string }) {
               <p className="text-xs uppercase text-primary">📞 Thirrje hyrëse</p>
               <p className="mt-1 text-lg font-bold">{incoming.first_name} {incoming.last_name}</p>
               <p className="text-xs text-muted-foreground">{incoming.phone ?? ""} {incoming.email ?? ""}</p>
+              <label className="mt-3 block text-xs text-muted-foreground">
+                Zëri im
+                <select value={voice} onChange={(e) => pickVoice(e.target.value)} className="mt-1 w-full rounded-lg border border-border bg-background px-2 py-1.5 text-sm text-foreground">
+                  <option value="1">Normal</option>
+                  <option value="0.8">I thellë</option>
+                  <option value="0.65">Shumë i thellë</option>
+                  <option value="1.25">I hollë</option>
+                </select>
+              </label>
               <div className="mt-4 flex gap-2">
                 <button onClick={accept} className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary py-2 text-sm font-semibold text-primary-foreground"><Phone className="h-4 w-4" /> Prano</button>
                 <button onClick={reject} className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-destructive py-2 text-sm font-semibold text-destructive-foreground"><PhoneOff className="h-4 w-4" /> Refuzo</button>
