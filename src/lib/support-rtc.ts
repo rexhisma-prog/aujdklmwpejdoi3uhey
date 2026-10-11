@@ -20,6 +20,8 @@ export type RtcSession = {
   stream: MediaStream;
   setMuted: (m: boolean) => void;
   close: () => void;
+  /** Total audio bytes received from the other side so far. */
+  inboundBytes: () => Promise<number>;
 };
 
 /**
@@ -146,6 +148,13 @@ export async function startRtc(opts: {
     pc,
     stream,
     setMuted: (m) => stream.getAudioTracks().forEach((t) => (t.enabled = !m)),
+    inboundBytes: async () => {
+      let n = 0;
+      (await pc.getStats()).forEach((r: any) => {
+        if (r.type === "inbound-rtp" && (r.kind === "audio" || r.mediaType === "audio")) n += r.bytesReceived ?? 0;
+      });
+      return n;
+    },
     close: () => {
       stream.getTracks().forEach((t) => t.stop());
       pc.close();
