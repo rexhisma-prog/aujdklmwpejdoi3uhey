@@ -79,15 +79,8 @@ export async function startRtc(opts: {
     });
     if (error) console.warn("rtc send", kind, error.message);
   };
-  // Wait (max 4s) for ICE gathering so the SDP itself carries the network candidates.
-  const gathered = () =>
-    new Promise<void>((res) => {
-      if (pc.iceGatheringState === "complete") return res();
-      const t = setTimeout(res, 4000);
-      pc.addEventListener("icegatheringstatechange", () => {
-        if (pc.iceGatheringState === "complete") { clearTimeout(t); res(); }
-      });
-    });
+  // No waiting for ICE gathering: candidates trickle via "ice" rows, so the
+  // offer/answer is sent immediately and the call connects without delay.
 
   pc.onicecandidate = (e) => {
     if (e.candidate) void send("ice", e.candidate.toJSON());
