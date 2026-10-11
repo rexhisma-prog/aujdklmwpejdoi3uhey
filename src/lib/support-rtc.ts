@@ -59,10 +59,10 @@ export async function startRtc(opts: {
   const seen = new Set<string>();
   let chain = Promise.resolve();
   const handle = (row: { id: string; sender_id: string; kind: string; payload: any }) => {
-    chain = chain.then(() => process(row)).catch((e) => console.warn("rtc", e));
+    chain = chain.then(() => processRow(row)).catch((e) => console.warn("rtc", e));
     return chain;
   };
-  const process = async (row: { id: string; sender_id: string; kind: string; payload: any }) => {
+  const processRow = async (row: { id: string; sender_id: string; kind: string; payload: any }) => {
     if (row.sender_id === opts.selfId || seen.has(row.id)) return;
     seen.add(row.id);
     if (row.kind === "offer" && !opts.isCaller) {
