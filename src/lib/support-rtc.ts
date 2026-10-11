@@ -100,7 +100,6 @@ export async function startRtc(opts: {
       await pc.setRemoteDescription(row.payload);
       const ans = await pc.createAnswer();
       await pc.setLocalDescription(ans);
-      await gathered();
       const ld = pc.localDescription!;
       await send("answer", { type: ld.type, sdp: ld.sdp });
     } else if (row.kind === "answer" && opts.isCaller) {
@@ -132,7 +131,6 @@ export async function startRtc(opts: {
   if (opts.isCaller) {
     const offer = await pc.createOffer();
     await pc.setLocalDescription(offer);
-    await gathered();
     const ld = pc.localDescription!;
     await send("offer", { type: ld.type, sdp: ld.sdp });
   }
