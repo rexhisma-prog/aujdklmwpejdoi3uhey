@@ -63,6 +63,8 @@ export function AdminCallManager({ adminId }: { adminId: string }) {
 
   const accept = async () => {
     const c = incoming!;
+    // Unlock playback while we still have the click gesture.
+    if (audio.current) { audio.current.muted = false; audio.current.play().catch(() => {}); }
     stopRing();
     setIncoming(null);
     const { error } = await supabase.from("support_calls").update({ status: "accepted", answered_at: new Date().toISOString() }).eq("id", c.id).eq("status", "ringing");
