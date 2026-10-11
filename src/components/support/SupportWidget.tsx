@@ -110,7 +110,7 @@ function Widget({ userId, email }: { userId: string; email: string | null }) {
         </button>
       )}
       {open && (
-        <div className="fixed inset-0 z-[60] flex flex-col overflow-hidden bg-card animate-in fade-in slide-in-from-bottom-4 sm:inset-auto sm:bottom-5 sm:right-5 sm:h-[600px] sm:max-h-[85vh] sm:w-[380px] sm:rounded-3xl sm:border sm:border-border sm:shadow-[var(--shadow-elegant)]">
+        <div className="fixed inset-0 z-[60] flex flex-col overflow-hidden bg-card pb-14 animate-in fade-in slide-in-from-bottom-4 sm:inset-auto sm:bottom-5 sm:right-5 sm:h-[720px] sm:max-h-[92vh] sm:w-[460px] sm:rounded-3xl sm:border sm:border-border sm:pb-0 sm:shadow-[var(--shadow-elegant)]">
           <div className="flex items-center gap-3 border-b border-border bg-primary/10 px-4 py-3">
             {view !== "list" && (
               <button onClick={() => setView("list")} aria-label="Mbrapa" className="text-muted-foreground hover:text-foreground"><ArrowLeft className="h-5 w-5" /></button>
@@ -278,7 +278,7 @@ export function Composer({ onSend, onTyping, disabled }: { onSend: (t: string) =
     if (e) { setErr(e); setText(t); } else setErr(null);
   };
   return (
-    <div className="border-t border-border p-3">
+    <div className="border-t border-border p-3 pb-4 sm:pb-3">
       {err && <p className="mb-1 text-xs text-destructive">{err}</p>}
       <div className="flex items-end gap-2">
         <textarea
@@ -286,12 +286,12 @@ export function Composer({ onSend, onTyping, disabled }: { onSend: (t: string) =
           disabled={disabled}
           onChange={(e) => { setText(e.target.value); onTyping(); }}
           onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } }}
-          rows={1}
+          rows={2}
           maxLength={2000}
           placeholder="Shkruaj mesazhin..."
-          className="max-h-32 flex-1 resize-none rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none focus:border-primary"
+          className="max-h-32 min-h-[56px] flex-1 resize-none rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none focus:border-primary"
         />
-        <button onClick={send} aria-label="Dërgo" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground"><Send className="h-4 w-4" /></button>
+        <button onClick={send} aria-label="Dërgo" className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground"><Send className="h-5 w-5" /></button>
       </div>
     </div>
   );
