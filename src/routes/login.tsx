@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable";
+import { startGoogleSignIn } from "@/lib/google-signin";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -92,9 +92,7 @@ function LoginPage() {
           type="button"
           onClick={async () => {
             setError(null);
-            const result = await lovable.auth.signInWithOAuth("google", {
-              redirect_uri: window.location.origin,
-            });
+            const result = await startGoogleSignIn();
             if (result.error) setError(result.error.message);
           }}
           className="flex w-full items-center justify-center gap-3 rounded-xl border border-border bg-background py-3 text-sm font-semibold transition hover:border-primary/50"

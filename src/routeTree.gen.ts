@@ -9,79 +9,35 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TopupRouteImport } from './routes/topup'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as SiguriaRouteImport } from './routes/siguria'
-import { Route as RikthimInstagramRouteImport } from './routes/rikthim-instagram'
-import { Route as RegisterRouteImport } from './routes/register'
-import { Route as ReferralsRouteImport } from './routes/referrals'
-import { Route as RaportoProfilRouteImport } from './routes/raporto-profil'
-import { Route as MbyllProfileFakeRouteImport } from './routes/mbyll-profile-fake'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as DashboardRouteImport } from './routes/dashboard'
-import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as MbyllProfileFakeRouteImport } from './routes/mbyll-profile-fake'
+import { Route as NativeCallbackRouteImport } from './routes/native-callback'
+import { Route as RaportoProfilRouteImport } from './routes/raporto-profil'
+import { Route as ReferralsRouteImport } from './routes/referrals'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as RikthimInstagramRouteImport } from './routes/rikthim-instagram'
+import { Route as SiguriaRouteImport } from './routes/siguria'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as TopupRouteImport } from './routes/topup'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
-import { Route as RefCodeRouteImport } from './routes/ref.$code'
-import { Route as OrderServiceIdRouteImport } from './routes/order.$serviceId'
-import { Route as AdminSupportRouteImport } from './routes/admin.support'
-import { Route as AdminSherbimetRouteImport } from './routes/admin.sherbimet'
-import { Route as AdminRegjistrimetRouteImport } from './routes/admin.regjistrimet'
-import { Route as AdminPagesatRouteImport } from './routes/admin.pagesat'
 import { Route as AdminKerkesatRouteImport } from './routes/admin.kerkesat'
-import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
-import { Route as ApiPublicOneforWebhookRouteImport } from './routes/api/public/onefor/webhook'
+import { Route as AdminPagesatRouteImport } from './routes/admin.pagesat'
+import { Route as AdminRegjistrimetRouteImport } from './routes/admin.regjistrimet'
+import { Route as AdminSherbimetRouteImport } from './routes/admin.sherbimet'
+import { Route as AdminSupportRouteImport } from './routes/admin.support'
+import { Route as OrderServiceIdRouteImport } from './routes/order.$serviceId'
+import { Route as RefCodeRouteImport } from './routes/ref.$code'
 import { Route as ApiPublicNowpaymentsWebhookRouteImport } from './routes/api/public/nowpayments/webhook'
+import { Route as ApiPublicOneforWebhookRouteImport } from './routes/api/public/onefor/webhook'
+import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as ApiPublicPaymentOneforCompleteRouteImport } from './routes/api/public/payment/onefor/complete'
 
-const TopupRoute = TopupRouteImport.update({
-  id: '/topup',
-  path: '/topup',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SiguriaRoute = SiguriaRouteImport.update({
-  id: '/siguria',
-  path: '/siguria',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RikthimInstagramRoute = RikthimInstagramRouteImport.update({
-  id: '/rikthim-instagram',
-  path: '/rikthim-instagram',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RegisterRoute = RegisterRouteImport.update({
-  id: '/register',
-  path: '/register',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ReferralsRoute = ReferralsRouteImport.update({
-  id: '/referrals',
-  path: '/referrals',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RaportoProfilRoute = RaportoProfilRouteImport.update({
-  id: '/raporto-profil',
-  path: '/raporto-profil',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MbyllProfileFakeRoute = MbyllProfileFakeRouteImport.update({
-  id: '/mbyll-profile-fake',
-  path: '/mbyll-profile-fake',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -89,9 +45,59 @@ const AdminRoute = AdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MbyllProfileFakeRoute = MbyllProfileFakeRouteImport.update({
+  id: '/mbyll-profile-fake',
+  path: '/mbyll-profile-fake',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NativeCallbackRoute = NativeCallbackRouteImport.update({
+  id: '/native-callback',
+  path: '/native-callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RaportoProfilRoute = RaportoProfilRouteImport.update({
+  id: '/raporto-profil',
+  path: '/raporto-profil',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReferralsRoute = ReferralsRouteImport.update({
+  id: '/referrals',
+  path: '/referrals',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RikthimInstagramRoute = RikthimInstagramRouteImport.update({
+  id: '/rikthim-instagram',
+  path: '/rikthim-instagram',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SiguriaRoute = SiguriaRouteImport.update({
+  id: '/siguria',
+  path: '/siguria',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TopupRoute = TopupRouteImport.update({
+  id: '/topup',
+  path: '/topup',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
@@ -99,29 +105,9 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
-const RefCodeRoute = RefCodeRouteImport.update({
-  id: '/ref/$code',
-  path: '/ref/$code',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OrderServiceIdRoute = OrderServiceIdRouteImport.update({
-  id: '/order/$serviceId',
-  path: '/order/$serviceId',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminSupportRoute = AdminSupportRouteImport.update({
-  id: '/support',
-  path: '/support',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminSherbimetRoute = AdminSherbimetRouteImport.update({
-  id: '/sherbimet',
-  path: '/sherbimet',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminRegjistrimetRoute = AdminRegjistrimetRouteImport.update({
-  id: '/regjistrimet',
-  path: '/regjistrimet',
+const AdminKerkesatRoute = AdminKerkesatRouteImport.update({
+  id: '/kerkesat',
+  path: '/kerkesat',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminPagesatRoute = AdminPagesatRouteImport.update({
@@ -129,15 +115,35 @@ const AdminPagesatRoute = AdminPagesatRouteImport.update({
   path: '/pagesat',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminKerkesatRoute = AdminKerkesatRouteImport.update({
-  id: '/kerkesat',
-  path: '/kerkesat',
+const AdminRegjistrimetRoute = AdminRegjistrimetRouteImport.update({
+  id: '/regjistrimet',
+  path: '/regjistrimet',
   getParentRoute: () => AdminRoute,
 } as any)
-const LovableEmailQueueProcessRoute =
-  LovableEmailQueueProcessRouteImport.update({
-    id: '/lovable/email/queue/process',
-    path: '/lovable/email/queue/process',
+const AdminSherbimetRoute = AdminSherbimetRouteImport.update({
+  id: '/sherbimet',
+  path: '/sherbimet',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSupportRoute = AdminSupportRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => AdminRoute,
+} as any)
+const OrderServiceIdRoute = OrderServiceIdRouteImport.update({
+  id: '/order/$serviceId',
+  path: '/order/$serviceId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RefCodeRoute = RefCodeRouteImport.update({
+  id: '/ref/$code',
+  path: '/ref/$code',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicNowpaymentsWebhookRoute =
+  ApiPublicNowpaymentsWebhookRouteImport.update({
+    id: '/api/public/nowpayments/webhook',
+    path: '/api/public/nowpayments/webhook',
     getParentRoute: () => rootRouteImport,
   } as any)
 const ApiPublicOneforWebhookRoute = ApiPublicOneforWebhookRouteImport.update({
@@ -145,10 +151,10 @@ const ApiPublicOneforWebhookRoute = ApiPublicOneforWebhookRouteImport.update({
   path: '/api/public/onefor/webhook',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicNowpaymentsWebhookRoute =
-  ApiPublicNowpaymentsWebhookRouteImport.update({
-    id: '/api/public/nowpayments/webhook',
-    path: '/api/public/nowpayments/webhook',
+const LovableEmailQueueProcessRoute =
+  LovableEmailQueueProcessRouteImport.update({
+    id: '/lovable/email/queue/process',
+    path: '/lovable/email/queue/process',
     getParentRoute: () => rootRouteImport,
   } as any)
 const ApiPublicPaymentOneforCompleteRoute =
@@ -164,6 +170,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/mbyll-profile-fake': typeof MbyllProfileFakeRoute
+  '/native-callback': typeof NativeCallbackRoute
   '/raporto-profil': typeof RaportoProfilRoute
   '/referrals': typeof ReferralsRoute
   '/register': typeof RegisterRoute
@@ -189,6 +196,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/mbyll-profile-fake': typeof MbyllProfileFakeRoute
+  '/native-callback': typeof NativeCallbackRoute
   '/raporto-profil': typeof RaportoProfilRoute
   '/referrals': typeof ReferralsRoute
   '/register': typeof RegisterRoute
@@ -216,6 +224,7 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/mbyll-profile-fake': typeof MbyllProfileFakeRoute
+  '/native-callback': typeof NativeCallbackRoute
   '/raporto-profil': typeof RaportoProfilRoute
   '/referrals': typeof ReferralsRoute
   '/register': typeof RegisterRoute
@@ -244,6 +253,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/mbyll-profile-fake'
+    | '/native-callback'
     | '/raporto-profil'
     | '/referrals'
     | '/register'
@@ -269,6 +279,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/mbyll-profile-fake'
+    | '/native-callback'
     | '/raporto-profil'
     | '/referrals'
     | '/register'
@@ -295,6 +306,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/mbyll-profile-fake'
+    | '/native-callback'
     | '/raporto-profil'
     | '/referrals'
     | '/register'
@@ -322,6 +334,7 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   LoginRoute: typeof LoginRoute
   MbyllProfileFakeRoute: typeof MbyllProfileFakeRoute
+  NativeCallbackRoute: typeof NativeCallbackRoute
   RaportoProfilRoute: typeof RaportoProfilRoute
   ReferralsRoute: typeof ReferralsRoute
   RegisterRoute: typeof RegisterRoute
@@ -339,74 +352,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/topup': {
-      id: '/topup'
-      path: '/topup'
-      fullPath: '/topup'
-      preLoaderRoute: typeof TopupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/siguria': {
-      id: '/siguria'
-      path: '/siguria'
-      fullPath: '/siguria'
-      preLoaderRoute: typeof SiguriaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/rikthim-instagram': {
-      id: '/rikthim-instagram'
-      path: '/rikthim-instagram'
-      fullPath: '/rikthim-instagram'
-      preLoaderRoute: typeof RikthimInstagramRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/register': {
-      id: '/register'
-      path: '/register'
-      fullPath: '/register'
-      preLoaderRoute: typeof RegisterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/referrals': {
-      id: '/referrals'
-      path: '/referrals'
-      fullPath: '/referrals'
-      preLoaderRoute: typeof ReferralsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/raporto-profil': {
-      id: '/raporto-profil'
-      path: '/raporto-profil'
-      fullPath: '/raporto-profil'
-      preLoaderRoute: typeof RaportoProfilRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/mbyll-profile-fake': {
-      id: '/mbyll-profile-fake'
-      path: '/mbyll-profile-fake'
-      fullPath: '/mbyll-profile-fake'
-      preLoaderRoute: typeof MbyllProfileFakeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -416,11 +366,81 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mbyll-profile-fake': {
+      id: '/mbyll-profile-fake'
+      path: '/mbyll-profile-fake'
+      fullPath: '/mbyll-profile-fake'
+      preLoaderRoute: typeof MbyllProfileFakeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/native-callback': {
+      id: '/native-callback'
+      path: '/native-callback'
+      fullPath: '/native-callback'
+      preLoaderRoute: typeof NativeCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/raporto-profil': {
+      id: '/raporto-profil'
+      path: '/raporto-profil'
+      fullPath: '/raporto-profil'
+      preLoaderRoute: typeof RaportoProfilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/referrals': {
+      id: '/referrals'
+      path: '/referrals'
+      fullPath: '/referrals'
+      preLoaderRoute: typeof ReferralsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rikthim-instagram': {
+      id: '/rikthim-instagram'
+      path: '/rikthim-instagram'
+      fullPath: '/rikthim-instagram'
+      preLoaderRoute: typeof RikthimInstagramRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/siguria': {
+      id: '/siguria'
+      path: '/siguria'
+      fullPath: '/siguria'
+      preLoaderRoute: typeof SiguriaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/topup': {
+      id: '/topup'
+      path: '/topup'
+      fullPath: '/topup'
+      preLoaderRoute: typeof TopupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/': {
@@ -430,39 +450,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/ref/$code': {
-      id: '/ref/$code'
-      path: '/ref/$code'
-      fullPath: '/ref/$code'
-      preLoaderRoute: typeof RefCodeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/order/$serviceId': {
-      id: '/order/$serviceId'
-      path: '/order/$serviceId'
-      fullPath: '/order/$serviceId'
-      preLoaderRoute: typeof OrderServiceIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/support': {
-      id: '/admin/support'
-      path: '/support'
-      fullPath: '/admin/support'
-      preLoaderRoute: typeof AdminSupportRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/sherbimet': {
-      id: '/admin/sherbimet'
-      path: '/sherbimet'
-      fullPath: '/admin/sherbimet'
-      preLoaderRoute: typeof AdminSherbimetRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/regjistrimet': {
-      id: '/admin/regjistrimet'
-      path: '/regjistrimet'
-      fullPath: '/admin/regjistrimet'
-      preLoaderRoute: typeof AdminRegjistrimetRouteImport
+    '/admin/kerkesat': {
+      id: '/admin/kerkesat'
+      path: '/kerkesat'
+      fullPath: '/admin/kerkesat'
+      preLoaderRoute: typeof AdminKerkesatRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/pagesat': {
@@ -472,18 +464,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminPagesatRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/kerkesat': {
-      id: '/admin/kerkesat'
-      path: '/kerkesat'
-      fullPath: '/admin/kerkesat'
-      preLoaderRoute: typeof AdminKerkesatRouteImport
+    '/admin/regjistrimet': {
+      id: '/admin/regjistrimet'
+      path: '/regjistrimet'
+      fullPath: '/admin/regjistrimet'
+      preLoaderRoute: typeof AdminRegjistrimetRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/lovable/email/queue/process': {
-      id: '/lovable/email/queue/process'
-      path: '/lovable/email/queue/process'
-      fullPath: '/lovable/email/queue/process'
-      preLoaderRoute: typeof LovableEmailQueueProcessRouteImport
+    '/admin/sherbimet': {
+      id: '/admin/sherbimet'
+      path: '/sherbimet'
+      fullPath: '/admin/sherbimet'
+      preLoaderRoute: typeof AdminSherbimetRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/support': {
+      id: '/admin/support'
+      path: '/support'
+      fullPath: '/admin/support'
+      preLoaderRoute: typeof AdminSupportRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/order/$serviceId': {
+      id: '/order/$serviceId'
+      path: '/order/$serviceId'
+      fullPath: '/order/$serviceId'
+      preLoaderRoute: typeof OrderServiceIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ref/$code': {
+      id: '/ref/$code'
+      path: '/ref/$code'
+      fullPath: '/ref/$code'
+      preLoaderRoute: typeof RefCodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/nowpayments/webhook': {
+      id: '/api/public/nowpayments/webhook'
+      path: '/api/public/nowpayments/webhook'
+      fullPath: '/api/public/nowpayments/webhook'
+      preLoaderRoute: typeof ApiPublicNowpaymentsWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/onefor/webhook': {
@@ -493,11 +513,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicOneforWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/nowpayments/webhook': {
-      id: '/api/public/nowpayments/webhook'
-      path: '/api/public/nowpayments/webhook'
-      fullPath: '/api/public/nowpayments/webhook'
-      preLoaderRoute: typeof ApiPublicNowpaymentsWebhookRouteImport
+    '/lovable/email/queue/process': {
+      id: '/lovable/email/queue/process'
+      path: '/lovable/email/queue/process'
+      fullPath: '/lovable/email/queue/process'
+      preLoaderRoute: typeof LovableEmailQueueProcessRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/payment/onefor/complete': {
@@ -536,6 +556,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   LoginRoute: LoginRoute,
   MbyllProfileFakeRoute: MbyllProfileFakeRoute,
+  NativeCallbackRoute: NativeCallbackRoute,
   RaportoProfilRoute: RaportoProfilRoute,
   ReferralsRoute: ReferralsRoute,
   RegisterRoute: RegisterRoute,

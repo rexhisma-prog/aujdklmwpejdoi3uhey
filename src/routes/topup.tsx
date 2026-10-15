@@ -1,4 +1,5 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { openExternal } from "@/lib/native";
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
@@ -152,7 +153,7 @@ function TopupPage() {
           setQrUrl(redirectUrl);
           setSubmitting(false);
         } else {
-          window.location.href = redirectUrl;
+          await openExternal(redirectUrl);
         }
         return;
       } catch (err) {
@@ -166,7 +167,7 @@ function TopupPage() {
     if (method === "crypto") {
       try {
         const { redirectUrl } = await startCryptoPayment({ data: { amount } });
-        window.location.href = redirectUrl;
+        await openExternal(redirectUrl);
         return;
       } catch (err) {
         setSubmitting(false);
