@@ -3,6 +3,7 @@ import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/r
 import appCss from "../styles.css?url";
 import { CookieConsent } from "../components/CookieConsent";
 import { SupportWidget } from "../components/support/SupportWidget";
+import { NativeBridge } from "../components/NativeBridge";
 
 function NotFoundComponent() {
   return (
@@ -30,7 +31,7 @@ export const Route = createRootRoute({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
       { title: "shtofollow.com — Rritu në rrjetet sociale" },
       { name: "description", content: "Shto Followers, Pëlqime dhe Shikime në Instagram, TikTok dhe Facebook. Wallet EUR, porosi të shpejta, transaksione të sigurta." },
       { name: "author", content: "shtofollow.com" },
@@ -87,6 +88,7 @@ function RootComponent() {
       <Outlet />
       <CookieConsent />
       <SupportWidget />
+      <NativeBridge />
     </>
   );
 }

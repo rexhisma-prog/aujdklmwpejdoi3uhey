@@ -16,6 +16,7 @@ import { Route as RikthimInstagramRouteImport } from './routes/rikthim-instagram
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ReferralsRouteImport } from './routes/referrals'
 import { Route as RaportoProfilRouteImport } from './routes/raporto-profil'
+import { Route as NativeCallbackRouteImport } from './routes/native-callback'
 import { Route as MbyllProfileFakeRouteImport } from './routes/mbyll-profile-fake'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardRouteImport } from './routes/dashboard'
@@ -67,6 +68,11 @@ const ReferralsRoute = ReferralsRouteImport.update({
 const RaportoProfilRoute = RaportoProfilRouteImport.update({
   id: '/raporto-profil',
   path: '/raporto-profil',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NativeCallbackRoute = NativeCallbackRouteImport.update({
+  id: '/native-callback',
+  path: '/native-callback',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MbyllProfileFakeRoute = MbyllProfileFakeRouteImport.update({
@@ -164,6 +170,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/mbyll-profile-fake': typeof MbyllProfileFakeRoute
+  '/native-callback': typeof NativeCallbackRoute
   '/raporto-profil': typeof RaportoProfilRoute
   '/referrals': typeof ReferralsRoute
   '/register': typeof RegisterRoute
@@ -189,6 +196,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/mbyll-profile-fake': typeof MbyllProfileFakeRoute
+  '/native-callback': typeof NativeCallbackRoute
   '/raporto-profil': typeof RaportoProfilRoute
   '/referrals': typeof ReferralsRoute
   '/register': typeof RegisterRoute
@@ -216,6 +224,7 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/mbyll-profile-fake': typeof MbyllProfileFakeRoute
+  '/native-callback': typeof NativeCallbackRoute
   '/raporto-profil': typeof RaportoProfilRoute
   '/referrals': typeof ReferralsRoute
   '/register': typeof RegisterRoute
@@ -244,6 +253,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/mbyll-profile-fake'
+    | '/native-callback'
     | '/raporto-profil'
     | '/referrals'
     | '/register'
@@ -269,6 +279,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/mbyll-profile-fake'
+    | '/native-callback'
     | '/raporto-profil'
     | '/referrals'
     | '/register'
@@ -295,6 +306,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/mbyll-profile-fake'
+    | '/native-callback'
     | '/raporto-profil'
     | '/referrals'
     | '/register'
@@ -322,6 +334,7 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   LoginRoute: typeof LoginRoute
   MbyllProfileFakeRoute: typeof MbyllProfileFakeRoute
+  NativeCallbackRoute: typeof NativeCallbackRoute
   RaportoProfilRoute: typeof RaportoProfilRoute
   ReferralsRoute: typeof ReferralsRoute
   RegisterRoute: typeof RegisterRoute
@@ -386,6 +399,13 @@ declare module '@tanstack/react-router' {
       path: '/raporto-profil'
       fullPath: '/raporto-profil'
       preLoaderRoute: typeof RaportoProfilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/native-callback': {
+      id: '/native-callback'
+      path: '/native-callback'
+      fullPath: '/native-callback'
+      preLoaderRoute: typeof NativeCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mbyll-profile-fake': {
@@ -536,6 +556,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   LoginRoute: LoginRoute,
   MbyllProfileFakeRoute: MbyllProfileFakeRoute,
+  NativeCallbackRoute: NativeCallbackRoute,
   RaportoProfilRoute: RaportoProfilRoute,
   ReferralsRoute: ReferralsRoute,
   RegisterRoute: RegisterRoute,
