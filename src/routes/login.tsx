@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable";
+import { startGoogleSignIn } from "@/lib/google-signin";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
