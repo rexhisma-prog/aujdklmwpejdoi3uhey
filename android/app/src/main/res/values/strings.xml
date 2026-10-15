@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">ShtoFollow</string>
+    <string name="title_activity_main">ShtoFollow</string>
+    <string name="package_name">com.shtofollow.app</string>
+    <string name="custom_url_scheme">com.shtofollow.app</string>
+</resources>
