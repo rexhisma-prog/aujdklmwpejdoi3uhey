@@ -88,7 +88,7 @@ function TopupPage() {
   const navigate = useNavigate();
   const [userId, setUserId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [amount, setAmount] = useState<number>(10);
+  const [amount, setAmount] = useState<number>(20);
   const [method, setMethod] = useState<Method>("card");
   const [reference, setReference] = useState("");
   const [submitting, setSubmitting] = useState(false);
