@@ -5,6 +5,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { createOneforTopup } from "@/lib/onefor.functions";
 import { createCryptoTopup } from "@/lib/nowpayments.functions";
+import { MIN_TOPUP_AMOUNT, MAX_TOPUP_AMOUNT, validateTopupAmount } from "@/lib/topup-amount";
 import { QRCodeSVG } from "qrcode.react";
 import {
   ArrowLeft,
@@ -24,6 +25,10 @@ export const Route = createFileRoute("/topup")({
       { title: "Mbush balancin — shtofollow.com" },
       { name: "description", content: "Mbush balancin e walletit tënd shtofollow.com në EUR me kartë, OneFor ose transfertë bankare." },
       { name: "robots", content: "noindex, nofollow" },
+      { property: "og:title", content: "Mbush balancin — shtofollow.com" },
+      { property: "og:description", content: "Mbush balancin tënd ShtoFollow në EUR me mënyrën e pagesës që zgjedh." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: TopupPage,
@@ -69,8 +74,8 @@ const METHODS: {
   },
 ];
 
-const DEFAULT_MIN = 1;
-const REFERRED_MIN = 1;
+const DEFAULT_MIN = MIN_TOPUP_AMOUNT;
+const REFERRED_MIN = MIN_TOPUP_AMOUNT;
 const PRESETS = [1, 5, 10, 20, 50, 100, 200];
 
 const BANK_DETAILS = {
@@ -134,8 +139,10 @@ function TopupPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userId) return;
-    if (amount < MIN_AMOUNT) {
-      setError(`Shuma minimale për mbushje është ${MIN_AMOUNT} €.`);
+    try {
+      validateTopupAmount(amount);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Shumë e pavlefshme.");
       return;
     }
     setError(null);
@@ -346,6 +353,7 @@ function TopupPage() {
             <input
               type="number"
               min={MIN_AMOUNT}
+              max={MAX_TOPUP_AMOUNT}
               step="0.01"
               value={amount}
               onChange={(e) => setAmount(Number(e.target.value))}
@@ -437,7 +445,7 @@ function TopupPage() {
 
           <button
             type="submit"
-            disabled={submitting || amount < MIN_AMOUNT}
+            disabled={submitting || !Number.isFinite(amount) || amount < MIN_AMOUNT || amount > MAX_TOPUP_AMOUNT}
             className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] hover:opacity-90 disabled:opacity-60"
           >
             {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
