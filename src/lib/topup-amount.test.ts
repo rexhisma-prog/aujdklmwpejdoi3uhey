@@ -1,11 +1,12 @@
-import { describe, expect, test } from "bun:test";
+import { describe, test } from "node:test";
+import assert from "node:assert/strict";
 import { validateTopupAmount } from "./topup-amount";
 
 describe("top-up amounts", () => {
   test("accepts a 0.56 EUR deposit", () => {
-    expect(validateTopupAmount(0.56)).toBe(0.56);
+    assert.equal(validateTopupAmount(0.56), 0.56);
   });
   test("rejects a zero deposit", () => {
-    expect(() => validateTopupAmount(0)).toThrow();
+    assert.throws(() => validateTopupAmount(0));
   });
 });
