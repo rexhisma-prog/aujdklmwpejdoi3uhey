@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { validateTopupAmount } from "@/lib/topup-amount";
 
 const SITE_URL = "https://shtofollow.com";
 
@@ -23,12 +24,9 @@ function getOneforConfig() {
 export const createOneforTopup = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: { amount: number; channel?: "card" | "onefor" }) => {
-    const amount = Number(input?.amount);
-    if (!Number.isFinite(amount) || amount < 1 || amount > 100000) {
-      throw new Error("Shuma minimale për mbushje është 1 €.");
-    }
+    const amount = validateTopupAmount(input?.amount);
     const channel = input?.channel === "onefor" ? "onefor" : "card";
-    return { amount: Math.round(amount * 100) / 100, channel };
+    return { amount, channel };
   })
   .handler(async ({ data, context }) => {
     const { userId, claims } = context;
