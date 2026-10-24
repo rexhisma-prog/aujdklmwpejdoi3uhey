@@ -76,7 +76,7 @@ const METHODS: {
 
 const DEFAULT_MIN = MIN_TOPUP_AMOUNT;
 const REFERRED_MIN = MIN_TOPUP_AMOUNT;
-const PRESETS = [8, 20, 50, 100, 200];
+const PRESETS = [7, 20, 50, 100, 200];
 
 const BANK_DETAILS = {
   bank: "Teb Bank",
@@ -88,7 +88,7 @@ function TopupPage() {
   const navigate = useNavigate();
   const [userId, setUserId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [amount, setAmount] = useState<number>(8);
+  const [amount, setAmount] = useState<number>(7);
   const [method, setMethod] = useState<Method>("card");
   const [reference, setReference] = useState("");
   const [submitting, setSubmitting] = useState(false);
