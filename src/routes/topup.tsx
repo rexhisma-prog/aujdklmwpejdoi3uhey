@@ -354,7 +354,6 @@ function TopupPage() {
             </div>
             <input
               type="number"
-              min={MIN_AMOUNT}
               max={MAX_TOPUP_AMOUNT}
               step="0.01"
               value={amount}
@@ -363,7 +362,7 @@ function TopupPage() {
               className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none"
             />
             <p className="mt-1 text-xs text-muted-foreground">
-              Shuma minimale: {MIN_AMOUNT} €
+              Shuma minimale: {DISPLAY_MIN} €
               {isReferred && " (llogari e regjistruar përmes referimit)"}
             </p>
           </div>
