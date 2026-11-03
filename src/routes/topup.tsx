@@ -77,6 +77,8 @@ const METHODS: {
 const DEFAULT_MIN = MIN_TOPUP_AMOUNT;
 const REFERRED_MIN = MIN_TOPUP_AMOUNT;
 const PRESETS = [20, 50, 100, 200];
+// Advertised minimum shown on the page; the real minimum (3.30 €) stays hidden.
+const DISPLAY_MIN = 20;
 
 const BANK_DETAILS = {
   bank: "Teb Bank",
